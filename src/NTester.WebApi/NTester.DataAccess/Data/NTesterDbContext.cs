@@ -7,7 +7,7 @@ using NTester.DataAccess.EntityTypeConfigurations;
 namespace NTester.DataAccess.Data;
 
 /// <inheritdoc cref="INTesterDbContext"/>
-public class NTesterDbContext : IdentityDbContext<IdentityUser<Guid>, IdentityRole<Guid>, Guid>
+public class NTesterDbContext : IdentityDbContext<IdentityUser<Guid>, IdentityRole<Guid>, Guid>, INTesterDbContext
 {
     /// <summary>
     /// Constructor of the NTester database context instance.
