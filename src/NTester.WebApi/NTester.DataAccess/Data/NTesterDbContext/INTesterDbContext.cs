@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NTester.DataAccess.Entities;
 
-namespace NTester.DataAccess.Data;
+namespace NTester.DataAccess.Data.NTesterDbContext;
 
 /// <summary>
 /// Database context of the NTester application.

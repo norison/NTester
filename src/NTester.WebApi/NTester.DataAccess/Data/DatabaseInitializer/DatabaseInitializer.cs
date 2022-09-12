@@ -1,19 +1,19 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace NTester.DataAccess.Data;
+namespace NTester.DataAccess.Data.DatabaseInitializer;
 
 /// <summary>
 /// Initializes the database.
 /// </summary>
 public class DatabaseInitializer : IDatabaseInitializer
 {
-    private readonly NTesterDbContext _dbContext;
+    private readonly NTesterDbContext.NTesterDbContext _dbContext;
 
     /// <summary>
     /// Create an instance of the database initializer.
     /// </summary>
     /// <param name="dbContext">Database context of the NTester application.</param>
-    public DatabaseInitializer(NTesterDbContext dbContext)
+    public DatabaseInitializer(NTesterDbContext.NTesterDbContext dbContext)
     {
         _dbContext = dbContext;
     }

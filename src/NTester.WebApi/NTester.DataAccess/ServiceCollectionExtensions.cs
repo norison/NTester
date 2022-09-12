@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using NTester.DataAccess.Data;
+using NTester.DataAccess.Data.DatabaseInitializer;
+using NTester.DataAccess.Data.NTesterDbContext;
 
 namespace NTester.DataAccess;
 

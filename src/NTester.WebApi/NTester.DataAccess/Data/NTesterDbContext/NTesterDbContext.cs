@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using NTester.DataAccess.Entities;
 using NTester.DataAccess.EntityTypeConfigurations;
 
-namespace NTester.DataAccess.Data;
+namespace NTester.DataAccess.Data.NTesterDbContext;
 
 /// <inheritdoc cref="INTesterDbContext"/>
 public class NTesterDbContext : IdentityDbContext<IdentityUser<Guid>, IdentityRole<Guid>, Guid>, INTesterDbContext

@@ -1,4 +1,6 @@
-﻿namespace NTester.DataAccess.Data;
+﻿using NTester.DataAccess.Data.NTesterDbContext;
+
+namespace NTester.DataAccess.Data.DatabaseInitializer;
 
 /// <summary>
 /// Initializes the database.
