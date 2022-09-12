@@ -6,9 +6,7 @@ using NTester.DataAccess.EntityTypeConfigurations;
 
 namespace NTester.DataAccess.Data;
 
-/// <summary>
-/// Database context of the NTester application.
-/// </summary>
+/// <inheritdoc cref="INTesterDbContext"/>
 public class NTesterDbContext : IdentityDbContext<IdentityUser<Guid>, IdentityRole<Guid>, Guid>
 {
     /// <summary>
@@ -19,13 +17,13 @@ public class NTesterDbContext : IdentityDbContext<IdentityUser<Guid>, IdentityRo
     {
     }
 
-    /// <inheritdoc cref="DbSet{TestEntity}"/>
+    /// <inheritdoc cref="INTesterDbContext.Tests"/>
     public DbSet<TestEntity> Tests { get; set; }
 
-    /// <inheritdoc cref="DbSet{QuestionEntity}"/>
+    /// <inheritdoc cref="INTesterDbContext.Questions"/>
     public DbSet<QuestionEntity> Questions { get; set; }
 
-    /// <inheritdoc cref="DbSet{AnswerEntity}"/>
+    /// <inheritdoc cref="INTesterDbContext.Answers"/>
     public DbSet<AnswerEntity> Answers { get; set; }
 
     /// <inheritdoc cref="DbContext.OnModelCreating"/>
