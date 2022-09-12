@@ -7,7 +7,7 @@ using NTester.DataAccess.EntityTypeConfigurations;
 namespace NTester.DataAccess.Data.NTesterDbContext;
 
 /// <inheritdoc cref="INTesterDbContext"/>
-public class NTesterDbContext : IdentityDbContext<IdentityUser<Guid>, IdentityRole<Guid>, Guid>, INTesterDbContext
+public class NTesterDbContext : IdentityDbContext<UserEntity, IdentityRole<Guid>, Guid>, INTesterDbContext
 {
     /// <summary>
     /// Constructor of the NTester database context instance.
@@ -31,6 +31,7 @@ public class NTesterDbContext : IdentityDbContext<IdentityUser<Guid>, IdentityRo
     {
         base.OnModelCreating(builder);
 
+        builder.ApplyConfiguration(new UserEntityTypeConfiguration());
         builder.ApplyConfiguration(new TestEntityTypeConfiguration());
         builder.ApplyConfiguration(new QuestionEntityTypeConfiguration());
         builder.ApplyConfiguration(new AnswerEntityTypeConfiguration());

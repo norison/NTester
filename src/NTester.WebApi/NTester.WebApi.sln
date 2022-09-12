@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTester.WebApi", "NTester.W
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTester.DataAccess", "NTester.DataAccess\NTester.DataAccess.csproj", "{F34C352B-9C2E-4994-974F-6AD1AC075007}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTester.Domain", "NTester.Domain\NTester.Domain.csproj", "{902B4C54-6F1E-4CFB-90AF-D59923774D15}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{F34C352B-9C2E-4994-974F-6AD1AC075007}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F34C352B-9C2E-4994-974F-6AD1AC075007}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F34C352B-9C2E-4994-974F-6AD1AC075007}.Release|Any CPU.Build.0 = Release|Any CPU
+		{902B4C54-6F1E-4CFB-90AF-D59923774D15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{902B4C54-6F1E-4CFB-90AF-D59923774D15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{902B4C54-6F1E-4CFB-90AF-D59923774D15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{902B4C54-6F1E-4CFB-90AF-D59923774D15}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
