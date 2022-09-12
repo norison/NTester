@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTester.WebApi", "NTester.WebApi\NTester.WebApi.csproj", "{6AB58881-9E17-49E7-ACCF-2EAA28F86D67}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTester.DataAccess", "NTester.DataAccess\NTester.DataAccess.csproj", "{F34C352B-9C2E-4994-974F-6AD1AC075007}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{6AB58881-9E17-49E7-ACCF-2EAA28F86D67}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6AB58881-9E17-49E7-ACCF-2EAA28F86D67}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6AB58881-9E17-49E7-ACCF-2EAA28F86D67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F34C352B-9C2E-4994-974F-6AD1AC075007}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F34C352B-9C2E-4994-974F-6AD1AC075007}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F34C352B-9C2E-4994-974F-6AD1AC075007}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F34C352B-9C2E-4994-974F-6AD1AC075007}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
