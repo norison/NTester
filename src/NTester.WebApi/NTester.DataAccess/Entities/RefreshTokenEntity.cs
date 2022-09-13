@@ -23,7 +23,7 @@ public class RefreshTokenEntity
     /// <summary>
     /// Client of the refresh token entity.
     /// </summary>
-    public ClientEntity Client { get; set; } = new();
+    public ClientEntity? Client { get; set; }
 
     /// <summary>
     /// Id of the user.
@@ -33,5 +33,5 @@ public class RefreshTokenEntity
     /// <summary>
     /// User of the refresh token entity.
     /// </summary>
-    public UserEntity User { get; set; } = new();
+    public UserEntity? User { get; set; }
 }

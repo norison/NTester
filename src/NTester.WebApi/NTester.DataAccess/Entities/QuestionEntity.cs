@@ -23,7 +23,7 @@ public class QuestionEntity
     /// <summary>
     /// Test of the question.
     /// </summary>
-    public TestEntity Test { get; set; } = new();
+    public TestEntity? Test { get; set; }
 
     /// <summary>
     /// Answers of the question.

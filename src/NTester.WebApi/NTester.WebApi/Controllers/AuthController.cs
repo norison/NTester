@@ -3,9 +3,11 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NTester.DataContracts.Auth.Login;
+using NTester.DataContracts.Auth.Refresh;
 using NTester.DataContracts.Auth.Register;
 using NTester.Domain.Features.Auth.Commands.Login;
 using NTester.Domain.Features.Auth.Commands.Logout;
+using NTester.Domain.Features.Auth.Commands.Refresh;
 using NTester.Domain.Features.Auth.Commands.Register;
 using NTester.WebApi.Controllers.Base;
 
@@ -59,9 +61,21 @@ public class AuthController : ApiControllerBase
     }
 
     /// <summary>
-    /// 
+    /// Refreshes the token pair.
     /// </summary>
-    /// <returns></returns>
+    /// <param name="refreshRequest">Request for the refresh.</param>
+    /// <returns>Authentication response.</returns>
+    [HttpPost("refresh")]
+    public async Task<IActionResult> RegisterAsync(RefreshRequest refreshRequest)
+    {
+        var command = _mapper.Map<RefreshCommand>(refreshRequest);
+        var result = await _mediator.Send(command);
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Logouts a user.
+    /// </summary>
     [HttpPost("logout")]
     [Authorize]
     public async Task<IActionResult> LogoutAsync()

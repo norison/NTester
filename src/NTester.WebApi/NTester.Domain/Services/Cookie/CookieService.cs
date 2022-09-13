@@ -38,7 +38,7 @@ public class CookieService : ICookieService
     }
 
     /// <inheritdoc cref="ICookieService.GetRefreshToken"/>
-    public string GetRefreshToken()
+    public string? GetRefreshToken()
     {
         return _contextAccessor.HttpContext.Request.Cookies[RefreshTokenCookieName];
     }

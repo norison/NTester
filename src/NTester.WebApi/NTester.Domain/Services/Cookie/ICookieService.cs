@@ -20,5 +20,5 @@ public interface ICookieService
     /// Gets the refresh token from cookie.
     /// </summary>
     /// <returns>Refresh token.</returns>
-    string GetRefreshToken();
+    string? GetRefreshToken();
 }

@@ -28,5 +28,5 @@ public class AnswerEntity
     /// <summary>
     /// Question of the answer.
     /// </summary>
-    public QuestionEntity Question { get; set; } = new();
+    public QuestionEntity? Question { get; set; }
 }

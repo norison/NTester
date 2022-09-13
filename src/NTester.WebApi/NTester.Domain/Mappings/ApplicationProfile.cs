@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using NTester.DataContracts.Auth.Login;
+using NTester.DataContracts.Auth.Refresh;
 using NTester.DataContracts.Auth.Register;
 using NTester.Domain.Features.Auth.Commands.Login;
+using NTester.Domain.Features.Auth.Commands.Refresh;
 using NTester.Domain.Features.Auth.Commands.Register;
 
 namespace NTester.Domain.Mappings;
@@ -18,5 +20,6 @@ public class ApplicationProfile : Profile
     {
         CreateMap<LoginRequest, LoginCommand>();
         CreateMap<RegisterRequest, RegisterCommand>();
+        CreateMap<RefreshRequest, RefreshCommand>();
     }
 }

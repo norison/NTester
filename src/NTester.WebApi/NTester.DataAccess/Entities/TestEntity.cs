@@ -28,7 +28,7 @@ public class TestEntity
     /// <summary>
     /// User of the test.
     /// </summary>
-    public UserEntity User { get; set; } = new();
+    public UserEntity? User { get; set; }
 
     /// <summary>
     /// Questions of the test.

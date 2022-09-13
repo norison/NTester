@@ -15,6 +15,14 @@ public interface IAuthService
     /// <param name="clientId">Id of the client.</param>
     /// <returns>Authentication response.</returns>
     Task<AuthResponse> AuthenticateUserAsync(UserEntity userEntity, Guid clientId);
+    
+    /// <summary>
+    /// Authenticates a user.
+    /// </summary>
+    /// <param name="accessToken">Token for accessing resource.</param>
+    /// <param name="refreshToken">Token to refresh a pair of tokens.</param>
+    /// <returns></returns>
+    Task<AuthResponse> AuthenticateUserAsync(string accessToken, string refreshToken);
 
     /// <summary>
     /// Revokes a refresh token.
