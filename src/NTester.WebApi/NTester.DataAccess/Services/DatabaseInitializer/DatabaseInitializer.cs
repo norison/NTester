@@ -29,7 +29,7 @@ public class DatabaseInitializer : IDatabaseInitializer
 
         foreach (var client in _clientPresets.Clients)
         {
-            if (!_dbContext.Clients.Contains(client))
+            if (!await _dbContext.Clients.ContainsAsync(client))
             {
                 await _dbContext.Clients.AddAsync(client);
             }
