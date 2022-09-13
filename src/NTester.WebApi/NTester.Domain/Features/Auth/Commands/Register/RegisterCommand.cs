@@ -1,9 +1,12 @@
-﻿namespace NTester.DataContracts.Auth.Register;
+﻿using MediatR;
+using NTester.DataContracts.Auth;
+
+namespace NTester.Domain.Features.Auth.Commands.Register;
 
 /// <summary>
-/// Request for user registration.
+/// Command for user registration.
 /// </summary>
-public class RegisterRequest
+public class RegisterCommand : IRequest<AuthResponse>
 {
     /// <summary>
     /// User name of the user.

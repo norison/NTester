@@ -25,6 +25,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddDataAccess(configuration);
         services.AddDomain(configuration);
+        services.AddHttpContextAccessor();
         services.AddControllers();
 
         ConfigureIdentity(services);
@@ -39,7 +40,7 @@ public static class ServiceCollectionExtensions
             .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
-                var jwtSettings = configuration.GetSection("JwtSettings").Get<JwtSettings>();
+                var jwtSettings = configuration.GetSection("Auth:JwtSettings").Get<JwtSettings>();
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret));
 
                 options.TokenValidationParameters = new TokenValidationParameters

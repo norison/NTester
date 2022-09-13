@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NTester.Domain.Behaviors;
+using NTester.Domain.Services.Auth;
 using NTester.Domain.Services.SignInManager;
 using NTester.Domain.Services.Token;
 using NTester.Domain.Services.UserManager;
@@ -31,10 +32,12 @@ public static class ServiceCollectionExtensions
 
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
-        services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
+        services.Configure<JwtSettings>(configuration.GetSection("Auth:JwtSettings"));
+        services.Configure<RefreshTokenSettings>(configuration.GetSection("Auth:RefreshTokenSettings"));
 
         services.AddScoped<IUserManager, UserManagerWrapper>();
         services.AddScoped<ISignInManager, SignInManagerWrapper>();
+        services.AddScoped<IAuthService, AuthService>();
 
         services.AddSingleton<ITokenService, TokenService>();
 

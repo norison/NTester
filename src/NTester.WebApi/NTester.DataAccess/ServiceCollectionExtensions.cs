@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using NTester.DataAccess.Data.DatabaseInitializer;
 using NTester.DataAccess.Data.NTesterDbContext;
+using NTester.DataAccess.Services.DatabaseInitializer;
+using NTester.DataAccess.Services.Transaction;
 
 namespace NTester.DataAccess;
 
@@ -26,7 +27,10 @@ public static class ServiceCollectionExtensions
             options.UseSqlServer(connectionString);
         });
 
+        services.Configure<ClientPresets>(configuration.GetSection("Auth:ClientPresets"));
+
         services.AddScoped<IDatabaseInitializer, DatabaseInitializer>();
+        services.AddScoped<ITransactionFactory, TransactionFactory>();
 
         return services;
     }

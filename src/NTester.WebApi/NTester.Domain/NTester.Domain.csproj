@@ -24,11 +24,6 @@
       <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.2.2" />
       <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
       <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
-      <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Features\Queries" />
     </ItemGroup>
 
 </Project>

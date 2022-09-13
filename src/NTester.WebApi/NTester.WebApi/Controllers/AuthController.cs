@@ -2,7 +2,9 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using NTester.DataContracts.Auth.Login;
-using NTester.Domain.Features.Commands.Login;
+using NTester.DataContracts.Auth.Register;
+using NTester.Domain.Features.Auth.Commands.Login;
+using NTester.Domain.Features.Auth.Commands.Register;
 
 namespace NTester.WebApi.Controllers;
 
@@ -36,6 +38,19 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> LoginAsync(LoginRequest loginRequest)
     {
         var command = _mapper.Map<LoginCommand>(loginRequest);
+        var result = await _mediator.Send(command);
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Registers a user.
+    /// </summary>
+    /// <param name="registerRequest">Request for the registration.</param>
+    /// <returns>Authentication response.</returns>
+    [HttpPost("register")]
+    public async Task<IActionResult> RegisterAsync(RegisterRequest registerRequest)
+    {
+        var command = _mapper.Map<RegisterCommand>(registerRequest);
         var result = await _mediator.Send(command);
         return Ok(result);
     }

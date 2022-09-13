@@ -17,6 +17,9 @@ public interface INTesterDbContext
     /// <inheritdoc cref="DbSet{AnswerEntity}"/>
     DbSet<AnswerEntity> Answers { get; set; }
 
+    /// <inheritdoc cref="DbSet{ClientEntity}"/>
+    public DbSet<ClientEntity> Clients { get; set; }
+
     /// <inheritdoc cref="DbSet{RefreshTokenEntity}"/>
     DbSet<RefreshTokenEntity> RefreshTokens { get; set; }
 

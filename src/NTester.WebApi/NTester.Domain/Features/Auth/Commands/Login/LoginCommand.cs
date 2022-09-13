@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using NTester.DataContracts.Auth;
 
-namespace NTester.Domain.Features.Commands.Login;
+namespace NTester.Domain.Features.Auth.Commands.Login;
 
 /// <summary>
 /// Command for user login.
@@ -17,4 +17,9 @@ public class LoginCommand : IRequest<AuthResponse>
     /// Password of the user.
     /// </summary>
     public string Password { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Id of the client.
+    /// </summary>
+    public Guid ClientId { get; set; }
 }

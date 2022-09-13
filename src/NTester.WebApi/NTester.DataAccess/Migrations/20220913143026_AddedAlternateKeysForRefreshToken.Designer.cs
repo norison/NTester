@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NTester.DataAccess.Data.NTesterDbContext;
 
@@ -11,9 +12,10 @@ using NTester.DataAccess.Data.NTesterDbContext;
 namespace NTester.DataAccess.Migrations
 {
     [DbContext(typeof(NTesterDbContext))]
-    partial class NTesterDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220913143026_AddedAlternateKeysForRefreshToken")]
+    partial class AddedAlternateKeysForRefreshToken
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -233,15 +235,11 @@ namespace NTester.DataAccess.Migrations
 
                     b.HasKey("Token");
 
-                    b.HasIndex("AccessToken")
-                        .IsUnique();
+                    b.HasAlternateKey("AccessToken");
+
+                    b.HasAlternateKey("UserId", "ClientId");
 
                     b.HasIndex("ClientId");
-
-                    b.HasIndex("UserId", "ClientId")
-                        .IsUnique();
-
-                    SqlServerIndexBuilderExtensions.IncludeProperties(b.HasIndex("UserId", "ClientId"), new[] { "Token", "AccessToken", "ExpirationDateTime" });
 
                     b.ToTable("RefreshTokens");
                 });

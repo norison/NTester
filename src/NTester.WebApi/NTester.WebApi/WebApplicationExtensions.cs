@@ -1,4 +1,4 @@
-﻿using NTester.DataAccess.Data.DatabaseInitializer;
+﻿using NTester.DataAccess.Services.DatabaseInitializer;
 using NTester.WebApi.Middlewares.CustomExceptionHandler;
 
 namespace NTester.WebApi;

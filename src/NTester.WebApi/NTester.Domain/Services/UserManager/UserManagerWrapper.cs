@@ -24,8 +24,8 @@ public class UserManagerWrapper : IUserManager
     }
 
     /// <inheritdoc cref="IUserManager.CreateAsync"/>
-    public async Task<IdentityResult> CreateAsync(UserEntity user)
+    public async Task<IdentityResult> CreateAsync(UserEntity user, string password)
     {
-        return await _userManager.CreateAsync(user);
+        return await _userManager.CreateAsync(user, password);
     }
 }

@@ -18,13 +18,14 @@ public interface IUserManager
     Task<UserEntity> FindByNameAsync(string userName);
 
     /// <summary>
-    /// Creates the specified <paramref name="user"/> in the backing store with no password,
+    /// Creates the specified <paramref name="user"/> in the backing store with given password,
     /// as an asynchronous operation.
     /// </summary>
     /// <param name="user">The user to create.</param>
+    /// <param name="password">The password for the user to hash and store.</param>
     /// <returns>
     /// The <see cref="Task"/> that represents the asynchronous operation, containing the <see cref="IdentityResult"/>
     /// of the operation.
     /// </returns>
-    Task<IdentityResult> CreateAsync(UserEntity user);
+    Task<IdentityResult> CreateAsync(UserEntity user, string password);
 }

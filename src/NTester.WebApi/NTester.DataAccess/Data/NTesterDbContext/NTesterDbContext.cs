@@ -25,6 +25,9 @@ public class NTesterDbContext : IdentityDbContext<UserEntity, IdentityRole<Guid>
 
     /// <inheritdoc cref="INTesterDbContext.Answers"/>
     public DbSet<AnswerEntity> Answers { get; set; }
+    
+    /// <inheritdoc cref="INTesterDbContext.Clients"/>
+    public DbSet<ClientEntity> Clients { get; set; }
 
     /// <inheritdoc cref="INTesterDbContext.RefreshTokens"/>
     public DbSet<RefreshTokenEntity> RefreshTokens { get; set; }
@@ -34,10 +37,19 @@ public class NTesterDbContext : IdentityDbContext<UserEntity, IdentityRole<Guid>
     {
         base.OnModelCreating(builder);
 
+        builder.Entity<UserEntity>().ToTable("Users");
+        builder.Entity<IdentityRole<Guid>>().ToTable("Roles");
+        builder.Entity<IdentityUserRole<Guid>>().ToTable("UsersRoles");
+        builder.Entity<IdentityUserClaim<Guid>>().ToTable("UsersClaims");
+        builder.Entity<IdentityUserLogin<Guid>>().ToTable("UsersLogins");
+        builder.Entity<IdentityUserToken<Guid>>().ToTable("UsersTokens");
+        builder.Entity<IdentityRoleClaim<Guid>>().ToTable("RoleClaims");
+
         builder.ApplyConfiguration(new UserEntityTypeConfiguration());
         builder.ApplyConfiguration(new TestEntityTypeConfiguration());
         builder.ApplyConfiguration(new QuestionEntityTypeConfiguration());
         builder.ApplyConfiguration(new AnswerEntityTypeConfiguration());
         builder.ApplyConfiguration(new RefreshTokenEntityTypeConfiguration());
+        builder.ApplyConfiguration(new ClientEntityTypeConfiguration());
     }
 }

@@ -11,9 +11,24 @@ public class RefreshTokenEntity
     public string Token { get; set; } = string.Empty;
 
     /// <summary>
+    /// Token for the access.
+    /// </summary>
+    public string AccessToken { get; set; } = string.Empty;
+
+    /// <summary>
     /// Expiration date time of the refresh token entity.
     /// </summary>
     public DateTime ExpirationDateTime { get; set; }
+
+    /// <summary>
+    /// Id of the client.
+    /// </summary>
+    public Guid ClientId { get; set; }
+
+    /// <summary>
+    /// Client of the refresh token entity.
+    /// </summary>
+    public ClientEntity Client { get; set; } = new();
 
     /// <summary>
     /// Id of the user.
