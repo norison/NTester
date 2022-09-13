@@ -5,6 +5,7 @@ using NTester.DataAccess.Services.Transaction;
 using NTester.DataContracts.Auth;
 using NTester.Domain.Exceptions;
 using NTester.Domain.Services.Auth;
+using NTester.Domain.Services.Cookie;
 using NTester.Domain.Services.SignInManager;
 using NTester.Domain.Services.UserManager;
 
@@ -18,6 +19,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AuthRespo
     private readonly IUserManager _userManager;
     private readonly ISignInManager _signInManager;
     private readonly IAuthService _authService;
+    private readonly ICookieService _cookieService;
     private readonly ITransactionFactory _transactionFactory;
 
     /// <summary>
@@ -26,16 +28,19 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AuthRespo
     /// <param name="userManager">Manager of the users.</param>
     /// <param name="signInManager">Manager of the sign in.</param>
     /// <param name="authService">Service of the authentication.</param>
+    /// <param name="cookieService">Service for the cookies.</param>
     /// <param name="transactionFactory">Factory of the transactions.</param>
     public RegisterCommandHandler(
         IUserManager userManager,
         ISignInManager signInManager,
         IAuthService authService,
+        ICookieService cookieService,
         ITransactionFactory transactionFactory)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _authService = authService;
+        _cookieService = cookieService;
         _transactionFactory = transactionFactory;
     }
 
@@ -64,7 +69,9 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AuthRespo
                 throw new RestException(HttpStatusCode.BadRequest, identityResult.Errors.First().Description);
             }
 
-            var result = await _authService.AuthenticateUserAsync(user, request.ClientId, cancellationToken);
+            var result = await _authService.AuthenticateUserAsync(user, request.ClientId);
+
+            _cookieService.SetRefreshToken(result.RefreshToken);
 
             await transaction.CommitAsync(cancellationToken);
 

@@ -13,7 +13,14 @@ public interface IAuthService
     /// </summary>
     /// <param name="userEntity">Entity of the user.</param>
     /// <param name="clientId">Id of the client.</param>
-    /// <param name="cancellationToken">Token for the cancellation.</param>
     /// <returns>Authentication response.</returns>
-    Task<AuthResponse> AuthenticateUserAsync(UserEntity userEntity, Guid clientId, CancellationToken cancellationToken);
+    Task<AuthResponse> AuthenticateUserAsync(UserEntity userEntity, Guid clientId);
+
+    /// <summary>
+    /// Revokes a refresh token.
+    /// </summary>
+    /// <param name="refreshToken">Token to refresh.</param>
+    /// <param name="clientId">Id of the client.</param>
+    /// <param name="userId">Id of the user.</param>
+    Task RevokeRefreshTokenAsync(string refreshToken, Guid clientId, Guid userId);
 }

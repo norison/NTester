@@ -13,12 +13,11 @@ public class RefreshTokenEntityTypeConfiguration : IEntityTypeConfiguration<Refr
     public void Configure(EntityTypeBuilder<RefreshTokenEntity> builder)
     {
         builder.HasKey(x => x.Token);
-        builder.HasIndex(x => x.AccessToken).IsUnique();
 
         builder
             .HasIndex(x => new { x.UserId, x.ClientId })
             .IsUnique()
-            .IncludeProperties(x => new { x.Token, x.AccessToken, x.ExpirationDateTime });
+            .IncludeProperties(x => new { x.Token, x.ExpirationDateTime });
 
         builder
             .HasOne(x => x.Client)

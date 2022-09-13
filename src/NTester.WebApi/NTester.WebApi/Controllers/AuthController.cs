@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NTester.DataContracts.Auth.Login;
 using NTester.DataContracts.Auth.Register;
 using NTester.Domain.Features.Auth.Commands.Login;
+using NTester.Domain.Features.Auth.Commands.Logout;
 using NTester.Domain.Features.Auth.Commands.Register;
+using NTester.WebApi.Controllers.Base;
 
 namespace NTester.WebApi.Controllers;
 
@@ -13,7 +16,7 @@ namespace NTester.WebApi.Controllers;
 /// </summary>
 [ApiController]
 [Route("api/[controller]")]
-public class AuthController : ControllerBase
+public class AuthController : ApiControllerBase
 {
     private readonly IMediator _mediator;
     private readonly IMapper _mapper;
@@ -53,5 +56,23 @@ public class AuthController : ControllerBase
         var command = _mapper.Map<RegisterCommand>(registerRequest);
         var result = await _mediator.Send(command);
         return Ok(result);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    [HttpPost("logout")]
+    [Authorize]
+    public async Task<IActionResult> LogoutAsync()
+    {
+        var command = new LogoutCommand
+        {
+            ClientId = ClientId,
+            UserId = UserId
+        };
+
+        await _mediator.Send(command);
+        return Ok();
     }
 }

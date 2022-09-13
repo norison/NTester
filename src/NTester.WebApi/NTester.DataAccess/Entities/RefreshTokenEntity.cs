@@ -11,11 +11,6 @@ public class RefreshTokenEntity
     public string Token { get; set; } = string.Empty;
 
     /// <summary>
-    /// Token for the access.
-    /// </summary>
-    public string AccessToken { get; set; } = string.Empty;
-
-    /// <summary>
     /// Expiration date time of the refresh token entity.
     /// </summary>
     public DateTime ExpirationDateTime { get; set; }

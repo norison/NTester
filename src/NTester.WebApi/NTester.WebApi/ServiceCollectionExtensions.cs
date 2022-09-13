@@ -37,12 +37,18 @@ public static class ServiceCollectionExtensions
     private static void ConfigureAuthentication(IServiceCollection services, IConfiguration configuration)
     {
         services
-            .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddAuthentication(options =>
+            {
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
             .AddJwtBearer(options =>
             {
                 var jwtSettings = configuration.GetSection("Auth:JwtSettings").Get<JwtSettings>();
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret));
 
+                options.SaveToken = true;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidIssuer = jwtSettings.Issuer,

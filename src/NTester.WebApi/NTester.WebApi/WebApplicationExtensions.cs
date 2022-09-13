@@ -17,6 +17,12 @@ public static class WebApplicationExtensions
     {
         InitializeDatabase(app);
 
+        if (app.Environment.IsProduction())
+        {
+            app.UseHsts();
+        }
+
+        app.UseHttpsRedirection();
         app.UseCustomExceptionHandler();
         app.UseAuthentication();
         app.UseAuthorization();
