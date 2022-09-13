@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Identity;
 using NTester.DataAccess.Entities;
 
 namespace NTester.Domain.Services.SignInManager;
 
 /// <inheritdoc cref="ISignInManager"/>
+[ExcludeFromCodeCoverage]
 public class SignInManagerWrapper : ISignInManager
 {
     private readonly SignInManager<UserEntity> _signInManager;

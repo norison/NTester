@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Diagnostics.CodeAnalysis;
+using AutoMapper;
 using NTester.DataContracts.Auth.Login;
 using NTester.DataContracts.Auth.Refresh;
 using NTester.DataContracts.Auth.Register;
@@ -11,6 +12,7 @@ namespace NTester.Domain.Mappings;
 /// <summary>
 /// Mapping profile for the entire application.
 /// </summary>
+[ExcludeFromCodeCoverage]
 public class ApplicationProfile : Profile
 {
     /// <summary>

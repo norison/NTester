@@ -1,4 +1,5 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -10,6 +11,7 @@ using NTester.Domain.Exceptions;
 namespace NTester.Domain.Services.Token;
 
 /// <inheritdoc cref="ITokenService"/>
+[ExcludeFromCodeCoverage]
 public class TokenService : ITokenService
 {
     private readonly JwtSettings _jwtSettings;

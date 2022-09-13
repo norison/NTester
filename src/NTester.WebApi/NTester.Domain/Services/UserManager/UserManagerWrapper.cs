@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Identity;
 using NTester.DataAccess.Entities;
 
 namespace NTester.Domain.Services.UserManager;
 
 /// <inheritdoc cref="IUserManager"/>
+[ExcludeFromCodeCoverage]
 public class UserManagerWrapper : IUserManager
 {
     private readonly UserManager<UserEntity> _userManager;

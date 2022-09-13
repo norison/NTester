@@ -1,8 +1,11 @@
-﻿namespace NTester.Domain.Services.Token;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace NTester.Domain.Services.Token;
 
 /// <summary>
 /// Settings for the access token.
 /// </summary>
+[ExcludeFromCodeCoverage]
 public class JwtSettings
 {
     /// <summary>
