@@ -1,11 +1,9 @@
 ﻿using System.Reflection;
 using FluentValidation;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using NTester.DataAccess.Data.NTesterDbContext;
-using NTester.DataAccess.Entities;
+using NTester.Domain.Behaviors;
 using NTester.Domain.Services.SignInManager;
 using NTester.Domain.Services.Token;
 using NTester.Domain.Services.UserManager;
@@ -31,11 +29,13 @@ public static class ServiceCollectionExtensions
         services.AddAutoMapper(assembly);
         services.AddValidatorsFromAssembly(assembly);
 
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+
         services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
 
         services.AddScoped<IUserManager, UserManagerWrapper>();
         services.AddScoped<ISignInManager, SignInManagerWrapper>();
-        
+
         services.AddSingleton<ITokenService, TokenService>();
 
         return services;
