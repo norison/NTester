@@ -1,7 +1,7 @@
 ﻿namespace NTester.DataContracts.Auth.Register;
 
 /// <summary>
-/// Request of the user registration.
+/// Request for user registration.
 /// </summary>
 public class RegisterRequest
 {

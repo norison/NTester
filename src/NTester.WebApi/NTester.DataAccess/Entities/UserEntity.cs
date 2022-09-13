@@ -21,4 +21,9 @@ public class UserEntity : IdentityUser<Guid>
     /// Tests of the user.
     /// </summary>
     public IEnumerable<TestEntity> Tests { get; set; } = new List<TestEntity>();
+
+    /// <summary>
+    /// Refresh tokens of the user.
+    /// </summary>
+    public IEnumerable<RefreshTokenEntity> RefreshTokens { get; set; } = new List<RefreshTokenEntity>();
 }

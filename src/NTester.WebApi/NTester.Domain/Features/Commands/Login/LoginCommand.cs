@@ -1,9 +1,12 @@
-﻿namespace NTester.DataContracts.Auth.Login;
+﻿using MediatR;
+using NTester.DataContracts.Auth;
+
+namespace NTester.Domain.Features.Commands.Login;
 
 /// <summary>
-/// Request for user login.
+/// Command for user login.
 /// </summary>
-public class LoginRequest
+public class LoginCommand : IRequest<AuthResponse>
 {
     /// <summary>
     /// User name of the user.

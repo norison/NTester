@@ -9,9 +9,4 @@ public class ErrorResponse
     /// Message of the error.
     /// </summary>
     public string Message { get; set; } = string.Empty;
-
-    /// <summary>
-    /// Additional errors.
-    /// </summary>
-    public IEnumerable<ErrorResponse> Errors { get; set; } = new List<ErrorResponse>();
 }

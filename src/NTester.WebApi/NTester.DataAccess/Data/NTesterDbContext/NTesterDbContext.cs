@@ -26,6 +26,9 @@ public class NTesterDbContext : IdentityDbContext<UserEntity, IdentityRole<Guid>
     /// <inheritdoc cref="INTesterDbContext.Answers"/>
     public DbSet<AnswerEntity> Answers { get; set; }
 
+    /// <inheritdoc cref="INTesterDbContext.RefreshTokens"/>
+    public DbSet<RefreshTokenEntity> RefreshTokens { get; set; }
+
     /// <inheritdoc cref="DbContext.OnModelCreating"/>
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -35,5 +38,6 @@ public class NTesterDbContext : IdentityDbContext<UserEntity, IdentityRole<Guid>
         builder.ApplyConfiguration(new TestEntityTypeConfiguration());
         builder.ApplyConfiguration(new QuestionEntityTypeConfiguration());
         builder.ApplyConfiguration(new AnswerEntityTypeConfiguration());
+        builder.ApplyConfiguration(new RefreshTokenEntityTypeConfiguration());
     }
 }
