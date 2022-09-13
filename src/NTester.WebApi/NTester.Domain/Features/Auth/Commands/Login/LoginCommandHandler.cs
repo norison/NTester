@@ -63,7 +63,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, AuthResponse>
 
         if (!signInResult.Succeeded)
         {
-            throw new RestException(HttpStatusCode.BadRequest, "User was not found.");
+            throw new RestException(HttpStatusCode.BadRequest, "Password is incorrect.");
         }
     }
 }
