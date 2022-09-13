@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\NTester.DataAccess\NTester.DataAccess.csproj" />
+      <ProjectReference Include="..\NTester.DataContracts\NTester.DataContracts.csproj" />
     </ItemGroup>
 
 </Project>
