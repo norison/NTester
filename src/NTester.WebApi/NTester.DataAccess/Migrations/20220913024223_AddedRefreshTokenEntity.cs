@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace NTester.DataAccess.Migrations
 {
+    [ExcludeFromCodeCoverage]
     public partial class AddedRefreshTokenEntity : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -8,6 +8,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTester.Domain", "NTester.D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTester.DataContracts", "NTester.DataContracts\NTester.DataContracts.csproj", "{C0BA5E65-6086-4BF1-8FE5-4C1161CC827E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{9853D6F0-8FFE-4558-B0E7-CB363F29ABA2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTester.Domain.Tests", "Tests\NTester.Domain.Tests\NTester.Domain.Tests.csproj", "{37E8FBB7-E053-4488-9B49-FA3C42E7B8DD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +34,12 @@ Global
 		{C0BA5E65-6086-4BF1-8FE5-4C1161CC827E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C0BA5E65-6086-4BF1-8FE5-4C1161CC827E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C0BA5E65-6086-4BF1-8FE5-4C1161CC827E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37E8FBB7-E053-4488-9B49-FA3C42E7B8DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37E8FBB7-E053-4488-9B49-FA3C42E7B8DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37E8FBB7-E053-4488-9B49-FA3C42E7B8DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37E8FBB7-E053-4488-9B49-FA3C42E7B8DD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{37E8FBB7-E053-4488-9B49-FA3C42E7B8DD} = {9853D6F0-8FFE-4558-B0E7-CB363F29ABA2}
 	EndGlobalSection
 EndGlobal

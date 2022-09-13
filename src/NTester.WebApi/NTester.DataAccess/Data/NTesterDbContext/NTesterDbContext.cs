@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using NTester.DataAccess.Entities;
@@ -7,6 +8,7 @@ using NTester.DataAccess.EntityTypeConfigurations;
 namespace NTester.DataAccess.Data.NTesterDbContext;
 
 /// <inheritdoc cref="INTesterDbContext"/>
+[ExcludeFromCodeCoverage]
 public class NTesterDbContext : IdentityDbContext<UserEntity, IdentityRole<Guid>, Guid>, INTesterDbContext
 {
     /// <summary>

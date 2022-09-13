@@ -1,10 +1,12 @@
-﻿using NTester.DataAccess.Entities;
+﻿using System.Diagnostics.CodeAnalysis;
+using NTester.DataAccess.Entities;
 
 namespace NTester.DataAccess.Services.DatabaseInitializer;
 
 /// <summary>
 /// Contains presents of the clients.
 /// </summary>
+[ExcludeFromCodeCoverage]
 public class ClientPresets
 {
     /// <summary>

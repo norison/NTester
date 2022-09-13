@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
 namespace NTester.DataAccess.Services.DatabaseInitializer;
@@ -6,6 +7,7 @@ namespace NTester.DataAccess.Services.DatabaseInitializer;
 /// <summary>
 /// Initializes the database.
 /// </summary>
+[ExcludeFromCodeCoverage]
 public class DatabaseInitializer : IDatabaseInitializer
 {
     private readonly Data.NTesterDbContext.NTesterDbContext _dbContext;
