@@ -1,4 +1,6 @@
 ﻿using System.Net;
+using System.Security;
+using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;
 using MediatR;
@@ -6,7 +8,6 @@ using NSubstitute;
 using NTester.Domain.Behaviors;
 using NTester.Domain.Exceptions;
 using NUnit.Framework;
-using Shouldly;
 
 namespace NTester.Domain.Tests.Behaviors;
 
@@ -39,7 +40,7 @@ public class ValidationBehaviorTests
         await _validationBehavior.Handle(request, CancellationToken.None, _nextDelegate);
 
         // Assert
-        _nextDelegate.ReceivedCalls().Count().ShouldBe(1);
+        _nextDelegate.ReceivedCalls().Count().Should().Be(1);
     }
 
     [Test]
@@ -57,14 +58,14 @@ public class ValidationBehaviorTests
         _validator.Validate((IValidationContext)default!).ReturnsForAnyArgs(validationResult);
 
         // Act/Assert
-        var exception = await _validationBehavior
-            .Handle(request, CancellationToken.None, _nextDelegate)
-            .ShouldThrowAsync<RestException>();
+        await _validationBehavior
+            .Invoking(x => x.Handle(request, CancellationToken.None, _nextDelegate))
+            .Should()
+            .ThrowAsync<RestException>()
+            .WithMessage(errorMessage)
+            .Where(x => x.StatusCode == HttpStatusCode.BadRequest);
 
-        // Assert
-        _nextDelegate.ReceivedCalls().Count().ShouldBe(0);
-        exception.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
-        exception.Message.ShouldBe(errorMessage);
+        _nextDelegate.ReceivedCalls().Count().Should().Be(0);
     }
 
     public class TestRequest : IRequest<Unit>

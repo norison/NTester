@@ -7,8 +7,15 @@ namespace NTester.Domain.Extensions;
 /// </summary>
 public static class ClaimPrincipalExtensions
 {
-    private const string UserIdClaimType = "id";
-    private const string ClientIdClaimType = "client";
+    /// <summary>
+    /// Claim type name of the user id.
+    /// </summary>
+    public const string UserIdClaimType = "id";
+
+    /// <summary>
+    /// Claim type name of the client id.
+    /// </summary>
+    public const string ClientIdClaimType = "client";
 
     /// <summary>
     /// Gets user id from the claim principal.
@@ -17,7 +24,7 @@ public static class ClaimPrincipalExtensions
     /// <returns>Id of the user.</returns>
     public static Guid GetUserId(this ClaimsPrincipal claimsPrincipal)
     {
-        return Guid.Parse(claimsPrincipal.Claims.First(x => x.Type == UserIdClaimType).Value);
+        return GetGuidValue(claimsPrincipal, UserIdClaimType);
     }
 
     /// <summary>
@@ -27,6 +34,12 @@ public static class ClaimPrincipalExtensions
     /// <returns>Id of the client.</returns>
     public static Guid GetClientId(this ClaimsPrincipal claimsPrincipal)
     {
-        return Guid.Parse(claimsPrincipal.Claims.First(x => x.Type == ClientIdClaimType).Value);
+        return GetGuidValue(claimsPrincipal, ClientIdClaimType);
+    }
+
+    private static Guid GetGuidValue(ClaimsPrincipal claimsPrincipal, string claimType)
+    {
+        var value = claimsPrincipal.FindFirstValue(claimType);
+        return value == null ? Guid.Empty : Guid.Parse(value);
     }
 }
