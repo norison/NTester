@@ -62,12 +62,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AuthRespo
 
         try
         {
-            var identityResult = await _userManager.CreateAsync(user, request.Password);
-
-            if (!identityResult.Succeeded)
-            {
-                throw new RestException(HttpStatusCode.BadRequest, identityResult.Errors.First().Description);
-            }
+            await CreateUserAsync(user, request.Password);
 
             var result = await _authService.AuthenticateUserAsync(user, request.ClientId);
 
@@ -91,6 +86,16 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AuthRespo
         if (user != null)
         {
             throw new RestException(HttpStatusCode.BadRequest, "User with the same user name already exists.");
+        }
+    }
+
+    private async Task CreateUserAsync(UserEntity user, string password)
+    {
+        var identityResult = await _userManager.CreateAsync(user, password);
+
+        if (!identityResult.Succeeded)
+        {
+            throw new RestException(HttpStatusCode.BadRequest, identityResult.Errors.First().Description);
         }
     }
 }

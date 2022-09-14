@@ -6,6 +6,11 @@ namespace NTester.Domain.Services.Cookie;
 public class CookieService : ICookieService
 {
     private readonly IHttpContextAccessor _contextAccessor;
+    
+    /// <summary>
+    /// Cookie name of the refresh token.
+    /// </summary>
+    public const string RefreshTokenCookieName = "Refresh-Token";
 
     /// <summary>
     /// Creates an instance of the cookie service.
@@ -15,8 +20,6 @@ public class CookieService : ICookieService
     {
         _contextAccessor = contextAccessor;
     }
-
-    private const string RefreshTokenCookieName = "Refresh-Token";
 
     /// <inheritdoc cref="ICookieService.SetRefreshToken"/>
     public void SetRefreshToken(string refreshToken)
