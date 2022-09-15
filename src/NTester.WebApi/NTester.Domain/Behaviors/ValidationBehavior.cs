@@ -1,7 +1,7 @@
-﻿using System.Net;
-using FluentValidation;
+﻿using FluentValidation;
 using MediatR;
-using NTester.Domain.Exceptions;
+using NTester.Domain.Exceptions.Codes;
+using ValidationException = NTester.Domain.Exceptions.ValidationException;
 
 namespace NTester.Domain.Behaviors;
 
@@ -41,7 +41,7 @@ public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<
             return await next();
         }
 
-        var error = validationResult.Errors.First();
-        throw new RestException(HttpStatusCode.BadRequest, error.ErrorMessage);
+        var errorMessage = validationResult.Errors.First().ErrorMessage;
+        throw new ValidationException((int)CommonCodes.RequestValidationFailed, errorMessage);
     }
 }

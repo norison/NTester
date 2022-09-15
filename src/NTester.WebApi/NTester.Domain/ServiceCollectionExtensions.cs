@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using NTester.Domain.Behaviors;
 using NTester.Domain.Services.Auth;
 using NTester.Domain.Services.Cookie;
+using NTester.Domain.Services.DateTime;
 using NTester.Domain.Services.SignInManager;
 using NTester.Domain.Services.Token;
 using NTester.Domain.Services.UserManager;
@@ -43,6 +44,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<ICookieService, CookieService>();
 
+        services.AddSingleton<IDateTimeService, DateTimeService>();
         services.AddSingleton<ITokenService, TokenService>();
 
         return services;

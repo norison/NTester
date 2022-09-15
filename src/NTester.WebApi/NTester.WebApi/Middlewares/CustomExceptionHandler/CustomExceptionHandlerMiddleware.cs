@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using NTester.DataContracts;
 using NTester.Domain.Exceptions;
+using NTester.Domain.Exceptions.Base;
 
 namespace NTester.WebApi.Middlewares.CustomExceptionHandler;
 
@@ -38,19 +39,16 @@ public class CustomExceptionHandlerMiddleware
 
     private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
-        var statusCode = HttpStatusCode.InternalServerError;
+        var restException = exception as RestExceptionBase ?? new NonGeneralException(exception.Message);
 
-        if (exception is RestException restException)
-        {
-            statusCode = restException.StatusCode;
-        }
-
-        context.Response.StatusCode = (int)statusCode;
+        context.Response.StatusCode = (int)restException.StatusCode;
         context.Response.ContentType = "application/json";
 
         var errorResponse = new ErrorResponse
         {
-            Message = exception.Message
+            Code = restException.Code,
+            Message = restException.Message,
+            CodeDescription = restException.CodeDescription
         };
 
         await context.Response.WriteAsJsonAsync(errorResponse);

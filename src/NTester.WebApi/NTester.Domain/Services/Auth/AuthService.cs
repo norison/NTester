@@ -6,7 +6,9 @@ using NTester.DataAccess.Data.NTesterDbContext;
 using NTester.DataAccess.Entities;
 using NTester.DataContracts.Auth;
 using NTester.Domain.Exceptions;
+using NTester.Domain.Exceptions.Codes;
 using NTester.Domain.Extensions;
+using NTester.Domain.Services.DateTime;
 using NTester.Domain.Services.Token;
 
 namespace NTester.Domain.Services.Auth;
@@ -16,21 +18,28 @@ public class AuthService : IAuthService
 {
     private readonly INTesterDbContext _dbContext;
     private readonly ITokenService _tokenService;
+    private readonly IDateTimeService _dateTimeService;
     private readonly RefreshTokenSettings _refreshTokenSettings;
+
+    private const string ErrorMessageRefreshTokenNotFound = "Refresh token not found or no access token pair.";
+    private const string ErrorMessageUnsupportedClient = "Provided client is not supported.";
 
     /// <summary>
     /// Creates an instance of the authentication service.
     /// </summary>
     /// <param name="dbContext">Database context of the application.</param>
     /// <param name="tokenService">Service for the token generation.</param>
+    /// <param name="dateTimeService">Service for the date and time generation.</param>
     /// <param name="refreshTokenSettings">Settings for the refresh token generation.</param>
     public AuthService(
         INTesterDbContext dbContext,
         ITokenService tokenService,
+        IDateTimeService dateTimeService,
         IOptions<RefreshTokenSettings> refreshTokenSettings)
     {
         _dbContext = dbContext;
         _tokenService = tokenService;
+        _dateTimeService = dateTimeService;
         _refreshTokenSettings = refreshTokenSettings.Value;
     }
 
@@ -63,7 +72,7 @@ public class AuthService : IAuthService
 
         if (refreshTokenEntity == null || refreshTokenEntity.Token != refreshToken)
         {
-            throw new RestException(HttpStatusCode.BadRequest, "Invalid token.");
+            throw new ValidationException((int)AuthCodes.InvalidRefreshToken, ErrorMessageRefreshTokenNotFound);
         }
 
         _dbContext.RefreshTokens.Remove(refreshTokenEntity);
@@ -77,14 +86,11 @@ public class AuthService : IAuthService
         var refreshTokenEntity =
             await _dbContext.RefreshTokens.FindAsync(refreshToken);
 
-        if (refreshTokenEntity == null)
+        if (refreshTokenEntity == null ||
+            refreshTokenEntity.ClientId != clientId ||
+            refreshTokenEntity.UserId != userId)
         {
-            throw new RestException(HttpStatusCode.NotFound, "Refresh token was not found.");
-        }
-
-        if (refreshTokenEntity.ClientId != clientId || refreshTokenEntity.UserId != userId)
-        {
-            throw new RestException(HttpStatusCode.BadRequest, "Invalid refresh token.");
+            throw new ValidationException((int)AuthCodes.InvalidRefreshToken, ErrorMessageRefreshTokenNotFound);
         }
 
         _dbContext.RefreshTokens.Remove(refreshTokenEntity);
@@ -105,7 +111,7 @@ public class AuthService : IAuthService
             Token = refreshToken,
             UserId = userId,
             ClientId = clientId,
-            ExpirationDateTime = DateTime.UtcNow.AddMonths(_refreshTokenSettings.LifeMonths)
+            ExpirationDateTime = _dateTimeService.UtcNow.AddMonths(_refreshTokenSettings.LifeMonths)
         };
 
         await _dbContext.RefreshTokens.AddAsync(refreshTokenEntity);
@@ -123,7 +129,7 @@ public class AuthService : IAuthService
         var client = await _dbContext.Clients.FindAsync(clientId);
         if (client == null)
         {
-            throw new RestException(HttpStatusCode.BadRequest, "Unsupported client.");
+            throw new ValidationException((int)AuthCodes.UnsupportedClient, ErrorMessageUnsupportedClient);
         }
     }
 

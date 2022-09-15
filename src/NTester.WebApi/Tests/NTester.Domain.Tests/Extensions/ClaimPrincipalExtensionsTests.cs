@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using FluentAssertions;
+using NTester.Domain.Constants;
 using NTester.Domain.Extensions;
 using NUnit.Framework;
 
@@ -15,7 +16,7 @@ public class ClaimPrincipalExtensionsTests
         var userId = Guid.NewGuid();
         var claims = new List<Claim>
         {
-            new(ClaimPrincipalExtensions.UserIdClaimType, userId.ToString())
+            new(ClaimConstants.UserIdClaimTypeName, userId.ToString())
         };
         var principal = new ClaimsPrincipal(new ClaimsIdentity(claims));
 
@@ -46,7 +47,7 @@ public class ClaimPrincipalExtensionsTests
         var clientId = Guid.NewGuid();
         var claims = new List<Claim>
         {
-            new(ClaimPrincipalExtensions.ClientIdClaimType, clientId.ToString())
+            new(ClaimConstants.ClientIdClaimTypeName, clientId.ToString())
         };
         var principal = new ClaimsPrincipal(new ClaimsIdentity(claims));
 

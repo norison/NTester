@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using MediatR;
 using NTester.Domain.Exceptions;
+using NTester.Domain.Exceptions.Codes;
 using NTester.Domain.Services.Auth;
 using NTester.Domain.Services.Cookie;
 
@@ -13,6 +14,8 @@ public class LogoutCommandHandler : IRequestHandler<LogoutCommand, Unit>
 {
     private readonly IAuthService _authService;
     private readonly ICookieService _cookieService;
+
+    private const string ErrorMessageRefreshTokenNotProvided = "Refresh token was not provided.";
 
     /// <summary>
     /// Creates an instance of the logout command handler.
@@ -32,7 +35,8 @@ public class LogoutCommandHandler : IRequestHandler<LogoutCommand, Unit>
         
         if (string.IsNullOrEmpty(refreshToken))
         {
-            throw new RestException(HttpStatusCode.BadRequest, "Refresh token was not provided.");
+            throw new ValidationException((int)AuthCodes.RefreshTokenWasNotProvided,
+                ErrorMessageRefreshTokenNotProvided);
         }
         
         _cookieService.RemoveRefreshToken();

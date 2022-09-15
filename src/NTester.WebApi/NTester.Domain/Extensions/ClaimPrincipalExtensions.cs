@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using NTester.Domain.Constants;
 
 namespace NTester.Domain.Extensions;
 
@@ -8,23 +9,13 @@ namespace NTester.Domain.Extensions;
 public static class ClaimPrincipalExtensions
 {
     /// <summary>
-    /// Claim type name of the user id.
-    /// </summary>
-    public const string UserIdClaimType = "id";
-
-    /// <summary>
-    /// Claim type name of the client id.
-    /// </summary>
-    public const string ClientIdClaimType = "client";
-
-    /// <summary>
     /// Gets user id from the claim principal.
     /// </summary>
     /// <param name="claimsPrincipal">Claim principal.</param>
     /// <returns>Id of the user.</returns>
     public static Guid GetUserId(this ClaimsPrincipal claimsPrincipal)
     {
-        return GetGuidValue(claimsPrincipal, UserIdClaimType);
+        return GetGuidValue(claimsPrincipal, ClaimConstants.UserIdClaimTypeName);
     }
 
     /// <summary>
@@ -34,7 +25,7 @@ public static class ClaimPrincipalExtensions
     /// <returns>Id of the client.</returns>
     public static Guid GetClientId(this ClaimsPrincipal claimsPrincipal)
     {
-        return GetGuidValue(claimsPrincipal, ClientIdClaimType);
+        return GetGuidValue(claimsPrincipal, ClaimConstants.ClientIdClaimTypeName);
     }
 
     private static Guid GetGuidValue(ClaimsPrincipal claimsPrincipal, string claimType)

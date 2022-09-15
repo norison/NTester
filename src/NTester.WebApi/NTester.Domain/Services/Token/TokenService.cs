@@ -1,12 +1,13 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.IdentityModel.Tokens.Jwt;
-using System.Net;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using NTester.Domain.Exceptions;
+using NTester.Domain.Exceptions.Codes;
+using NTester.Domain.Services.DateTime;
 
 namespace NTester.Domain.Services.Token;
 
@@ -14,14 +15,20 @@ namespace NTester.Domain.Services.Token;
 [ExcludeFromCodeCoverage]
 public class TokenService : ITokenService
 {
+    private readonly IDateTimeService _dateTimeService;
     private readonly JwtSettings _jwtSettings;
+
+    private const string ErrorMessageInvalidAccessToken =
+        "The access token has invalid values or cannot be verified by the secret.";
 
     /// <summary>
     /// Creates an instance of the token service.
     /// </summary>
+    /// <param name="dateTimeService">Service for date and time generation.</param>
     /// <param name="jwtSettings">Settings of the token.</param>
-    public TokenService(IOptions<JwtSettings> jwtSettings)
+    public TokenService(IDateTimeService dateTimeService, IOptions<JwtSettings> jwtSettings)
     {
+        _dateTimeService = dateTimeService;
         _jwtSettings = jwtSettings.Value;
     }
 
@@ -34,8 +41,8 @@ public class TokenService : ITokenService
             issuer: _jwtSettings.Issuer,
             audience: _jwtSettings.Audience,
             claims: claims,
-            notBefore: DateTime.UtcNow,
-            expires: DateTime.UtcNow.Add(_jwtSettings.LifeTime),
+            notBefore: _dateTimeService.UtcNow,
+            expires: _dateTimeService.UtcNow.Add(_jwtSettings.LifeTime),
             signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256)
         );
 
@@ -69,7 +76,7 @@ public class TokenService : ITokenService
         if (securityToken is not JwtSecurityToken jwtSecurityToken ||
             jwtSecurityToken.Header.Alg != SecurityAlgorithms.HmacSha256)
         {
-            throw new RestException(HttpStatusCode.BadRequest, "Access token is invalid.");
+            throw new ValidationException((int)AuthCodes.InvalidAccessToken, ErrorMessageInvalidAccessToken);
         }
 
         return principal;

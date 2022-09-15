@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using NTester.DataAccess;
 using NTester.DataAccess.Data.NTesterDbContext;
@@ -27,6 +28,8 @@ public static class ServiceCollectionExtensions
         services.AddDomain(configuration);
         services.AddHttpContextAccessor();
         services.AddControllers();
+
+        services.Configure<ApiBehaviorOptions>(options => { options.SuppressModelStateInvalidFilter = false; });
 
         ConfigureIdentity(services);
         ConfigureAuthentication(services, configuration);

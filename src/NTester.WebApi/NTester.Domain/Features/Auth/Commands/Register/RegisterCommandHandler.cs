@@ -1,9 +1,9 @@
-﻿using System.Net;
-using MediatR;
+﻿using MediatR;
 using NTester.DataAccess.Entities;
 using NTester.DataAccess.Services.Transaction;
 using NTester.DataContracts.Auth;
 using NTester.Domain.Exceptions;
+using NTester.Domain.Exceptions.Codes;
 using NTester.Domain.Services.Auth;
 using NTester.Domain.Services.Cookie;
 using NTester.Domain.Services.SignInManager;
@@ -17,28 +17,27 @@ namespace NTester.Domain.Features.Auth.Commands.Register;
 public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AuthResponse>
 {
     private readonly IUserManager _userManager;
-    private readonly ISignInManager _signInManager;
     private readonly IAuthService _authService;
     private readonly ICookieService _cookieService;
     private readonly ITransactionFactory _transactionFactory;
+
+    private const string ErrorMessageUserAlreadyExists =
+        "User with the same user name already exists - User name: '{0}'";
 
     /// <summary>
     /// Creates an instance of the registration command handler.
     /// </summary>
     /// <param name="userManager">Manager of the users.</param>
-    /// <param name="signInManager">Manager of the sign in.</param>
     /// <param name="authService">Service of the authentication.</param>
     /// <param name="cookieService">Service for the cookies.</param>
     /// <param name="transactionFactory">Factory of the transactions.</param>
     public RegisterCommandHandler(
         IUserManager userManager,
-        ISignInManager signInManager,
         IAuthService authService,
         ICookieService cookieService,
         ITransactionFactory transactionFactory)
     {
         _userManager = userManager;
-        _signInManager = signInManager;
         _authService = authService;
         _cookieService = cookieService;
         _transactionFactory = transactionFactory;
@@ -47,7 +46,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AuthRespo
     /// <inheritdoc cref="IRequestHandler{TRequest,TResponse}.Handle"/>
     public async Task<AuthResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
-        await ValidateIfUserExists(request);
+        await ValidateIfUserExists(request.UserName);
 
         var user = new UserEntity
         {
@@ -79,13 +78,14 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AuthRespo
         }
     }
 
-    private async Task ValidateIfUserExists(RegisterCommand request)
+    private async Task ValidateIfUserExists(string userName)
     {
-        var user = await _userManager.FindByNameAsync(request.UserName);
+        var user = await _userManager.FindByNameAsync(userName);
 
         if (user != null)
         {
-            throw new RestException(HttpStatusCode.BadRequest, "User with the same user name already exists.");
+            var message = string.Format(ErrorMessageUserAlreadyExists, userName);
+            throw new ValidationException((int)AuthCodes.UserAlreadyExists, message);
         }
     }
 
@@ -95,7 +95,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AuthRespo
 
         if (!identityResult.Succeeded)
         {
-            throw new RestException(HttpStatusCode.BadRequest, identityResult.Errors.First().Description);
+            throw new NonGeneralException(identityResult.Errors.First().Description);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using EntityFramework.Exceptions.SqlServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,6 +28,7 @@ public static class ServiceCollectionExtensions
         services.AddDbContext<INTesterDbContext, NTesterDbContext>(options =>
         {
             options.UseSqlServer(connectionString);
+            options.UseExceptionProcessor();
         });
 
         services.Configure<ClientPresets>(configuration.GetSection("Auth:ClientPresets"));
