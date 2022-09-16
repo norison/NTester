@@ -2,7 +2,6 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Storage;
 using NSubstitute;
-using NSubstitute.ExceptionExtensions;
 using NTester.DataAccess.Entities;
 using NTester.DataAccess.Services.Transaction;
 using NTester.DataContracts.Auth;

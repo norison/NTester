@@ -1,5 +1,4 @@
 using FluentAssertions;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using NSubstitute;
 using NTester.DataAccess.Entities;
