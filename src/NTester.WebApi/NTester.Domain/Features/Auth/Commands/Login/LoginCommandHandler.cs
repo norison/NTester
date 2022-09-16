@@ -1,5 +1,4 @@
-﻿using System.Net;
-using MediatR;
+﻿using MediatR;
 using NTester.DataAccess.Entities;
 using NTester.DataContracts.Auth;
 using NTester.Domain.Exceptions;

@@ -1,5 +1,4 @@
-﻿using System.Net;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using NTester.DataAccess.Data.NTesterDbContext;
@@ -83,12 +82,9 @@ public class AuthService : IAuthService
     /// <inheritdoc cref="IAuthService.RevokeRefreshTokenAsync"/>
     public async Task RevokeRefreshTokenAsync(string refreshToken, Guid clientId, Guid userId)
     {
-        var refreshTokenEntity =
-            await _dbContext.RefreshTokens.FindAsync(refreshToken);
+        var refreshTokenEntity = await _dbContext.RefreshTokens.FindAsync(refreshToken);
 
-        if (refreshTokenEntity == null ||
-            refreshTokenEntity.ClientId != clientId ||
-            refreshTokenEntity.UserId != userId)
+        if (refreshTokenEntity == null || refreshTokenEntity.ClientId != clientId || refreshTokenEntity.UserId != userId)
         {
             throw new ValidationException((int)AuthCodes.InvalidRefreshToken, ErrorMessageRefreshTokenNotFound);
         }

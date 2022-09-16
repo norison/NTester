@@ -1,5 +1,4 @@
-﻿using System.Net;
-using MediatR;
+﻿using MediatR;
 using NTester.Domain.Exceptions;
 using NTester.Domain.Exceptions.Codes;
 using NTester.Domain.Services.Auth;

@@ -6,7 +6,6 @@ using NTester.Domain.Exceptions;
 using NTester.Domain.Exceptions.Codes;
 using NTester.Domain.Services.Auth;
 using NTester.Domain.Services.Cookie;
-using NTester.Domain.Services.SignInManager;
 using NTester.Domain.Services.UserManager;
 
 namespace NTester.Domain.Features.Auth.Commands.Register;

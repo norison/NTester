@@ -67,34 +67,38 @@ public class AuthServiceTests
 
         var refreshTokenEntities = new List<RefreshTokenEntity> { new() { UserId = user.Id, ClientId = clientId } };
         var refreshTokensDbSet = refreshTokenEntities.AsQueryable().BuildMockDbSet();
+        refreshTokensDbSet
+            .WhenForAnyArgs(x => x.AddAsync(default!))
+            .Do(x => capturedRefreshTokenEntity = x.Arg<RefreshTokenEntity>());
 
-        _dbContext.Clients.FindAsync(default).ReturnsForAnyArgs(clientEntity);
         _dbContext.RefreshTokens.Returns(refreshTokensDbSet);
+        _dbContext.Clients.FindAsync(default).ReturnsForAnyArgs(clientEntity);
 
         _tokenService
             .GenerateAccessToken(default!)
             .ReturnsForAnyArgs(accessToken)
             .AndDoes(x => capturedClaims = x.Arg<IList<Claim>>());
-
         _tokenService.GenerateRefreshToken().ReturnsForAnyArgs(refreshToken);
-        _dateTimeService.UtcNow.Returns(expirationDateTime);
 
-        refreshTokensDbSet
-            .WhenForAnyArgs(x => x.AddAsync(default!))
-            .Do(x => capturedRefreshTokenEntity = x.Arg<RefreshTokenEntity>());
+        _dateTimeService.UtcNow.Returns(expirationDateTime);
 
         //Act
         var result = await _authService.AuthenticateUserAsync(user, clientId);
 
         // Assert
         await _dbContext.Clients.Received().FindAsync(clientId);
+
         await refreshTokensDbSet.Received().AddAsync(capturedRefreshTokenEntity);
         refreshTokensDbSet.Received().Remove(refreshTokenEntities[0]);
+
         _tokenService.Received().GenerateAccessToken(capturedClaims);
         _tokenService.Received().GenerateRefreshToken();
+        
+        await _dbContext.Received().SaveChangesAsync();
 
         result.AccessToken.Should().Be(accessToken);
         result.RefreshToken.Should().Be(refreshToken);
+
         capturedRefreshTokenEntity.Token.Should().Be(refreshToken);
         capturedRefreshTokenEntity.UserId.Should().Be(user.Id);
         capturedRefreshTokenEntity.ClientId.Should().Be(clientId);
@@ -178,14 +182,14 @@ public class AuthServiceTests
         Guid userId,
         Guid clientId,
         string accessToken,
+        string oldRefreshToken,
         string refreshToken,
-        string newRefreshToken,
         DateTime expirationDateTime)
     {
         // Arrange
         RefreshTokenEntity capturedRefreshTokenEntity = null!;
         IEnumerable<Claim> capturedClaims = null!;
-        
+
         var claims = new List<Claim>
         {
             new(ClaimConstants.UserIdClaimTypeName, userId.ToString()),
@@ -195,42 +199,106 @@ public class AuthServiceTests
 
         var refreshTokenEntities = new List<RefreshTokenEntity>
         {
-            new() { ClientId = clientId, UserId = userId, Token = refreshToken }
+            new() { ClientId = clientId, UserId = userId, Token = oldRefreshToken }
         };
 
         _tokenService.GetPrincipalFromExpiredAccessToken(default!).ReturnsForAnyArgs(principal);
-        var refreshTokensDbSet = refreshTokenEntities.AsQueryable().BuildMockDbSet();
-        _dbContext.RefreshTokens.Returns(refreshTokensDbSet);
-        
-        _dateTimeService.UtcNow.Returns(expirationDateTime);
-
-        _tokenService.GenerateRefreshToken().Returns(newRefreshToken);
+        _tokenService.GenerateRefreshToken().Returns(refreshToken);
         _tokenService
             .GenerateAccessToken(default!)
             .ReturnsForAnyArgs(accessToken)
             .AndDoes(x => capturedClaims = x.Arg<IEnumerable<Claim>>());
 
+        var refreshTokensDbSet = refreshTokenEntities.AsQueryable().BuildMockDbSet();
         refreshTokensDbSet
             .WhenForAnyArgs(x => x.AddAsync(default!))
             .Do(x => capturedRefreshTokenEntity = x.Arg<RefreshTokenEntity>());
 
+        _dbContext.RefreshTokens.Returns(refreshTokensDbSet);
+        _dateTimeService.UtcNow.Returns(expirationDateTime);
+
         // Act
-        var result = await _authService.AuthenticateUserAsync(accessToken, refreshToken);
+        var result = await _authService.AuthenticateUserAsync(accessToken, oldRefreshToken);
 
         // Assert
         _tokenService.Received().GetPrincipalFromExpiredAccessToken(accessToken);
-        await refreshTokensDbSet.Received().AddAsync(capturedRefreshTokenEntity);
-        refreshTokensDbSet.Received().Remove(refreshTokenEntities[0]);
         _tokenService.Received().GenerateAccessToken(capturedClaims);
         _tokenService.Received().GenerateRefreshToken();
 
+        await refreshTokensDbSet.Received().AddAsync(capturedRefreshTokenEntity);
+        refreshTokensDbSet.Received().Remove(refreshTokenEntities[0]);
+
+        await _dbContext.Received().SaveChangesAsync();
+
         result.AccessToken.Should().Be(accessToken);
-        result.RefreshToken.Should().Be(newRefreshToken);
-        capturedRefreshTokenEntity.Token.Should().Be(newRefreshToken);
+        result.RefreshToken.Should().Be(refreshToken);
+
+        capturedRefreshTokenEntity.Token.Should().Be(refreshToken);
         capturedRefreshTokenEntity.UserId.Should().Be(userId);
         capturedRefreshTokenEntity.ClientId.Should().Be(clientId);
         capturedRefreshTokenEntity.ExpirationDateTime
             .Should()
             .Be(expirationDateTime.AddMonths(_refreshTokenSettings.LifeMonths));
     }
+
+    [Test, TestCaseSource(nameof(InvalidRefreshTokensTestCases))]
+    public async Task RevokeRefreshTokenAsync_RefreshTokenNotFoundOrDoesNotMatch_ShouldThrowAnException(
+        RefreshTokenEntity refreshTokenEntity,
+        string refreshToken,
+        Guid clientId,
+        Guid userId)
+    {
+        // Arrange
+        _dbContext.RefreshTokens.FindAsync(default).ReturnsForAnyArgs(refreshTokenEntity);
+
+        // Act/Assert
+        await _authService
+            .Invoking(x => x.RevokeRefreshTokenAsync(refreshToken, clientId, userId))
+            .Should()
+            .ThrowAsync<ValidationException>()
+            .Where(x => x.Code == (int)AuthCodes.InvalidRefreshToken);
+    }
+
+    [Test, AutoDataExt]
+    public async Task RevokeRefreshTokenAsync_RefreshTokenFound_ShouldRemoveRefreshToken(
+        string refreshToken,
+        Guid clientId,
+        Guid userId)
+    {
+        // Arrange
+        var refreshTokenEntity = new RefreshTokenEntity
+        {
+            Token = refreshToken,
+            ClientId = clientId,
+            UserId = userId
+        };
+        _dbContext.RefreshTokens.FindAsync(default).ReturnsForAnyArgs(refreshTokenEntity);
+
+        // Act
+        await _authService.RevokeRefreshTokenAsync(refreshToken, clientId, userId);
+
+        // Assert
+        await _dbContext.RefreshTokens.Received().FindAsync(refreshToken);
+        _dbContext.RefreshTokens.Received().Remove(refreshTokenEntity);
+        await _dbContext.Received().SaveChangesAsync();
+    }
+
+    private static IEnumerable<TestCaseData> InvalidRefreshTokensTestCases => new List<TestCaseData>
+    {
+        new(null, string.Empty, Guid.NewGuid(), Guid.NewGuid()),
+        new(new RefreshTokenEntity
+        {
+            Token = "token",
+            ExpirationDateTime = default,
+            ClientId = Guid.Parse("29F79553-FC90-497C-BB2A-55179BF3BA6D"),
+            UserId = Guid.NewGuid(),
+        }, "token", Guid.Parse("29F79553-FC90-497C-BB2A-55179BF3BA6D"), Guid.NewGuid()),
+        new(new RefreshTokenEntity
+        {
+            Token = "token",
+            ExpirationDateTime = default,
+            ClientId = Guid.NewGuid(),
+            UserId = Guid.Parse("29F79553-FC90-497C-BB2A-55179BF3BA6D"),
+        }, "token", Guid.NewGuid(), Guid.Parse("29F79553-FC90-497C-BB2A-55179BF3BA6D"))
+    };
 }

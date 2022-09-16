@@ -1,5 +1,4 @@
-﻿using System.Net;
-using NTester.DataContracts;
+﻿using NTester.DataContracts;
 using NTester.Domain.Exceptions;
 using NTester.Domain.Exceptions.Base;
 
