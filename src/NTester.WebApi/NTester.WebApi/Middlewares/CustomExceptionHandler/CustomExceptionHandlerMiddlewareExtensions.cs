@@ -1,8 +1,11 @@
-﻿namespace NTester.WebApi.Middlewares.CustomExceptionHandler;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace NTester.WebApi.Middlewares.CustomExceptionHandler;
 
 /// <summary>
 /// Extensions for the custom exception handler middleware.
 /// </summary>
+[ExcludeFromCodeCoverage]
 public static class CustomExceptionHandlerMiddlewareExtensions
 {
     /// <summary>

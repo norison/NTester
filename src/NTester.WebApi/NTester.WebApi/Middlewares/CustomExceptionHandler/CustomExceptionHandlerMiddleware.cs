@@ -41,7 +41,6 @@ public class CustomExceptionHandlerMiddleware
         var restException = exception as RestExceptionBase ?? new NonGeneralException(exception.Message);
 
         context.Response.StatusCode = (int)restException.StatusCode;
-        context.Response.ContentType = "application/json";
 
         var errorResponse = new ErrorResponse
         {
@@ -49,7 +48,7 @@ public class CustomExceptionHandlerMiddleware
             Message = restException.Message,
             Description = restException.Description
         };
-
+        
         await context.Response.WriteAsJsonAsync(errorResponse);
     }
 }
