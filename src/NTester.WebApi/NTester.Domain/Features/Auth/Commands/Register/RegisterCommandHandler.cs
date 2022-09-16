@@ -55,23 +55,15 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AuthRespo
 
         await using var transaction = await _transactionFactory.CreateTransactionAsync(cancellationToken);
 
-        try
-        {
-            await CreateUserAsync(user, request.Password);
+        await CreateUserAsync(user, request.Password);
 
-            var result = await _authService.AuthenticateUserAsync(user, request.ClientId);
+        var result = await _authService.AuthenticateUserAsync(user, request.ClientId);
 
-            _cookieService.SetRefreshToken(result.RefreshToken);
+        _cookieService.SetRefreshToken(result.RefreshToken);
 
-            await transaction.CommitAsync(cancellationToken);
+        await transaction.CommitAsync(cancellationToken);
 
-            return result;
-        }
-        catch
-        {
-            await transaction.RollbackAsync(cancellationToken);
-            throw;
-        }
+        return result;
     }
 
     private async Task ValidateIfUserExists(string userName)
@@ -80,7 +72,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AuthRespo
 
         if (user != null)
         {
-            throw new UserAlreadyExistsException(userName);
+            throw new InvalidUserNameOrPasswordException();
         }
     }
 

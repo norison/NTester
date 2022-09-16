@@ -2,6 +2,7 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Storage;
 using NSubstitute;
+using NSubstitute.ExceptionExtensions;
 using NTester.DataAccess.Entities;
 using NTester.DataAccess.Services.Transaction;
 using NTester.DataContracts.Auth;
@@ -41,7 +42,9 @@ public class RegisterCommandHandlerTests
     }
 
     [Test, AutoDataExt]
-    public async Task Handle_UserAlreadyExists_ShouldThrowAnException(RegisterCommand registerCommand, UserEntity user)
+    public async Task Handle_UserAlreadyExists_ShouldThrowAnException(
+        RegisterCommand registerCommand,
+        UserEntity user)
     {
         // Arrange
         _userManager.FindByNameAsync(default!).ReturnsForAnyArgs(user);
@@ -50,7 +53,7 @@ public class RegisterCommandHandlerTests
         await _handler
             .Invoking(x => x.Handle(registerCommand, CancellationToken.None))
             .Should()
-            .ThrowAsync<UserAlreadyExistsException>();
+            .ThrowAsync<InvalidUserNameOrPasswordException>();
 
         await _userManager.Received().FindByNameAsync(registerCommand.UserName);
     }
@@ -77,12 +80,10 @@ public class RegisterCommandHandlerTests
             .ThrowAsync<NonGeneralException>()
             .WithMessage(identityError.Description);
 
-        await AssertUserManager(registerCommand, capturedUser);
-
         await _transactionFactory.Received().CreateTransactionAsync(CancellationToken.None);
-        await _dbContextTransaction.Received().RollbackAsync();
         await _dbContextTransaction.Received().DisposeAsync();
 
+        await AssertUserManager(registerCommand, capturedUser);
         AssertUser(registerCommand, capturedUser);
     }
 
@@ -109,16 +110,17 @@ public class RegisterCommandHandlerTests
 
         // Assert
         result.Should().Be(authResponse);
-        
+
         _cookieService.Received().SetRefreshToken(result.RefreshToken);
 
+        await _transactionFactory.Received().CreateTransactionAsync(CancellationToken.None);
         await _dbContextTransaction.Received().CommitAsync();
         await _dbContextTransaction.Received().DisposeAsync();
-        
+
         await AssertUserManager(registerCommand, capturedUser);
         AssertUser(registerCommand, capturedUser);
     }
-    
+
     private async Task AssertUserManager(RegisterCommand registerCommand, UserEntity user)
     {
         await _userManager.Received().FindByNameAsync(registerCommand.UserName);

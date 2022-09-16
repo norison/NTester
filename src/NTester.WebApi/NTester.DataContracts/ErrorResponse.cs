@@ -18,5 +18,5 @@ public class ErrorResponse
     /// <summary>
     /// Description of the error.
     /// </summary>
-    public string ErrorDescription { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
 }

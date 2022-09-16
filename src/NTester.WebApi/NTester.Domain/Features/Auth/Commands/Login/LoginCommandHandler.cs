@@ -55,14 +55,14 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, AuthResponse>
     {
         if (user == null)
         {
-            throw new IncorrectUserNameOrPasswordException();
+            throw new InvalidUserNameOrPasswordException();
         }
 
         var signInResult = await _signInManager.CheckPasswordSignInAsync(user, password, false);
 
         if (!signInResult.Succeeded)
         {
-            throw new IncorrectUserNameOrPasswordException();
+            throw new InvalidUserNameOrPasswordException();
         }
     }
 }

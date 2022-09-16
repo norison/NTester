@@ -47,7 +47,7 @@ public class CustomExceptionHandlerMiddleware
         {
             Code = restException.Code,
             Message = restException.Message,
-            ErrorDescription = restException.Description
+            Description = restException.Description
         };
 
         await context.Response.WriteAsJsonAsync(errorResponse);
