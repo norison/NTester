@@ -17,4 +17,7 @@ public abstract class ValidationExceptionBase : RestExceptionBase
 
     /// <inheritdoc cref="RestExceptionBase.StatusCode"/>
     public override HttpStatusCode StatusCode => HttpStatusCode.BadRequest;
+
+    /// <inheritdoc cref="RestExceptionBase.Description"/>
+    public override string Description => "A validation error occurred while passing invalid data.";
 }

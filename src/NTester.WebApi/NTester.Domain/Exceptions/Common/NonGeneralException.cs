@@ -21,4 +21,7 @@ public class NonGeneralException : RestExceptionBase
 
     /// <inheritdoc cref="RestExceptionBase.Code"/>
     public override int Code => (int)CommonCodes.NonGeneralErrorOccured;
+
+    /// <inheritdoc cref="RestExceptionBase.Description"/>
+    public override string Description => "A non-general error has occurred that should not be in the correct workflow.";
 }

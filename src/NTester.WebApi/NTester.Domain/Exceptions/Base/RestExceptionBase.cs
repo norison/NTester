@@ -21,7 +21,12 @@ public abstract class RestExceptionBase : Exception
     public abstract HttpStatusCode StatusCode { get; }
 
     /// <summary>
-    /// Code of the exception.
+    /// Code of the error.
     /// </summary>
     public abstract int Code { get; }
+
+    /// <summary>
+    /// Description of the exception.
+    /// </summary>
+    public abstract string Description { get; }
 }

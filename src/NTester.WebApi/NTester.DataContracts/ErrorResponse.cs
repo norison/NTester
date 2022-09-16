@@ -14,4 +14,9 @@ public class ErrorResponse
     /// Code of the error.
     /// </summary>
     public int Code { get; set; }
+
+    /// <summary>
+    /// Description of the error.
+    /// </summary>
+    public string ErrorDescription { get; set; } = string.Empty;
 }
