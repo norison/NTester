@@ -8,5 +8,5 @@ public static class CookieConstants
     /// <summary>
     /// Cookie name of the refresh token.
     /// </summary>
-    public const string RefreshTokenCookieName = "X-RefreshToken";
+    public const string RefreshTokenCookieName = "NTesterWebApi_RefreshToken";
 }

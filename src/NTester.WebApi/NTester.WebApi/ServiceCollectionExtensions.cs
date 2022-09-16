@@ -103,7 +103,6 @@ public static class ServiceCollectionExtensions
         services.AddVersionedApiExplorer(options =>
         {
             options.GroupNameFormat = "'v'VVV";
-            options.SubstituteApiVersionInUrl = true;
         });
     }
 }
