@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using NTester.DataAccess.Data.NTesterDbContext;
 using NTester.DataAccess.Entities;
 using NTester.DataContracts.Auth;
+using NTester.Domain.Constants;
 using NTester.Domain.Exceptions.Auth;
 using NTester.Domain.Extensions;
 using NTester.Domain.Services.DateTime;
@@ -130,8 +131,8 @@ public class AuthService : IAuthService
     {
         return new List<Claim>
         {
-            new("id", user.Id.ToString()),
-            new("client", clientId.ToString())
+            new(ClaimConstants.UserIdClaimTypeName, user.Id.ToString()),
+            new(ClaimConstants.ClientIdClaimTypeName, clientId.ToString())
         };
     }
 
