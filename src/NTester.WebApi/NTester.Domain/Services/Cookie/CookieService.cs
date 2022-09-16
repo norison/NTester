@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using NTester.Domain.Constants;
 
 namespace NTester.Domain.Services.Cookie;
 
@@ -6,11 +7,6 @@ namespace NTester.Domain.Services.Cookie;
 public class CookieService : ICookieService
 {
     private readonly IHttpContextAccessor _contextAccessor;
-    
-    /// <summary>
-    /// Cookie name of the refresh token.
-    /// </summary>
-    public const string RefreshTokenCookieName = "Refresh-Token";
 
     /// <summary>
     /// Creates an instance of the cookie service.
@@ -31,18 +27,21 @@ public class CookieService : ICookieService
             SameSite = SameSiteMode.Strict
         };
 
-        _contextAccessor.HttpContext.Response.Cookies.Append(RefreshTokenCookieName, refreshToken, cookieOptions);
+        _contextAccessor.HttpContext.Response.Cookies.Append(
+            CookieConstants.RefreshTokenCookieName,
+            refreshToken,
+            cookieOptions);
     }
 
     /// <inheritdoc cref="ICookieService.RemoveRefreshToken"/>
     public void RemoveRefreshToken()
     {
-        _contextAccessor.HttpContext.Response.Cookies.Delete(RefreshTokenCookieName);
+        _contextAccessor.HttpContext.Response.Cookies.Delete(CookieConstants.RefreshTokenCookieName);
     }
 
     /// <inheritdoc cref="ICookieService.GetRefreshToken"/>
     public string? GetRefreshToken()
     {
-        return _contextAccessor.HttpContext.Request.Cookies[RefreshTokenCookieName];
+        return _contextAccessor.HttpContext.Request.Cookies[CookieConstants.RefreshTokenCookieName];
     }
 }

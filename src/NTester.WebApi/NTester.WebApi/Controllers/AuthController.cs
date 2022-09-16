@@ -22,6 +22,7 @@ namespace NTester.WebApi.Controllers;
 [Produces("application/json")]
 [ApiController]
 [Route("api/[controller]")]
+[ApiVersion("1.0")]
 public class AuthController : ControllerBase
 {
     private readonly IMediator _mediator;

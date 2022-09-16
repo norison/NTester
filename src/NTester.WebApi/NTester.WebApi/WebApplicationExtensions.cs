@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using NTester.WebApi.Middlewares.CustomExceptionHandler;
 
 namespace NTester.WebApi;
@@ -21,19 +22,32 @@ public static class WebApplicationExtensions
             app.UseHsts();
         }
 
-        app.UseSwagger();
-        app.UseSwaggerUI(options =>
-        {
-            options.RoutePrefix = string.Empty;
-            options.SwaggerEndpoint("swagger/v1/swagger.json", "NTester Web API");
-        });
-        
+        ConfigureSwagger(app);
+
         app.UseHttpsRedirection();
         app.UseCustomExceptionHandler();
         app.UseAuthentication();
         app.UseAuthorization();
+        app.UseApiVersioning();
         app.MapControllers();
 
         return app;
+    }
+
+    private static void ConfigureSwagger(WebApplication app)
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI(options =>
+        {
+            var versionProvider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
+
+            foreach (var versionDescription in versionProvider.ApiVersionDescriptions)
+            {
+                var groupName = versionDescription.GroupName;
+                options.SwaggerEndpoint($"swagger/{groupName}/swagger.json", groupName);
+            }
+
+            options.RoutePrefix = string.Empty;
+        });
     }
 }

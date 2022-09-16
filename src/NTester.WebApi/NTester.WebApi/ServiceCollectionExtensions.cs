@@ -1,16 +1,18 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Versioning;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 using NTester.DataAccess;
 using NTester.DataAccess.Data.NTesterDbContext;
 using NTester.DataAccess.Entities;
 using NTester.Domain;
 using NTester.Domain.Services.Token;
+using NTester.WebApi.Swagger;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace NTester.WebApi;
 
@@ -37,14 +39,25 @@ public static class ServiceCollectionExtensions
 
         ConfigureIdentity(services);
         ConfigureAuthentication(services, configuration);
-
-        services.AddSwaggerGen(options =>
-        {
-            options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "NTester.WebApi.xml"));
-            options.SwaggerDoc("v1", new OpenApiInfo { Title = "NTester Web API", Version = "v1" });
-        });
+        ConfigureSwagger(services);
+        ConfigureVersioning(services);
 
         return services;
+    }
+
+    private static void ConfigureIdentity(IServiceCollection services)
+    {
+        services
+            .AddIdentity<UserEntity, IdentityRole<Guid>>(options =>
+            {
+                // disable password validation.
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 0;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+            })
+            .AddEntityFrameworkStores<NTesterDbContext>();
     }
 
     private static void ConfigureAuthentication(IServiceCollection services, IConfiguration configuration)
@@ -72,18 +85,25 @@ public static class ServiceCollectionExtensions
             });
     }
 
-    private static void ConfigureIdentity(IServiceCollection services)
+    private static void ConfigureSwagger(IServiceCollection services)
     {
-        services
-            .AddIdentity<UserEntity, IdentityRole<Guid>>(options =>
-            {
-                // disable password validation.
-                options.Password.RequireDigit = false;
-                options.Password.RequiredLength = 0;
-                options.Password.RequireLowercase = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequireNonAlphanumeric = false;
-            })
-            .AddEntityFrameworkStores<NTesterDbContext>();
+        services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
+        services.AddSwaggerGen();
+    }
+
+    private static void ConfigureVersioning(IServiceCollection services)
+    {
+        services.AddApiVersioning(options =>
+        {
+            options.AssumeDefaultVersionWhenUnspecified = true;
+            options.DefaultApiVersion = new ApiVersion(1, 0);
+            options.ReportApiVersions = true;
+            options.ApiVersionReader = new HeaderApiVersionReader("X-Version");
+        });
+        services.AddVersionedApiExplorer(options =>
+        {
+            options.GroupNameFormat = "'v'VVV";
+            options.SubstituteApiVersionInUrl = true;
+        });
     }
 }

@@ -2,6 +2,7 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using NSubstitute;
+using NTester.Domain.Constants;
 using NTester.Domain.Services.Cookie;
 using NUnit.Framework;
 
@@ -35,7 +36,7 @@ public class CookieServiceTests
         // Assert
         _contextAccessor.HttpContext.Response.Cookies
             .Received()
-            .Append(CookieService.RefreshTokenCookieName, refreshToken, capturedOptions);
+            .Append(CookieConstants.RefreshTokenCookieName, refreshToken, capturedOptions);
 
         capturedOptions.Should().NotBeNull();
         capturedOptions.Secure.Should().BeTrue();
@@ -52,14 +53,14 @@ public class CookieServiceTests
         // Assert
         _contextAccessor.HttpContext.Response.Cookies
             .Received()
-            .Delete(CookieService.RefreshTokenCookieName);
+            .Delete(CookieConstants.RefreshTokenCookieName);
     }
 
     [Test, AutoData]
     public void GetRefreshToken_ShouldReturnRefreshTokenFromCookie(string refreshToken)
     {
         // Arrange
-        _contextAccessor.HttpContext.Request.Cookies[CookieService.RefreshTokenCookieName].Returns(refreshToken);
+        _contextAccessor.HttpContext.Request.Cookies[CookieConstants.RefreshTokenCookieName].Returns(refreshToken);
         
         // Act
         var result = _cookieService.GetRefreshToken();
