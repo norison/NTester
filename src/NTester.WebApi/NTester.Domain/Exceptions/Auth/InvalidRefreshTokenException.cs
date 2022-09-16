@@ -17,5 +17,5 @@ public class InvalidRefreshTokenException : ValidationExceptionBase
     }
 
     /// <inheritdoc cref="RestExceptionBase.Code"/>
-    public override int Code => (int)AuthCodes.InvalidRefreshToken;
+    public override int Code => (int)AuthCode.InvalidRefreshToken;
 }

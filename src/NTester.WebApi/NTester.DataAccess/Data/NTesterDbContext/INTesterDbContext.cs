@@ -22,6 +22,9 @@ public interface INTesterDbContext
 
     /// <inheritdoc cref="DbSet{RefreshTokenEntity}"/>
     DbSet<RefreshTokenEntity> RefreshTokens { get; set; }
+    
+    /// <inheritdoc cref="DbSet{UserEntity}"/>
+    DbSet<UserEntity> Users { get; set; }
 
     /// <inheritdoc cref="DbContext.SaveChangesAsync(System.Threading.CancellationToken)"/>
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);

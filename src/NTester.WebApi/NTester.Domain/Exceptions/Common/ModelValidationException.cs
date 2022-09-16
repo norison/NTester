@@ -16,5 +16,5 @@ public class ModelValidationException : ValidationExceptionBase
     }
 
     /// <inheritdoc cref="RestExceptionBase.Code"/>
-    public override int Code => (int)CommonCodes.ModelValidationFailed;
+    public override int Code => (int)CommonCode.ModelValidationFailed;
 }

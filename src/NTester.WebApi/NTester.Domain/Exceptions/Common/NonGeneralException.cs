@@ -20,7 +20,7 @@ public class NonGeneralException : RestExceptionBase
     public override HttpStatusCode StatusCode => HttpStatusCode.InternalServerError;
 
     /// <inheritdoc cref="RestExceptionBase.Code"/>
-    public override int Code => (int)CommonCodes.NonGeneralErrorOccured;
+    public override int Code => (int)CommonCode.NonGeneralErrorOccured;
 
     /// <inheritdoc cref="RestExceptionBase.Description"/>
     public override string Description => "A non-general error has occurred that should not be in the correct workflow.";

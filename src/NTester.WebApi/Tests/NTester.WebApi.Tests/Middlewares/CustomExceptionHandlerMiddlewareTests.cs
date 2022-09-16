@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using NTester.DataContracts;
+using NTester.Domain.Exceptions.Account;
 using NTester.Domain.Exceptions.Base;
 using NTester.Domain.Exceptions.Common;
 using NTester.WebApi.Middlewares.CustomExceptionHandler;
@@ -112,6 +113,7 @@ public class CustomExceptionHandlerMiddlewareTests
     private static IEnumerable<RestExceptionBase> RestExceptions => new List<RestExceptionBase>
     {
         new ModelValidationException("validation message"),
-        new NonGeneralException("non-general message")
+        new NonGeneralException("non-general message"),
+        new UserNotFoundException(Guid.NewGuid())
     };
 }

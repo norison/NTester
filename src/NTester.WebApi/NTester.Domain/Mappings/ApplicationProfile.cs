@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using AutoMapper;
+using NTester.DataAccess.Entities;
+using NTester.DataContracts.Account.GetUser;
 using NTester.DataContracts.Auth.Login;
 using NTester.DataContracts.Auth.Refresh;
 using NTester.DataContracts.Auth.Register;
@@ -23,5 +25,6 @@ public class ApplicationProfile : Profile
         CreateMap<LoginRequest, LoginCommand>();
         CreateMap<RegisterRequest, RegisterCommand>();
         CreateMap<RefreshRequest, RefreshCommand>();
+        CreateMap<UserEntity, GetUserResponse>();
     }
 }

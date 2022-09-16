@@ -3,15 +3,15 @@
 /// <summary>
 /// Common error codes.
 /// </summary>
-public enum CommonCodes
+public enum CommonCode
 {
     /// <summary>
-    /// Message code when non-general error occured.
+    /// Error code when non-general error occured.
     /// </summary>
     NonGeneralErrorOccured = 1000,
 
     /// <summary>
-    /// Message code when model validation failed.
+    /// Error code when model validation failed.
     /// </summary>
     ModelValidationFailed = 1001
 }

@@ -17,5 +17,5 @@ public class RefreshTokenWasNotProvidedException : ValidationExceptionBase
     }
 
     /// <inheritdoc cref="RestExceptionBase.Code"/>
-    public override int Code => (int)AuthCodes.RefreshTokenWasNotProvided;
+    public override int Code => (int)AuthCode.RefreshTokenWasNotProvided;
 }

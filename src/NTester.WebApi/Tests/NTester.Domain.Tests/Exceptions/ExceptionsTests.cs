@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using FluentAssertions;
+using NTester.Domain.Exceptions.Account;
 using NTester.Domain.Exceptions.Auth;
 using NTester.Domain.Exceptions.Base;
 using NTester.Domain.Exceptions.Common;
@@ -25,24 +26,27 @@ public class ExceptionsTests
     {
         new(new NonGeneralException(string.Empty),
             HttpStatusCode.InternalServerError,
-            (int)CommonCodes.NonGeneralErrorOccured),
+            (int)CommonCode.NonGeneralErrorOccured),
         new(new ModelValidationException(string.Empty),
             HttpStatusCode.BadRequest,
-            (int)CommonCodes.ModelValidationFailed),
+            (int)CommonCode.ModelValidationFailed),
         new(new InvalidUserNameOrPasswordException(),
             HttpStatusCode.BadRequest,
-            (int)AuthCodes.IncorrectUserNameOrPassword),
+            (int)AuthCode.IncorrectUserNameOrPassword),
         new(new InvalidAccessTokenException(),
             HttpStatusCode.BadRequest,
-            (int)AuthCodes.InvalidAccessToken),
+            (int)AuthCode.InvalidAccessToken),
         new(new InvalidRefreshTokenException(),
             HttpStatusCode.BadRequest,
-            (int)AuthCodes.InvalidRefreshToken),
+            (int)AuthCode.InvalidRefreshToken),
         new(new RefreshTokenWasNotProvidedException(),
             HttpStatusCode.BadRequest,
-            (int)AuthCodes.RefreshTokenWasNotProvided),
+            (int)AuthCode.RefreshTokenWasNotProvided),
         new(new UnsupportedClientException(Guid.NewGuid()),
             HttpStatusCode.BadRequest,
-            (int)AuthCodes.UnsupportedClient)
+            (int)AuthCode.UnsupportedClient),
+        new(new UserNotFoundException(Guid.NewGuid()),
+            HttpStatusCode.NotFound,
+            (int)AccountCode.UserNotFound)
     };
 }

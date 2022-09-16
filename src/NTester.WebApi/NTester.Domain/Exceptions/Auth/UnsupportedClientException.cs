@@ -18,5 +18,5 @@ public class UnsupportedClientException : ValidationExceptionBase
     }
 
     /// <inheritdoc cref="RestExceptionBase.Code"/>
-    public override int Code => (int)AuthCodes.UnsupportedClient;
+    public override int Code => (int)AuthCode.UnsupportedClient;
 }

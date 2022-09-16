@@ -17,5 +17,5 @@ public class InvalidAccessTokenException : ValidationExceptionBase
     }
 
     /// <inheritdoc cref="RestExceptionBase.Code"/>
-    public override int Code => (int)AuthCodes.InvalidAccessToken;
+    public override int Code => (int)AuthCode.InvalidAccessToken;
 }

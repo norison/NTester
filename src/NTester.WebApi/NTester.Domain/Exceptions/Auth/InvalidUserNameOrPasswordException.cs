@@ -17,5 +17,5 @@ public class InvalidUserNameOrPasswordException : ValidationExceptionBase
     }
 
     /// <inheritdoc cref="RestExceptionBase.Code"/>
-    public override int Code => (int)AuthCodes.IncorrectUserNameOrPassword;
+    public override int Code => (int)AuthCode.IncorrectUserNameOrPassword;
 }
