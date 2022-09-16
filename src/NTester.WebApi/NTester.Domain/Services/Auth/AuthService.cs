@@ -4,8 +4,7 @@ using Microsoft.Extensions.Options;
 using NTester.DataAccess.Data.NTesterDbContext;
 using NTester.DataAccess.Entities;
 using NTester.DataContracts.Auth;
-using NTester.Domain.Exceptions;
-using NTester.Domain.Exceptions.Codes;
+using NTester.Domain.Exceptions.Auth;
 using NTester.Domain.Extensions;
 using NTester.Domain.Services.DateTime;
 using NTester.Domain.Services.Token;
@@ -19,9 +18,6 @@ public class AuthService : IAuthService
     private readonly ITokenService _tokenService;
     private readonly IDateTimeService _dateTimeService;
     private readonly RefreshTokenSettings _refreshTokenSettings;
-
-    private const string ErrorMessageRefreshTokenNotFound = "Refresh token not found or no access token pair.";
-    private const string ErrorMessageUnsupportedClient = "Provided client is not supported.";
 
     /// <summary>
     /// Creates an instance of the authentication service.
@@ -71,7 +67,7 @@ public class AuthService : IAuthService
 
         if (refreshTokenEntity == null || refreshTokenEntity.Token != refreshToken)
         {
-            throw new ValidationException((int)AuthCodes.InvalidRefreshToken, ErrorMessageRefreshTokenNotFound);
+            throw new InvalidRefreshTokenException();
         }
 
         _dbContext.RefreshTokens.Remove(refreshTokenEntity);
@@ -84,9 +80,10 @@ public class AuthService : IAuthService
     {
         var refreshTokenEntity = await _dbContext.RefreshTokens.FindAsync(refreshToken);
 
-        if (refreshTokenEntity == null || refreshTokenEntity.ClientId != clientId || refreshTokenEntity.UserId != userId)
+        if (refreshTokenEntity == null || refreshTokenEntity.ClientId != clientId ||
+            refreshTokenEntity.UserId != userId)
         {
-            throw new ValidationException((int)AuthCodes.InvalidRefreshToken, ErrorMessageRefreshTokenNotFound);
+            throw new InvalidRefreshTokenException();
         }
 
         _dbContext.RefreshTokens.Remove(refreshTokenEntity);
@@ -125,7 +122,7 @@ public class AuthService : IAuthService
         var client = await _dbContext.Clients.FindAsync(clientId);
         if (client == null)
         {
-            throw new ValidationException((int)AuthCodes.UnsupportedClient, ErrorMessageUnsupportedClient);
+            throw new UnsupportedClientException(clientId);
         }
     }
 

@@ -5,8 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using NTester.Domain.Exceptions;
-using NTester.Domain.Exceptions.Codes;
+using NTester.Domain.Exceptions.Auth;
 using NTester.Domain.Services.DateTime;
 
 namespace NTester.Domain.Services.Token;
@@ -17,9 +16,6 @@ public class TokenService : ITokenService
 {
     private readonly IDateTimeService _dateTimeService;
     private readonly JwtSettings _jwtSettings;
-
-    private const string ErrorMessageInvalidAccessToken =
-        "The access token has invalid values or cannot be verified by the secret.";
 
     /// <summary>
     /// Creates an instance of the token service.
@@ -76,7 +72,7 @@ public class TokenService : ITokenService
         if (securityToken is not JwtSecurityToken jwtSecurityToken ||
             jwtSecurityToken.Header.Alg != SecurityAlgorithms.HmacSha256)
         {
-            throw new ValidationException((int)AuthCodes.InvalidAccessToken, ErrorMessageInvalidAccessToken);
+            throw new InvalidAccessTokenException();
         }
 
         return principal;

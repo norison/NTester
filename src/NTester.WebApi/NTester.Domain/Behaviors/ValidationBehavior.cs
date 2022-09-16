@@ -1,7 +1,6 @@
 ﻿using FluentValidation;
 using MediatR;
-using NTester.Domain.Exceptions.Codes;
-using ValidationException = NTester.Domain.Exceptions.ValidationException;
+using NTester.Domain.Exceptions.Common;
 
 namespace NTester.Domain.Behaviors;
 
@@ -42,6 +41,6 @@ public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<
         }
 
         var errorMessage = validationResult.Errors.First().ErrorMessage;
-        throw new ValidationException((int)CommonCodes.RequestValidationFailed, errorMessage);
+        throw new ModelValidationException(errorMessage);
     }
 }

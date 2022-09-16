@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using NTester.DataContracts.Auth;
-using NTester.Domain.Exceptions;
-using NTester.Domain.Exceptions.Codes;
+using NTester.Domain.Exceptions.Auth;
 using NTester.Domain.Services.Auth;
 using NTester.Domain.Services.Cookie;
 
@@ -14,8 +13,6 @@ public class RefreshCommandHandler : IRequestHandler<RefreshCommand, AuthRespons
 {
     private readonly IAuthService _authService;
     private readonly ICookieService _cookieService;
-
-    private const string ErrorMessageRefreshTokenNotProvided = "Refresh token was not provided.";
 
     /// <summary>
     /// Creates an instance of the refresh command handler.
@@ -35,8 +32,7 @@ public class RefreshCommandHandler : IRequestHandler<RefreshCommand, AuthRespons
 
         if (string.IsNullOrEmpty(refreshToken))
         {
-            throw new ValidationException((int)AuthCodes.RefreshTokenWasNotProvided,
-                ErrorMessageRefreshTokenNotProvided);
+            throw new RefreshTokenWasNotProvidedException();
         }
 
         var result = await _authService.AuthenticateUserAsync(request.AccessToken, refreshToken);

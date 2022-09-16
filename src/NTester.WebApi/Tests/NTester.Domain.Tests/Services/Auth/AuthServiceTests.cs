@@ -6,8 +6,7 @@ using NSubstitute;
 using NTester.DataAccess.Data.NTesterDbContext;
 using NTester.DataAccess.Entities;
 using NTester.Domain.Constants;
-using NTester.Domain.Exceptions;
-using NTester.Domain.Exceptions.Codes;
+using NTester.Domain.Exceptions.Auth;
 using NTester.Domain.Services.Auth;
 using NTester.Domain.Services.DateTime;
 using NTester.Domain.Services.Token;
@@ -46,8 +45,7 @@ public class AuthServiceTests
         await _authService
             .Invoking(x => x.AuthenticateUserAsync(user, clientId))
             .Should()
-            .ThrowAsync<ValidationException>()
-            .Where(x => x.Code == (int)AuthCodes.UnsupportedClient);
+            .ThrowAsync<UnsupportedClientException>();
 
         await _dbContext.Clients.Received().FindAsync(clientId);
     }
@@ -93,7 +91,7 @@ public class AuthServiceTests
 
         _tokenService.Received().GenerateAccessToken(capturedClaims);
         _tokenService.Received().GenerateRefreshToken();
-        
+
         await _dbContext.Received().SaveChangesAsync();
 
         result.AccessToken.Should().Be(accessToken);
@@ -136,8 +134,7 @@ public class AuthServiceTests
         await _authService
             .Invoking(x => x.AuthenticateUserAsync(accessToken, refreshToken))
             .Should()
-            .ThrowAsync<ValidationException>()
-            .Where(x => x.Code == (int)AuthCodes.InvalidRefreshToken);
+            .ThrowAsync<InvalidRefreshTokenException>();
 
         _tokenService.Received().GetPrincipalFromExpiredAccessToken(accessToken);
     }
@@ -171,8 +168,7 @@ public class AuthServiceTests
         await _authService
             .Invoking(x => x.AuthenticateUserAsync(accessToken, refreshToken))
             .Should()
-            .ThrowAsync<ValidationException>()
-            .Where(x => x.Code == (int)AuthCodes.InvalidRefreshToken);
+            .ThrowAsync<InvalidRefreshTokenException>();
 
         _tokenService.Received().GetPrincipalFromExpiredAccessToken(accessToken);
     }
@@ -255,8 +251,7 @@ public class AuthServiceTests
         await _authService
             .Invoking(x => x.RevokeRefreshTokenAsync(refreshToken, clientId, userId))
             .Should()
-            .ThrowAsync<ValidationException>()
-            .Where(x => x.Code == (int)AuthCodes.InvalidRefreshToken);
+            .ThrowAsync<InvalidRefreshTokenException>();
     }
 
     [Test, AutoDataExt]

@@ -2,8 +2,8 @@
 using NTester.DataAccess.Entities;
 using NTester.DataAccess.Services.Transaction;
 using NTester.DataContracts.Auth;
-using NTester.Domain.Exceptions;
-using NTester.Domain.Exceptions.Codes;
+using NTester.Domain.Exceptions.Auth;
+using NTester.Domain.Exceptions.Common;
 using NTester.Domain.Services.Auth;
 using NTester.Domain.Services.Cookie;
 using NTester.Domain.Services.UserManager;
@@ -19,9 +19,6 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AuthRespo
     private readonly IAuthService _authService;
     private readonly ICookieService _cookieService;
     private readonly ITransactionFactory _transactionFactory;
-
-    private const string ErrorMessageUserAlreadyExists =
-        "User with the same user name already exists - User name: '{0}'";
 
     /// <summary>
     /// Creates an instance of the registration command handler.
@@ -83,8 +80,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AuthRespo
 
         if (user != null)
         {
-            var message = string.Format(ErrorMessageUserAlreadyExists, userName);
-            throw new ValidationException((int)AuthCodes.UserAlreadyExists, message);
+            throw new UserAlreadyExistsException(userName);
         }
     }
 

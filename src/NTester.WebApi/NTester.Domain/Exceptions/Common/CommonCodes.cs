@@ -1,4 +1,4 @@
-﻿namespace NTester.Domain.Exceptions.Codes;
+﻿namespace NTester.Domain.Exceptions.Common;
 
 /// <summary>
 /// Common error codes.
@@ -11,7 +11,7 @@ public enum CommonCodes
     NonGeneralErrorOccured = 1000,
 
     /// <summary>
-    /// Error code when request validation error failed.
+    /// Error code when model validation validation failed.
     /// </summary>
-    RequestValidationFailed = 1001
+    ModelValidationFailed = 1001
 }

@@ -1,8 +1,7 @@
 ﻿using MediatR;
 using NTester.DataAccess.Entities;
 using NTester.DataContracts.Auth;
-using NTester.Domain.Exceptions;
-using NTester.Domain.Exceptions.Codes;
+using NTester.Domain.Exceptions.Auth;
 using NTester.Domain.Services.Auth;
 using NTester.Domain.Services.Cookie;
 using NTester.Domain.Services.SignInManager;
@@ -19,8 +18,6 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, AuthResponse>
     private readonly ISignInManager _signInManager;
     private readonly IAuthService _authService;
     private readonly ICookieService _cookieService;
-
-    private const string ErrorMessageIncorrectUserNameOrPassword = "Provided incorrect user name or password";
 
     /// <summary>
     /// Creates an instance of the login command handler.
@@ -58,16 +55,14 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, AuthResponse>
     {
         if (user == null)
         {
-            throw new ValidationException((int)AuthCodes.IncorrectUserNameOrPassword,
-                ErrorMessageIncorrectUserNameOrPassword);
+            throw new IncorrectUserNameOrPasswordException();
         }
 
         var signInResult = await _signInManager.CheckPasswordSignInAsync(user, password, false);
 
         if (!signInResult.Succeeded)
         {
-            throw new ValidationException((int)AuthCodes.IncorrectUserNameOrPassword,
-                ErrorMessageIncorrectUserNameOrPassword);
+            throw new IncorrectUserNameOrPasswordException();
         }
     }
 }

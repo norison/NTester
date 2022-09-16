@@ -1,4 +1,4 @@
-﻿namespace NTester.Domain.Exceptions.Codes;
+﻿namespace NTester.Domain.Exceptions.Auth;
 
 /// <summary>
 /// Exception codes for the authentication.

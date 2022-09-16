@@ -1,6 +1,6 @@
 ﻿using NTester.DataContracts;
-using NTester.Domain.Exceptions;
 using NTester.Domain.Exceptions.Base;
+using NTester.Domain.Exceptions.Common;
 
 namespace NTester.WebApi.Middlewares.CustomExceptionHandler;
 
@@ -47,7 +47,6 @@ public class CustomExceptionHandlerMiddleware
         {
             Code = restException.Code,
             Message = restException.Message,
-            CodeDescription = restException.CodeDescription
         };
 
         await context.Response.WriteAsJsonAsync(errorResponse);

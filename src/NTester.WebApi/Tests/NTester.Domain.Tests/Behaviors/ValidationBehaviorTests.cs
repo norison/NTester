@@ -1,12 +1,11 @@
-﻿using System.Net;
-using FluentAssertions;
+﻿using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;
 using MediatR;
 using NSubstitute;
 using NTester.Domain.Behaviors;
+using NTester.Domain.Exceptions.Common;
 using NUnit.Framework;
-using ValidationException = NTester.Domain.Exceptions.ValidationException;
 
 namespace NTester.Domain.Tests.Behaviors;
 
@@ -60,9 +59,8 @@ public class ValidationBehaviorTests
         await _validationBehavior
             .Invoking(x => x.Handle(request, CancellationToken.None, _nextDelegate))
             .Should()
-            .ThrowAsync<ValidationException>()
-            .WithMessage(errorMessage)
-            .Where(x => x.StatusCode == HttpStatusCode.BadRequest);
+            .ThrowAsync<ModelValidationException>()
+            .WithMessage(errorMessage);
 
         _nextDelegate.ReceivedCalls().Count().Should().Be(0);
     }
