@@ -8,7 +8,7 @@ namespace NTester.Domain.Exceptions.Auth;
 /// </summary>
 public class UserAlreadyExistsException : RestExceptionBase
 {
-    private const string ErrorMessage = "User with the same user name already exists - User name: '{0}'";
+    private const string ErrorMessage = "User with the same user name already exists - User name: '{0}'.";
 
     /// <summary>
     /// Creates an instance of the model validation exception.
