@@ -1,10 +1,12 @@
-﻿using NTester.WebApi.Middlewares.CustomExceptionHandler;
+﻿using System.Diagnostics.CodeAnalysis;
+using NTester.WebApi.Middlewares.CustomExceptionHandler;
 
 namespace NTester.WebApi;
 
 /// <summary>
 /// Extensions of the web application.
 /// </summary>
+[ExcludeFromCodeCoverage]
 public static class WebApplicationExtensions
 {
     /// <summary>

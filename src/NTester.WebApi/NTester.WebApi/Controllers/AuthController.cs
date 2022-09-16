@@ -66,7 +66,7 @@ public class AuthController : ControllerBase
     /// <param name="refreshRequest">Request for the refresh.</param>
     /// <returns>Authentication response.</returns>
     [HttpPost("refresh")]
-    public async Task<IActionResult> RegisterAsync(RefreshRequest refreshRequest)
+    public async Task<IActionResult> RefreshAsync(RefreshRequest refreshRequest)
     {
         var command = _mapper.Map<RefreshCommand>(refreshRequest);
         var result = await _mediator.Send(command);
