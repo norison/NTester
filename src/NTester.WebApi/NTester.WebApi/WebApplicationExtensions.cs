@@ -21,6 +21,13 @@ public static class WebApplicationExtensions
             app.UseHsts();
         }
 
+        app.UseSwagger();
+        app.UseSwaggerUI(options =>
+        {
+            options.RoutePrefix = string.Empty;
+            options.SwaggerEndpoint("swagger/v1/swagger.json", "NTester Web API");
+        });
+        
         app.UseHttpsRedirection();
         app.UseCustomExceptionHandler();
         app.UseAuthentication();

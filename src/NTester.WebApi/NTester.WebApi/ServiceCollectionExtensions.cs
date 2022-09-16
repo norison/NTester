@@ -1,9 +1,11 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using NTester.DataAccess;
 using NTester.DataAccess.Data.NTesterDbContext;
 using NTester.DataAccess.Entities;
@@ -35,6 +37,12 @@ public static class ServiceCollectionExtensions
 
         ConfigureIdentity(services);
         ConfigureAuthentication(services, configuration);
+
+        services.AddSwaggerGen(options =>
+        {
+            options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "NTester.WebApi.xml"));
+            options.SwaggerDoc("v1", new OpenApiInfo { Title = "NTester Web API", Version = "v1" });
+        });
 
         return services;
     }

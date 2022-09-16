@@ -1,7 +1,10 @@
-﻿using AutoMapper;
+﻿using System.Net;
+using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NTester.DataContracts;
+using NTester.DataContracts.Auth;
 using NTester.DataContracts.Auth.Login;
 using NTester.DataContracts.Auth.Refresh;
 using NTester.DataContracts.Auth.Register;
@@ -16,6 +19,7 @@ namespace NTester.WebApi.Controllers;
 /// <summary>
 /// Manages authentication operations.
 /// </summary>
+[Produces("application/json")]
 [ApiController]
 [Route("api/[controller]")]
 public class AuthController : ControllerBase
@@ -39,6 +43,12 @@ public class AuthController : ControllerBase
     /// </summary>
     /// <param name="loginRequest">Request for the login.</param>
     /// <returns>Authentication response.</returns>
+    /// <response code="200">Success.</response>
+    /// <response code="400">If invalid data provided.</response>
+    /// <response code="500">If server error occured.</response>
+    [ProducesResponseType(typeof(AuthResponse), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.InternalServerError)]
     [HttpPost("login")]
     public async Task<IActionResult> LoginAsync(LoginRequest loginRequest)
     {
@@ -52,6 +62,12 @@ public class AuthController : ControllerBase
     /// </summary>
     /// <param name="registerRequest">Request for the registration.</param>
     /// <returns>Authentication response.</returns>
+    /// <response code="200">Success.</response>
+    /// <response code="400">If invalid data provided.</response>
+    /// <response code="500">If server error occured.</response>
+    [ProducesResponseType(typeof(AuthResponse), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.InternalServerError)]
     [HttpPost("register")]
     public async Task<IActionResult> RegisterAsync(RegisterRequest registerRequest)
     {
@@ -65,6 +81,12 @@ public class AuthController : ControllerBase
     /// </summary>
     /// <param name="refreshRequest">Request for the refresh.</param>
     /// <returns>Authentication response.</returns>
+    /// <response code="200">Success.</response>
+    /// <response code="400">If invalid data provided.</response>
+    /// <response code="500">If server error occured.</response>
+    [ProducesResponseType(typeof(AuthResponse), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.InternalServerError)]
     [HttpPost("refresh")]
     public async Task<IActionResult> RefreshAsync(RefreshRequest refreshRequest)
     {
@@ -76,6 +98,14 @@ public class AuthController : ControllerBase
     /// <summary>
     /// Logouts a user.
     /// </summary>
+    /// <response code="200">Success.</response>
+    /// <response code="400">If invalid data provided.</response>
+    /// <response code="401">If user is unauthorized.</response>
+    /// <response code="500">If server error occured.</response>
+    [ProducesResponseType(typeof(AuthResponse), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.InternalServerError)]
+    [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
     [HttpPost("logout")]
     [Authorize]
     public async Task<IActionResult> LogoutAsync()
