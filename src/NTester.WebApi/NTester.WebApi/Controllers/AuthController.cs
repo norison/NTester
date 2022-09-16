@@ -5,11 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 using NTester.DataContracts.Auth.Login;
 using NTester.DataContracts.Auth.Refresh;
 using NTester.DataContracts.Auth.Register;
+using NTester.Domain.Extensions;
 using NTester.Domain.Features.Auth.Commands.Login;
 using NTester.Domain.Features.Auth.Commands.Logout;
 using NTester.Domain.Features.Auth.Commands.Refresh;
 using NTester.Domain.Features.Auth.Commands.Register;
-using NTester.WebApi.Controllers.Base;
 
 namespace NTester.WebApi.Controllers;
 
@@ -18,7 +18,7 @@ namespace NTester.WebApi.Controllers;
 /// </summary>
 [ApiController]
 [Route("api/[controller]")]
-public class AuthController : ApiControllerBase
+public class AuthController : ControllerBase
 {
     private readonly IMediator _mediator;
     private readonly IMapper _mapper;
@@ -82,8 +82,8 @@ public class AuthController : ApiControllerBase
     {
         var command = new LogoutCommand
         {
-            ClientId = ClientId,
-            UserId = UserId
+            ClientId = HttpContext.User.GetClientId(),
+            UserId = HttpContext.User.GetUserId()
         };
 
         await _mediator.Send(command);
