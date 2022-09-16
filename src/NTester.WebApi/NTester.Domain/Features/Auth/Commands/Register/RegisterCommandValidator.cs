@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using NTester.Domain.Extensions;
 
 namespace NTester.Domain.Features.Auth.Commands.Register;
 
@@ -14,7 +15,7 @@ public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
     {
         RuleFor(x => x.Email).NotEmpty().EmailAddress();
         RuleFor(x => x.UserName).NotEmpty().MinimumLength(2);
-        RuleFor(x => x.Password).NotEmpty();
+        RuleFor(x => x.Password).Password();
         RuleFor(x => x.Name).NotEmpty().MaximumLength(10);
         RuleFor(x => x.Surname).NotEmpty().MaximumLength(10);
         RuleFor(x => x.ClientId).NotEmpty();

@@ -67,8 +67,9 @@ public static class ServiceCollectionExtensions
         services
             .AddIdentity<UserEntity, IdentityRole<Guid>>(options =>
             {
+                // disable password validation.
                 options.Password.RequireDigit = false;
-                options.Password.RequiredLength = 2;
+                options.Password.RequiredLength = 0;
                 options.Password.RequireLowercase = false;
                 options.Password.RequireUppercase = false;
                 options.Password.RequireNonAlphanumeric = false;

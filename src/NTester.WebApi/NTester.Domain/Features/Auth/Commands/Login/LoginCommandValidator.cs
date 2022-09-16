@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using NTester.Domain.Extensions;
 
 namespace NTester.Domain.Features.Auth.Commands.Login;
 
@@ -13,7 +14,7 @@ public class LoginCommandValidator : AbstractValidator<LoginCommand>
     public LoginCommandValidator()
     {
         RuleFor(x => x.UserName).NotEmpty();
-        RuleFor(x => x.Password).NotEmpty();
+        RuleFor(x => x.Password).Password();
         RuleFor(x => x.ClientId).NotEmpty();
     }
 }
