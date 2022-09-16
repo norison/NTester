@@ -11,7 +11,7 @@ public enum CommonCodes
     NonGeneralErrorOccured = 1000,
 
     /// <summary>
-    /// Error code when model validation validation failed.
+    /// Error code when model validation failed.
     /// </summary>
     ModelValidationFailed = 1001
 }

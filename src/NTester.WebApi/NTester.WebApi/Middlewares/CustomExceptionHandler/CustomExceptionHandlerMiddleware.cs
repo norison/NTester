@@ -23,7 +23,7 @@ public class CustomExceptionHandlerMiddleware
     /// <summary>
     /// Invokes the exception middleware.
     /// </summary>
-    /// <param name="context">context of the request.</param>
+    /// <param name="context">Context of the request.</param>
     public async Task InvokeAsync(HttpContext context)
     {
         try

@@ -6,7 +6,7 @@ namespace NTester.Domain.Exceptions.Auth;
 /// <summary>
 /// Exception for the case when user already exists.
 /// </summary>
-public class UnsupportedClientException : RestExceptionBase
+public class UnsupportedClientException : ValidationExceptionBase
 {
     private const string ErrorMessage = "Provided client is not supported - Client ID: '{0}'.";
 
@@ -17,9 +17,6 @@ public class UnsupportedClientException : RestExceptionBase
     public UnsupportedClientException(Guid clientId) : base(string.Format(ErrorMessage, clientId))
     {
     }
-
-    /// <inheritdoc cref="RestExceptionBase.StatusCode"/>
-    public override HttpStatusCode StatusCode => HttpStatusCode.BadRequest;
 
     /// <inheritdoc cref="RestExceptionBase.Code"/>
     public override int Code => (int)AuthCodes.UnsupportedClient;

@@ -6,7 +6,7 @@ namespace NTester.Domain.Exceptions.Auth;
 /// <summary>
 /// Exception for the case when user already exists.
 /// </summary>
-public class UserAlreadyExistsException : RestExceptionBase
+public class UserAlreadyExistsException : ValidationExceptionBase
 {
     private const string ErrorMessage = "User with the same user name already exists - User name: '{0}'.";
 
@@ -17,9 +17,6 @@ public class UserAlreadyExistsException : RestExceptionBase
     public UserAlreadyExistsException(string userName) : base(string.Format(ErrorMessage, userName))
     {
     }
-
-    /// <inheritdoc cref="RestExceptionBase.StatusCode"/>
-    public override HttpStatusCode StatusCode => HttpStatusCode.BadRequest;
 
     /// <inheritdoc cref="RestExceptionBase.Code"/>
     public override int Code => (int)AuthCodes.UserAlreadyExists;

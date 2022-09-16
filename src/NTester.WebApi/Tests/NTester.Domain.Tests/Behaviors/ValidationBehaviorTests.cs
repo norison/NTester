@@ -4,6 +4,7 @@ using FluentValidation.Results;
 using MediatR;
 using NSubstitute;
 using NTester.Domain.Behaviors;
+using NTester.Domain.Exceptions.Base;
 using NTester.Domain.Exceptions.Common;
 using NUnit.Framework;
 
@@ -59,7 +60,7 @@ public class ValidationBehaviorTests
         await _validationBehavior
             .Invoking(x => x.Handle(request, CancellationToken.None, _nextDelegate))
             .Should()
-            .ThrowAsync<ModelValidationException>()
+            .ThrowAsync<ValidationExceptionBase>()
             .WithMessage(errorMessage);
 
         _nextDelegate.ReceivedCalls().Count().Should().Be(0);

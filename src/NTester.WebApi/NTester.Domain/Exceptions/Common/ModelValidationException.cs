@@ -1,12 +1,11 @@
-﻿using System.Net;
-using NTester.Domain.Exceptions.Base;
+﻿using NTester.Domain.Exceptions.Base;
 
 namespace NTester.Domain.Exceptions.Common;
 
 /// <summary>
 /// Exception for model validation.
 /// </summary>
-public class ModelValidationException : RestExceptionBase
+public class ModelValidationException : ValidationExceptionBase
 {
     /// <summary>
     /// Creates an instance of the model validation exception.
@@ -16,9 +15,6 @@ public class ModelValidationException : RestExceptionBase
     {
     }
 
-    /// <inheritdoc cref="RestExceptionBase.StatusCode"/>
-    public override HttpStatusCode StatusCode => HttpStatusCode.BadRequest;
-    
     /// <inheritdoc cref="RestExceptionBase.Code"/>
     public override int Code => (int)CommonCodes.ModelValidationFailed;
 }
