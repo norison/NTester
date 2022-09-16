@@ -30,11 +30,10 @@ public static class ServiceCollectionExtensions
     {
         var assembly = Assembly.GetExecutingAssembly();
 
-        services.AddMediatR(assembly);
         services.AddAutoMapper(assembly);
-        services.AddValidatorsFromAssembly(assembly);
 
-        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+        ConfigureMediator(services, assembly);
+        ConfigureValidation(services, assembly);
 
         services.Configure<JwtSettings>(configuration.GetSection("Auth:JwtSettings"));
         services.Configure<RefreshTokenSettings>(configuration.GetSection("Auth:RefreshTokenSettings"));
@@ -48,5 +47,18 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<ITokenService, TokenService>();
 
         return services;
+    }
+
+    private static void ConfigureMediator(IServiceCollection services, Assembly assembly)
+    {
+        services.AddMediatR(assembly);
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+    }
+
+    private static void ConfigureValidation(IServiceCollection services, Assembly assembly)
+    {
+        services.AddValidatorsFromAssembly(assembly);
+        ValidatorOptions.Global.DefaultRuleLevelCascadeMode = CascadeMode.Stop;
+        ValidatorOptions.Global.DefaultClassLevelCascadeMode = CascadeMode.Stop;
     }
 }

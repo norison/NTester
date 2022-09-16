@@ -1,5 +1,4 @@
-﻿using NTester.DataAccess.Services.DatabaseInitializer;
-using NTester.WebApi.Middlewares.CustomExceptionHandler;
+﻿using NTester.WebApi.Middlewares.CustomExceptionHandler;
 
 namespace NTester.WebApi;
 
@@ -15,8 +14,6 @@ public static class WebApplicationExtensions
     /// <returns>Web application.</returns>
     public static WebApplication UseNTester(this WebApplication app)
     {
-        InitializeDatabase(app);
-
         if (app.Environment.IsProduction())
         {
             app.UseHsts();
@@ -29,15 +26,5 @@ public static class WebApplicationExtensions
         app.MapControllers();
 
         return app;
-    }
-
-    private static void InitializeDatabase(IHost host)
-    {
-        using var scope = host.Services.CreateScope();
-
-        scope.ServiceProvider
-            .GetRequiredService<IDatabaseInitializer>()
-            .InitializeAsync()
-            .Wait();
     }
 }

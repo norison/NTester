@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace NTester.DataAccess.Migrations
 {
-    [ExcludeFromCodeCoverage]
     public partial class AddedClient : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)

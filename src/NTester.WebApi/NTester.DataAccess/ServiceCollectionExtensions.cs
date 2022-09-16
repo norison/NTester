@@ -1,10 +1,8 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using EntityFramework.Exceptions.SqlServer;
+﻿using EntityFramework.Exceptions.SqlServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NTester.DataAccess.Data.NTesterDbContext;
-using NTester.DataAccess.Services.DatabaseInitializer;
 using NTester.DataAccess.Services.Transaction;
 
 namespace NTester.DataAccess;
@@ -12,7 +10,6 @@ namespace NTester.DataAccess;
 /// <summary>
 /// Extensions of the service collections.
 /// </summary>
-[ExcludeFromCodeCoverage]
 public static class ServiceCollectionExtensions
 {
     /// <summary>
@@ -31,9 +28,6 @@ public static class ServiceCollectionExtensions
             options.UseExceptionProcessor();
         });
 
-        services.Configure<ClientPresets>(configuration.GetSection("Auth:ClientPresets"));
-
-        services.AddScoped<IDatabaseInitializer, DatabaseInitializer>();
         services.AddScoped<ITransactionFactory, TransactionFactory>();
 
         return services;

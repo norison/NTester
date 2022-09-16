@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NTester.DataAccess.Entities;
 
@@ -8,7 +7,6 @@ namespace NTester.DataAccess.EntityTypeConfigurations;
 /// <summary>
 /// Configuration of the <see cref="AnswerEntity"/> in database.
 /// </summary>
-[ExcludeFromCodeCoverage]
 public class AnswerEntityTypeConfiguration : IEntityTypeConfiguration<AnswerEntity>
 {
     /// <inheritdoc cref="IEntityTypeConfiguration{AnswerEntity}.Configure"/>

@@ -1,5 +1,4 @@
-﻿using System.Net;
-using NTester.Domain.Exceptions.Base;
+﻿using NTester.Domain.Exceptions.Base;
 
 namespace NTester.Domain.Exceptions.Auth;
 

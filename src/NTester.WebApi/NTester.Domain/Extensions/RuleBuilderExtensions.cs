@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using FluentValidation;
 
 namespace NTester.Domain.Extensions;
@@ -5,6 +6,7 @@ namespace NTester.Domain.Extensions;
 /// <summary>
 /// Extension methods for rule builder.
 /// </summary>
+[ExcludeFromCodeCoverage]
 public static class RuleBuilderExtensions
 {
     /// <summary>
@@ -15,7 +17,6 @@ public static class RuleBuilderExtensions
     /// <param name="requireDigits">If passwords must contain a digit.</param>
     /// <param name="requireLowercase">If passwords must contain a lower case ASCII character.</param>
     /// <param name="requireUppercase">If passwords must contain a upper case ASCII character.</param>
-    /// <typeparam name="T"></typeparam>
     public static IRuleBuilderOptions<T, string> Password<T>(
         this IRuleBuilder<T, string> ruleBuilder,
         int requiredLength = 2,
@@ -23,7 +24,7 @@ public static class RuleBuilderExtensions
         bool requireLowercase = false,
         bool requireUppercase = false)
     {
-        var options = ruleBuilder.NotEmpty().MinimumLength(requiredLength);
+        var options = ruleBuilder.NotEmpty().MinimumLength(requiredLength).NoWhiteSpaces();
 
         if (requireUppercase)
         {
@@ -41,5 +42,14 @@ public static class RuleBuilderExtensions
         }
 
         return options;
+    }
+
+    /// <summary>
+    /// Rule builder for string to validate the white spaces.
+    /// </summary>
+    /// <param name="ruleBuilder">Rule builder.</param>
+    public static IRuleBuilderOptions<T, string> NoWhiteSpaces<T>(this IRuleBuilder<T, string> ruleBuilder)
+    {
+        return ruleBuilder.Matches(@"\A\S+\z");
     }
 }

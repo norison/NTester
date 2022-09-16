@@ -1,11 +1,9 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Microsoft.EntityFrameworkCore.Storage;
+﻿using Microsoft.EntityFrameworkCore.Storage;
 using NTester.DataAccess.Data.NTesterDbContext;
 
 namespace NTester.DataAccess.Services.Transaction;
 
 /// <inheritdoc cref="ITransactionFactory"/>
-[ExcludeFromCodeCoverage]
 public class TransactionFactory : ITransactionFactory
 {
     private readonly NTesterDbContext _dbContext;

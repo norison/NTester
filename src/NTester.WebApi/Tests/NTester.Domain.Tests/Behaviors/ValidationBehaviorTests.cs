@@ -5,7 +5,6 @@ using MediatR;
 using NSubstitute;
 using NTester.Domain.Behaviors;
 using NTester.Domain.Exceptions.Base;
-using NTester.Domain.Exceptions.Common;
 using NUnit.Framework;
 
 namespace NTester.Domain.Tests.Behaviors;
