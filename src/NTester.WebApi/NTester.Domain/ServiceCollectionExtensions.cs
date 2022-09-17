@@ -52,6 +52,7 @@ public static class ServiceCollectionExtensions
     private static void ConfigureMediator(IServiceCollection services, Assembly assembly)
     {
         services.AddMediatR(assembly);
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
     }
 

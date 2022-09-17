@@ -1,16 +1,13 @@
-using System.Security.Claims;
 using AutoFixture.NUnit3;
 using AutoMapper;
 using FluentAssertions;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
 using NTester.DataContracts.Auth;
 using NTester.DataContracts.Auth.Login;
 using NTester.DataContracts.Auth.Refresh;
 using NTester.DataContracts.Auth.Register;
-using NTester.Domain.Constants;
 using NTester.Domain.Features.Auth.Commands.Login;
 using NTester.Domain.Features.Auth.Commands.Logout;
 using NTester.Domain.Features.Auth.Commands.Refresh;

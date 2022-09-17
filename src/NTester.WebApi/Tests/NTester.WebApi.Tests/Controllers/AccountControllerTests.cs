@@ -1,12 +1,9 @@
-using System.Security.Claims;
 using AutoFixture.NUnit3;
 using FluentAssertions;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
 using NTester.DataContracts.Account.GetUser;
-using NTester.Domain.Constants;
 using NTester.Domain.Features.Account.Queries.GetUser;
 using NTester.WebApi.Controllers;
 using NTester.WebApi.Tests.Controllers.Base;
