@@ -91,7 +91,6 @@ public class RegisterCommandHandlerTests
     [Test, AutoDataExt]
     public async Task Handle_NoErrors_ShouldReturnCorrectResult(
         RegisterCommand registerCommand,
-        UserEntity user,
         AuthResponse authResponse)
     {
         // Arrange
@@ -107,7 +106,7 @@ public class RegisterCommandHandlerTests
             .ReturnsForAnyArgs(identityResult)
             .AndDoes(x => capturedUser = x.Arg<UserEntity>());
 
-        _authService.AuthenticateUserAsync((UserEntity)default!, default).ReturnsForAnyArgs(authResponse);
+        _authService.AuthenticateUserAsync((Guid)default!, default).ReturnsForAnyArgs(authResponse);
 
         // Act
         var result = await _handler.Handle(registerCommand, CancellationToken.None);
@@ -120,6 +119,8 @@ public class RegisterCommandHandlerTests
         await _transactionFactory.Received().CreateTransactionAsync(CancellationToken.None);
         await _dbContextTransaction.Received().CommitAsync();
         await _dbContextTransaction.Received().DisposeAsync();
+
+        await _authService.AuthenticateUserAsync(capturedUser.Id, registerCommand.ClientId);
 
         await _userManager.Received().CreateAsync(capturedUser, registerCommand.Password);
 

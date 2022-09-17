@@ -39,20 +39,21 @@ public class AuthServiceTests
     }
 
     [Test, AutoDataExt]
-    public async Task AuthenticateUserAsync_ClientNotFound_ShouldThrowAnException(UserEntity user, Guid clientId)
+    public async Task AuthenticateUserAsync_ClientNotFound_ShouldThrowAnException(Guid userId, Guid clientId)
     {
         // Act/Assert
+        var clientsDbSet = Array.Empty<ClientEntity>().AsQueryable().BuildMockDbSet();
+        _dbContext.Clients.Returns(clientsDbSet);
+
         await _authService
-            .Invoking(x => x.AuthenticateUserAsync(user, clientId))
+            .Invoking(x => x.AuthenticateUserAsync(userId, clientId))
             .Should()
             .ThrowAsync<UnsupportedClientException>();
-
-        await _dbContext.Clients.Received().FindAsync(clientId);
     }
 
     [Test, AutoDataExt]
     public async Task AuthenticateUserAsync_NoErrors_ShouldAuthenticate(
-        UserEntity user,
+        Guid userId,
         Guid clientId,
         ClientEntity clientEntity,
         DateTime expirationDateTime,
@@ -63,14 +64,17 @@ public class AuthServiceTests
         RefreshTokenEntity capturedRefreshTokenEntity = null!;
         IList<Claim> capturedClaims = null!;
 
-        var refreshTokenEntities = new List<RefreshTokenEntity> { new() { UserId = user.Id, ClientId = clientId } };
+        var refreshTokenEntities = new List<RefreshTokenEntity> { new() { UserId = userId, ClientId = clientId } };
         var refreshTokensDbSet = refreshTokenEntities.AsQueryable().BuildMockDbSet();
         refreshTokensDbSet
             .WhenForAnyArgs(x => x.AddAsync(default!))
             .Do(x => capturedRefreshTokenEntity = x.Arg<RefreshTokenEntity>());
 
         _dbContext.RefreshTokens.Returns(refreshTokensDbSet);
-        _dbContext.Clients.FindAsync(default).ReturnsForAnyArgs(clientEntity);
+
+        clientEntity.Id = clientId;
+        var clientsDbSet = new List<ClientEntity> { clientEntity }.AsQueryable().BuildMockDbSet();
+        _dbContext.Clients.Returns(clientsDbSet);
 
         _tokenService
             .GenerateAccessToken(default!)
@@ -81,11 +85,9 @@ public class AuthServiceTests
         _dateTimeService.UtcNow.Returns(expirationDateTime);
 
         //Act
-        var result = await _authService.AuthenticateUserAsync(user, clientId);
+        var result = await _authService.AuthenticateUserAsync(userId, clientId);
 
         // Assert
-        await _dbContext.Clients.Received().FindAsync(clientId);
-
         await refreshTokensDbSet.Received().AddAsync(capturedRefreshTokenEntity);
         refreshTokensDbSet.Received().Remove(refreshTokenEntities[0]);
 
@@ -98,14 +100,14 @@ public class AuthServiceTests
         result.RefreshToken.Should().Be(refreshToken);
 
         capturedRefreshTokenEntity.Token.Should().Be(refreshToken);
-        capturedRefreshTokenEntity.UserId.Should().Be(user.Id);
+        capturedRefreshTokenEntity.UserId.Should().Be(userId);
         capturedRefreshTokenEntity.ClientId.Should().Be(clientId);
         capturedRefreshTokenEntity.ExpirationDateTime
             .Should()
             .Be(expirationDateTime.AddMonths(_refreshTokenSettings.LifeMonths));
         capturedClaims
             .Should()
-            .Contain(x => x.Type == ClaimConstants.UserIdClaimTypeName && x.Value == user.Id.ToString());
+            .Contain(x => x.Type == ClaimConstants.UserIdClaimTypeName && x.Value == userId.ToString());
         capturedClaims
             .Should()
             .Contain(x => x.Type == ClaimConstants.ClientIdClaimTypeName && x.Value == clientId.ToString());

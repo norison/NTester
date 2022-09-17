@@ -41,19 +41,19 @@ public class AuthService : IAuthService
 
     #region Public Methods
 
-    /// <inheritdoc cref="IAuthService.AuthenticateUserAsync(UserEntity, Guid)"/>
-    public async Task<AuthResponse> AuthenticateUserAsync(UserEntity user, Guid clientId)
+    /// <inheritdoc cref="IAuthService.AuthenticateUserAsync(Guid, Guid)"/>
+    public async Task<AuthResponse> AuthenticateUserAsync(Guid userId, Guid clientId)
     {
         await ValidateIfClientExistsAsync(clientId);
 
-        var refreshTokenEntity = await GetRefreshTokenOrDefault(user.Id, clientId);
+        var refreshTokenEntity = await GetRefreshTokenOrDefault(userId, clientId);
         if (refreshTokenEntity != null)
         {
             _dbContext.RefreshTokens.Remove(refreshTokenEntity);
         }
 
-        var claims = GenerateClaims(user, clientId);
-        return await AuthenticateAsync(user.Id, clientId, claims);
+        var claims = GenerateClaims(userId, clientId);
+        return await AuthenticateAsync(userId, clientId, claims);
     }
 
     /// <inheritdoc cref="IAuthService.AuthenticateUserAsync(string, string)"/>
@@ -120,18 +120,19 @@ public class AuthService : IAuthService
 
     private async Task ValidateIfClientExistsAsync(Guid clientId)
     {
-        var client = await _dbContext.Clients.FindAsync(clientId);
-        if (client == null)
+        var isClientExists = await _dbContext.Clients.AnyAsync(x => x.Id == clientId);
+
+        if (!isClientExists)
         {
             throw new UnsupportedClientException(clientId);
         }
     }
 
-    private static IEnumerable<Claim> GenerateClaims(UserEntity user, Guid clientId)
+    private static IEnumerable<Claim> GenerateClaims(Guid userId, Guid clientId)
     {
         return new List<Claim>
         {
-            new(ClaimConstants.UserIdClaimTypeName, user.Id.ToString()),
+            new(ClaimConstants.UserIdClaimTypeName, userId.ToString()),
             new(ClaimConstants.ClientIdClaimTypeName, clientId.ToString())
         };
     }

@@ -58,7 +58,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AuthRespo
 
         await CreateUserAsync(user, request.Password);
 
-        var result = await _authService.AuthenticateUserAsync(user, request.ClientId);
+        var result = await _authService.AuthenticateUserAsync(user.Id, request.ClientId);
 
         _cookieService.SetRefreshToken(result.RefreshToken);
 
