@@ -2,11 +2,11 @@ using AutoMapper;
 using FluentAssertions;
 using MockQueryable.NSubstitute;
 using NSubstitute;
-using NTester.DataAccess.Data.NTesterDbContext;
 using NTester.DataAccess.Entities;
 using NTester.Domain.Exceptions.Account;
 using NTester.Domain.Features.Account.GetUser;
 using NTester.Domain.Mappings;
+using NTester.Domain.Services.UserManager;
 using NTester.Domain.Tests.Common;
 using NUnit.Framework;
 
@@ -15,20 +15,20 @@ namespace NTester.Domain.Tests.Features.Account.GetUser;
 [TestFixture]
 public class GetUserCommandHandlerTests
 {
-    private INTesterDbContext _dbContext;
+    private IUserManager _userManager;
     private IMapper _mapper;
     private GetUserCommandHandler _handler;
 
     [SetUp]
     public void SetUp()
     {
-        _dbContext = Substitute.For<INTesterDbContext>();
+        _userManager = Substitute.For<IUserManager>();
         _mapper = Substitute.For<IMapper>();
 
         var configuration = new MapperConfiguration(configure => { configure.AddProfile<ApplicationProfile>(); });
         _mapper.ConfigurationProvider.Returns(configuration);
 
-        _handler = new GetUserCommandHandler(_dbContext, _mapper);
+        _handler = new GetUserCommandHandler(_userManager, _mapper);
     }
 
     [Test, AutoDataExt]
@@ -37,7 +37,7 @@ public class GetUserCommandHandlerTests
         // Arrange
         var command = new GetUserCommand { UserId = userId };
         var usersDbSet = Array.Empty<UserEntity>().AsQueryable().BuildMockDbSet();
-        _dbContext.Users.Returns(usersDbSet);
+        _userManager.Users.Returns(usersDbSet);
 
         // Act/Assert
         await _handler
@@ -52,7 +52,7 @@ public class GetUserCommandHandlerTests
         // Arrange
         var command = new GetUserCommand { UserId = user.Id };
         var usersDbSet = new List<UserEntity> { user }.AsQueryable().BuildMockDbSet();
-        _dbContext.Users.Returns(usersDbSet);
+        _userManager.Users.Returns(usersDbSet);
 
         // Act
         var result = await _handler.Handle(command, CancellationToken.None);

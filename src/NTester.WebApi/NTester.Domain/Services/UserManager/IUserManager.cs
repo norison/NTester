@@ -9,6 +9,11 @@ namespace NTester.Domain.Services.UserManager;
 public interface IUserManager
 {
     /// <summary>
+    /// Returns an IQueryable of users if the store is an IQueryableUserStore
+    /// </summary>
+    IQueryable<UserEntity> Users { get; }
+    
+    /// <summary>
     /// Finds and returns a user, if any, who has the specified user name.
     /// </summary>
     /// <param name="userName">The user name to search for.</param>

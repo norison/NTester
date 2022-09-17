@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using NTester.DataAccess.Entities;
 using NTester.DataAccess.Services.Transaction;
 using NTester.DataContracts.Auth;
@@ -68,9 +69,9 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AuthRespo
 
     private async Task ValidateIfUserExists(string userName)
     {
-        var user = await _userManager.FindByNameAsync(userName);
+        var isUserExists = await _userManager.Users.AnyAsync(x => x.UserName == userName);
 
-        if (user != null)
+        if (isUserExists)
         {
             throw new InvalidUserNameOrPasswordException();
         }

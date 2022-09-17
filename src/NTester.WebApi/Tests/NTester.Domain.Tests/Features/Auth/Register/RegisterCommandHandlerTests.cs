@@ -1,6 +1,7 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Storage;
+using MockQueryable.NSubstitute;
 using NSubstitute;
 using NTester.DataAccess.Entities;
 using NTester.DataAccess.Services.Transaction;
@@ -41,20 +42,18 @@ public class RegisterCommandHandlerTests
     }
 
     [Test, AutoDataExt]
-    public async Task Handle_UserAlreadyExists_ShouldThrowAnException(
-        RegisterCommand registerCommand,
-        UserEntity user)
+    public async Task Handle_UserAlreadyExists_ShouldThrowAnException(RegisterCommand registerCommand)
     {
         // Arrange
-        _userManager.FindByNameAsync(default!).ReturnsForAnyArgs(user);
+        var user = new UserEntity { UserName = registerCommand.UserName };
+        var usersDbSet = new List<UserEntity> { user }.AsQueryable().BuildMockDbSet();
+        _userManager.Users.Returns(usersDbSet);
 
         // Act/Assert
         await _handler
             .Invoking(x => x.Handle(registerCommand, CancellationToken.None))
             .Should()
             .ThrowAsync<InvalidUserNameOrPasswordException>();
-
-        await _userManager.Received().FindByNameAsync(registerCommand.UserName);
     }
 
     [Test, AutoDataExt]
@@ -66,6 +65,8 @@ public class RegisterCommandHandlerTests
         UserEntity capturedUser = null!;
 
         var identityResult = IdentityResult.Failed(identityError);
+        var usersDbSet = Array.Empty<UserEntity>().AsQueryable().BuildMockDbSet();
+        _userManager.Users.Returns(usersDbSet);
 
         _userManager
             .CreateAsync(default!, default!)
@@ -82,7 +83,8 @@ public class RegisterCommandHandlerTests
         await _transactionFactory.Received().CreateTransactionAsync(CancellationToken.None);
         await _dbContextTransaction.Received().DisposeAsync();
 
-        await AssertUserManager(registerCommand, capturedUser);
+        await _userManager.Received().CreateAsync(capturedUser, registerCommand.Password);
+
         AssertUser(registerCommand, capturedUser);
     }
 
@@ -96,6 +98,9 @@ public class RegisterCommandHandlerTests
         UserEntity capturedUser = null!;
 
         var identityResult = IdentityResult.Success;
+
+        var usersDbSet = Array.Empty<UserEntity>().AsQueryable().BuildMockDbSet();
+        _userManager.Users.Returns(usersDbSet);
 
         _userManager
             .CreateAsync(default!, default!)
@@ -116,14 +121,9 @@ public class RegisterCommandHandlerTests
         await _dbContextTransaction.Received().CommitAsync();
         await _dbContextTransaction.Received().DisposeAsync();
 
-        await AssertUserManager(registerCommand, capturedUser);
-        AssertUser(registerCommand, capturedUser);
-    }
+        await _userManager.Received().CreateAsync(capturedUser, registerCommand.Password);
 
-    private async Task AssertUserManager(RegisterCommand registerCommand, UserEntity user)
-    {
-        await _userManager.Received().FindByNameAsync(registerCommand.UserName);
-        await _userManager.Received().CreateAsync(user, registerCommand.Password);
+        AssertUser(registerCommand, capturedUser);
     }
 
     private static void AssertUser(RegisterCommand registerCommand, UserEntity user)

@@ -19,6 +19,9 @@ public class UserManagerWrapper : IUserManager
         _userManager = userManager;
     }
 
+    /// <inheritdoc cref="IUserManager.Users"/>
+    public IQueryable<UserEntity> Users => _userManager.Users;
+
     /// <inheritdoc cref="IUserManager.FindByNameAsync"/>
     public async Task<UserEntity> FindByNameAsync(string userName)
     {
