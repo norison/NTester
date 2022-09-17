@@ -16,12 +16,13 @@ using NTester.Domain.Features.Auth.Commands.Logout;
 using NTester.Domain.Features.Auth.Commands.Refresh;
 using NTester.Domain.Features.Auth.Commands.Register;
 using NTester.WebApi.Controllers;
+using NTester.WebApi.Tests.Controllers.Base;
 using NUnit.Framework;
 
 namespace NTester.WebApi.Tests.Controllers;
 
 [TestFixture]
-public class AuthControllerTests
+public class AuthControllerTests : ControllerTestsBase
 {
     private IMediator _mediator;
     private IMapper _mapper;
@@ -101,15 +102,8 @@ public class AuthControllerTests
     {
         // Arrange
         LogoutCommand capturedLogoutCommand = null!;
-        
-        _authController.ControllerContext.HttpContext = new DefaultHttpContext
-        {
-            User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-            {
-                new(ClaimConstants.UserIdClaimTypeName, userId.ToString()),
-                new(ClaimConstants.ClientIdClaimTypeName, clientId.ToString())
-            }))
-        };
+
+        _authController.ControllerContext.HttpContext = CreateHttpContext(userId, clientId);
 
         _mediator
             .WhenForAnyArgs(x => x.Send((LogoutCommand)default!))

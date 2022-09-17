@@ -88,12 +88,12 @@ public class AuthServiceTests
         var result = await _authService.AuthenticateUserAsync(userId, clientId);
 
         // Assert
-        await refreshTokensDbSet.Received().AddAsync(capturedRefreshTokenEntity);
         refreshTokensDbSet.Received().Remove(refreshTokenEntities[0]);
 
         _tokenService.Received().GenerateAccessToken(capturedClaims);
         _tokenService.Received().GenerateRefreshToken();
-
+        
+        await refreshTokensDbSet.Received().AddAsync(capturedRefreshTokenEntity);
         await _dbContext.Received().SaveChangesAsync();
 
         result.AccessToken.Should().Be(accessToken);

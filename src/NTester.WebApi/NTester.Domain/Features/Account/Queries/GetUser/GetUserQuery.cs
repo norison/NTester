@@ -1,12 +1,12 @@
 using MediatR;
 using NTester.DataContracts.Account.GetUser;
 
-namespace NTester.Domain.Features.Account.GetUser;
+namespace NTester.Domain.Features.Account.Queries.GetUser;
 
 /// <summary>
-/// Command to get the user.
+/// Query to get the user.
 /// </summary>
-public class GetUserCommand : IRequest<GetUserResponse>
+public class GetUserQuery : IRequest<GetUserResponse>
 {
     /// <summary>
     /// Id of the user.

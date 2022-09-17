@@ -1,3 +1,4 @@
+using AutoMapper;
 using FluentAssertions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -21,6 +22,7 @@ namespace NTester.Domain.Tests.Features.Auth.Register;
 public class RegisterCommandHandlerTests
 {
     private IUserManager _userManager;
+    private IMapper _mapper;
     private IAuthService _authService;
     private ICookieService _cookieService;
     private ITransactionFactory _transactionFactory;
@@ -38,7 +40,10 @@ public class RegisterCommandHandlerTests
 
         _transactionFactory.CreateTransactionAsync(default).ReturnsForAnyArgs(_dbContextTransaction);
 
-        _handler = new RegisterCommandHandler(_userManager, _authService, _cookieService, _transactionFactory);
+        _mapper = MapperFactory.CreateMapper();
+
+        _handler = new RegisterCommandHandler(_userManager, _mapper, _authService, _cookieService, _transactionFactory);
+        _handler = new RegisterCommandHandler(_userManager, _mapper, _authService, _cookieService, _transactionFactory);
     }
 
     [Test, AutoDataExt]
@@ -59,7 +64,8 @@ public class RegisterCommandHandlerTests
     [Test, AutoDataExt]
     public async Task Handle_FailedToCreateAUser_ShouldThrowAnException(
         RegisterCommand registerCommand,
-        IdentityError identityError)
+        IdentityError identityError,
+        UserEntity user)
     {
         // Arrange
         UserEntity capturedUser = null!;
@@ -67,7 +73,7 @@ public class RegisterCommandHandlerTests
         var identityResult = IdentityResult.Failed(identityError);
         var usersDbSet = Array.Empty<UserEntity>().AsQueryable().BuildMockDbSet();
         _userManager.Users.Returns(usersDbSet);
-
+        
         _userManager
             .CreateAsync(default!, default!)
             .ReturnsForAnyArgs(identityResult)

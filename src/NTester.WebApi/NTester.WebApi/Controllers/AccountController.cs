@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using NTester.DataContracts;
 using NTester.DataContracts.Account.GetUser;
 using NTester.Domain.Extensions;
-using NTester.Domain.Features.Account.GetUser;
+using NTester.Domain.Features.Account.Queries.GetUser;
 
 namespace NTester.WebApi.Controllers;
 
@@ -46,7 +46,7 @@ public class AccountController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetUserAsync()
     {
-        var getUserCommand = new GetUserCommand { UserId = HttpContext.User.GetUserId() };
+        var getUserCommand = new GetUserQuery { UserId = HttpContext.User.GetUserId() };
         var result = await _mediator.Send(getUserCommand);
         return Ok(result);
     }

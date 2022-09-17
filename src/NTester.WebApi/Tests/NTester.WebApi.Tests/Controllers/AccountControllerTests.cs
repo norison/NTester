@@ -7,14 +7,15 @@ using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
 using NTester.DataContracts.Account.GetUser;
 using NTester.Domain.Constants;
-using NTester.Domain.Features.Account.GetUser;
+using NTester.Domain.Features.Account.Queries.GetUser;
 using NTester.WebApi.Controllers;
+using NTester.WebApi.Tests.Controllers.Base;
 using NUnit.Framework;
 
 namespace NTester.WebApi.Tests.Controllers;
 
 [TestFixture]
-public class AccountControllerTests
+public class AccountControllerTests : ControllerTestsBase
 {
     private IMediator _mediator;
     private AccountController _accountController;
@@ -30,29 +31,23 @@ public class AccountControllerTests
     public async Task GetUserAsync_ShouldReturnCorrectResult(GetUserResponse getUserResponse, Guid userId)
     {
         // Arrange
-        GetUserCommand capturedCommand = null!;
+        GetUserQuery capturedQuery = null!;
 
-        _accountController.ControllerContext.HttpContext = new DefaultHttpContext
-        {
-            User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-            {
-                new(ClaimConstants.UserIdClaimTypeName, userId.ToString())
-            }))
-        };
+        _accountController.ControllerContext.HttpContext = CreateHttpContext(userId);
 
         _mediator
-            .Send((GetUserCommand)default!)
+            .Send((GetUserQuery)default!)
             .ReturnsForAnyArgs(getUserResponse)
-            .AndDoes(x => capturedCommand = x.Arg<GetUserCommand>());
+            .AndDoes(x => capturedQuery = x.Arg<GetUserQuery>());
 
         // Act
         var result = await _accountController.GetUserAsync();
 
         // Assert
-        await _mediator.Received().Send(capturedCommand);
+        await _mediator.Received().Send(capturedQuery);
 
         result.Should().BeOfType<OkObjectResult>();
         result.As<OkObjectResult>().Value.Should().Be(getUserResponse);
-        capturedCommand.UserId.Should().Be(userId);
+        capturedQuery.UserId.Should().Be(userId);
     }
 }

@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using NTester.DataAccess.Entities;
 using NTester.DataAccess.Services.Transaction;
@@ -17,6 +18,7 @@ namespace NTester.Domain.Features.Auth.Commands.Register;
 public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AuthResponse>
 {
     private readonly IUserManager _userManager;
+    private readonly IMapper _mapper;
     private readonly IAuthService _authService;
     private readonly ICookieService _cookieService;
     private readonly ITransactionFactory _transactionFactory;
@@ -25,16 +27,19 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AuthRespo
     /// Creates an instance of the registration command handler.
     /// </summary>
     /// <param name="userManager">Manager of the users.</param>
+    /// <param name="mapper">Mapper of the entities.</param>
     /// <param name="authService">Service of the authentication.</param>
     /// <param name="cookieService">Service for the cookies.</param>
     /// <param name="transactionFactory">Factory of the transactions.</param>
     public RegisterCommandHandler(
         IUserManager userManager,
+        IMapper mapper,
         IAuthService authService,
         ICookieService cookieService,
         ITransactionFactory transactionFactory)
     {
         _userManager = userManager;
+        _mapper = mapper;
         _authService = authService;
         _cookieService = cookieService;
         _transactionFactory = transactionFactory;
@@ -45,14 +50,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AuthRespo
     {
         await ValidateIfUserExists(request.UserName);
 
-        var user = new UserEntity
-        {
-            Id = Guid.NewGuid(),
-            UserName = request.UserName,
-            Email = request.Email,
-            Name = request.Name,
-            Surname = request.Surname
-        };
+        var user = _mapper.Map<UserEntity>(request);
 
         await using var transaction = await _transactionFactory.CreateTransactionAsync(cancellationToken);
 

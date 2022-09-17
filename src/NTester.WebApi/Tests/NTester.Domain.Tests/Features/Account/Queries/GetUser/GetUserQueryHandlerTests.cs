@@ -4,38 +4,34 @@ using MockQueryable.NSubstitute;
 using NSubstitute;
 using NTester.DataAccess.Entities;
 using NTester.Domain.Exceptions.Account;
-using NTester.Domain.Features.Account.GetUser;
-using NTester.Domain.Mappings;
+using NTester.Domain.Features.Account.Queries.GetUser;
 using NTester.Domain.Services.UserManager;
 using NTester.Domain.Tests.Common;
 using NUnit.Framework;
 
-namespace NTester.Domain.Tests.Features.Account.GetUser;
+namespace NTester.Domain.Tests.Features.Account.Queries.GetUser;
 
 [TestFixture]
-public class GetUserCommandHandlerTests
+public class GetUserQueryHandlerTests
 {
     private IUserManager _userManager;
     private IMapper _mapper;
-    private GetUserCommandHandler _handler;
+    private GetUserQueryHandler _handler;
 
     [SetUp]
     public void SetUp()
     {
         _userManager = Substitute.For<IUserManager>();
-        _mapper = Substitute.For<IMapper>();
+        _mapper = MapperFactory.CreateMapper();
 
-        var configuration = new MapperConfiguration(configure => { configure.AddProfile<ApplicationProfile>(); });
-        _mapper.ConfigurationProvider.Returns(configuration);
-
-        _handler = new GetUserCommandHandler(_userManager, _mapper);
+        _handler = new GetUserQueryHandler(_userManager, _mapper);
     }
 
     [Test, AutoDataExt]
     public async Task Handle_UserNotFound_ShouldThrowAnException(Guid userId)
     {
         // Arrange
-        var command = new GetUserCommand { UserId = userId };
+        var command = new GetUserQuery { UserId = userId };
         var usersDbSet = Array.Empty<UserEntity>().AsQueryable().BuildMockDbSet();
         _userManager.Users.Returns(usersDbSet);
 
@@ -50,7 +46,7 @@ public class GetUserCommandHandlerTests
     public async Task Handle_NoErrors_ShouldReturnCorrectResult(UserEntity user)
     {
         // Arrange
-        var command = new GetUserCommand { UserId = user.Id };
+        var command = new GetUserQuery { UserId = user.Id };
         var usersDbSet = new List<UserEntity> { user }.AsQueryable().BuildMockDbSet();
         _userManager.Users.Returns(usersDbSet);
 

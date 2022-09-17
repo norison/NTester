@@ -1,7 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
 using AutoMapper;
 using NTester.DataAccess.Entities;
-using NTester.DataContracts.Account.GetUser;
 using NTester.DataContracts.Auth.Login;
 using NTester.DataContracts.Auth.Refresh;
 using NTester.DataContracts.Auth.Register;
@@ -9,22 +7,36 @@ using NTester.Domain.Features.Auth.Commands.Login;
 using NTester.Domain.Features.Auth.Commands.Refresh;
 using NTester.Domain.Features.Auth.Commands.Register;
 
-namespace NTester.Domain.Mappings;
+namespace NTester.Domain.Mappings.Auth;
 
 /// <summary>
-/// Mapping profile for the entire application.
+/// Mappings profile for the authentication feature.
 /// </summary>
-[ExcludeFromCodeCoverage]
-public class ApplicationProfile : Profile
+public class AuthMappingsProfile : Profile
 {
     /// <summary>
-    /// Creates an instance of application mapping profile.
+    /// Creates and instance of the <see cref="AuthMappingsProfile"/>.
     /// </summary>
-    public ApplicationProfile()
+    public AuthMappingsProfile()
+    {
+        ConfigureLogin();
+        ConfigureRegister();
+        ConfigureRefresh();
+    }
+
+    private void ConfigureLogin()
     {
         CreateMap<LoginRequest, LoginCommand>();
+    }
+
+    private void ConfigureRegister()
+    {
         CreateMap<RegisterRequest, RegisterCommand>();
+        CreateMap<RegisterCommand, UserEntity>().AfterMap((_, dest) => { dest.Id = Guid.NewGuid(); });
+    }
+
+    private void ConfigureRefresh()
+    {
         CreateMap<RefreshRequest, RefreshCommand>();
-        CreateMap<UserEntity, GetUserResponse>();
     }
 }
