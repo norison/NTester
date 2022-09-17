@@ -1,7 +1,9 @@
+using System.Net;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NTester.DataContracts;
 using NTester.DataContracts.Tests.Create;
 using NTester.Domain.Extensions;
 using NTester.Domain.Features.Tests.Commands.Create;
@@ -37,6 +39,14 @@ public class TestsController : ControllerBase
     /// </summary>
     /// <param name="createTestRequest">Request to create a test.</param>
     /// <returns>Response on test creation.</returns>
+    /// <response code="200">Success.</response>
+    /// <response code="400">If invalid data provided.</response>
+    /// <response code="401">If user is unauthorized.</response>
+    /// <response code="500">If server error occured.</response>
+    [ProducesResponseType(typeof(CreateTestResponse), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.InternalServerError)]
+    [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
     [HttpPost("create")]
     public async Task<IActionResult> CreateTestAsync(CreateTestRequest createTestRequest)
     {
