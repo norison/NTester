@@ -24,6 +24,8 @@ public static class WebApplicationExtensions
 
         ConfigureSwagger(app);
 
+        app.UseCors(options => options.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod().AllowCredentials());
+
         app.UseHttpsRedirection();
         app.UseCustomExceptionHandler();
         app.UseAuthentication();

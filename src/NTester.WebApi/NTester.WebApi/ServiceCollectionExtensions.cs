@@ -29,11 +29,12 @@ public static class ServiceCollectionExtensions
     /// <param name="services">Collection of the services.</param>
     /// <param name="configuration">Configuration of the application.</param>
     /// <returns>Collection of the services.</returns>
-    public static IServiceCollection AddNTesterServices(this IServiceCollection services, IConfiguration configuration)
+    public static void AddNTesterServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDataAccess(configuration);
         services.AddDomain(configuration);
         services.AddHttpContextAccessor();
+        services.AddCors();
 
         services.AddControllers().AddNewtonsoftJson(options =>
         {
@@ -47,8 +48,6 @@ public static class ServiceCollectionExtensions
         ConfigureAuthentication(services, configuration);
         ConfigureSwagger(services);
         ConfigureVersioning(services);
-
-        return services;
     }
 
     private static void ConfigureIdentity(IServiceCollection services)
