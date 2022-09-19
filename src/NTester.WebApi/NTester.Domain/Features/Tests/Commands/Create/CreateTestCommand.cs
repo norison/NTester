@@ -22,7 +22,7 @@ public class CreateTestCommand : IRequest<CreateTestResponse>
     /// <summary>
     /// Description of the test.
     /// </summary>
-    public string Description { get; set; } = string.Empty;
+    public string? Description { get; set; }
 
     /// <summary>
     /// Questions of the test.

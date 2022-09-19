@@ -14,7 +14,7 @@ public class CreateTestCommandValidator : AbstractValidator<CreateTestCommand>
     public CreateTestCommandValidator()
     {
         RuleFor(x => x.Title).NotEmpty().MaximumLength(50);
-        RuleFor(x => x.Description).NotEmpty().MaximumLength(200);
+        RuleFor(x => x.Description).MaximumLength(200);
         RuleFor(x => x.UserId).NotEmpty();
 
         RuleFor(x => x.Questions).NotEmpty();

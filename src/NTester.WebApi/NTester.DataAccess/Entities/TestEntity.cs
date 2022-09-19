@@ -18,7 +18,17 @@ public class TestEntity
     /// <summary>
     /// Description of the entity.
     /// </summary>
-    public string Description { get; set; } = string.Empty;
+    public string? Description { get; set; }
+
+    /// <summary>
+    /// Date and time of the creation.
+    /// </summary>
+    public DateTime CreationDateTime { get; set; }
+
+    /// <summary>
+    /// If test is published or not.
+    /// </summary>
+    public bool Published { get; set; }
 
     /// <summary>
     /// Id of the user.

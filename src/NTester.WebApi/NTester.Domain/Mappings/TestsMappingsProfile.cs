@@ -3,10 +3,14 @@ using AutoMapper;
 using NTester.DataAccess.Entities;
 using NTester.DataContracts.Tests.Create;
 using NTester.DataContracts.Tests.Create.Models;
+using NTester.DataContracts.Tests.GetTests;
+using NTester.DataContracts.Tests.GetTests.Models;
 using NTester.Domain.Features.Tests.Commands.Create;
 using NTester.Domain.Features.Tests.Commands.Create.Models;
+using NTester.Domain.Features.Tests.Queries.GetTests.GetOwnTests;
+using NTester.Domain.Features.Tests.Queries.GetTests.GetPublicTests;
 
-namespace NTester.Domain.Mappings.Tests;
+namespace NTester.Domain.Mappings;
 
 /// <summary>
 /// Mappings profile for the tests feature.
@@ -20,6 +24,7 @@ public class TestsMappingsProfile : Profile
     public TestsMappingsProfile()
     {
         ConfigureCreateTest();
+        ConfigureGetTests();
     }
 
     private void ConfigureCreateTest()
@@ -31,6 +36,7 @@ public class TestsMappingsProfile : Profile
         CreateMap<CreateTestCommand, TestEntity>().AfterMap((_, dest) =>
         {
             dest.Id = Guid.NewGuid();
+
             foreach (var question in dest.Questions)
             {
                 question.Id = Guid.NewGuid();
@@ -46,5 +52,12 @@ public class TestsMappingsProfile : Profile
 
         CreateMap<CreateTestQuestionModel, QuestionEntity>();
         CreateMap<CreateTestAnswerModel, AnswerEntity>();
+    }
+
+    private void ConfigureGetTests()
+    {
+        CreateMap<GetOwnTestsRequest, GetOwnTestsQuery>();
+        CreateMap<GetPublicTestsRequest, GetPublicTestsQuery>();
+        CreateMap<TestEntity, GetTestsResponseItem>();
     }
 }

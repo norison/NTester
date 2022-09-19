@@ -2,7 +2,7 @@ using AutoMapper;
 using NTester.DataAccess.Entities;
 using NTester.DataContracts.Account.GetUser;
 
-namespace NTester.Domain.Mappings.Account;
+namespace NTester.Domain.Mappings;
 
 /// <summary>
 /// Mappings profile for the account feature.

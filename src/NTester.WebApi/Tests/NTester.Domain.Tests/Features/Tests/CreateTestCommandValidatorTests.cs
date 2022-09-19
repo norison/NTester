@@ -105,8 +105,6 @@ public class CreateTestCommandValidatorTests : ValidatorTestBase<CreateTestComma
 
     private static IEnumerable<string> DescriptionTestCases => new List<string>
     {
-        null!,
-        "",
         new('a', 201)
     };
 

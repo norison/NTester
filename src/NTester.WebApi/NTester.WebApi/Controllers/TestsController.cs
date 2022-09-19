@@ -5,8 +5,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NTester.DataContracts;
 using NTester.DataContracts.Tests.Create;
+using NTester.DataContracts.Tests.GetTests;
 using NTester.Domain.Extensions;
 using NTester.Domain.Features.Tests.Commands.Create;
+using NTester.Domain.Features.Tests.Queries.GetTests.GetOwnTests;
+using NTester.Domain.Features.Tests.Queries.GetTests.GetPublicTests;
 
 namespace NTester.WebApi.Controllers;
 
@@ -32,6 +35,49 @@ public class TestsController : ControllerBase
     {
         _mediator = mediator;
         _mapper = mapper;
+    }
+
+    /// <summary>
+    /// Gets a collection of the own tests.
+    /// </summary>
+    /// <param name="getPublicTestsRequest">Request to retrieve the own tests.</param>
+    /// <returns>Collection of the tests.</returns>
+    /// <response code="200">Success.</response>
+    /// <response code="400">If invalid data provided.</response>
+    /// <response code="401">If user is unauthorized.</response>
+    /// <response code="500">If server error occured.</response>
+    [ProducesResponseType(typeof(GetTestsResponse), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.InternalServerError)]
+    [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+    [HttpGet]
+    public async Task<IActionResult> GetOwnTestsAsync([FromQuery] GetOwnTestsRequest getPublicTestsRequest)
+    {
+        var query = _mapper.Map<GetOwnTestsQuery>(getPublicTestsRequest);
+        query.UserId = HttpContext.User.GetUserId();
+        var result = await _mediator.Send(query);
+        return Ok(result);
+    }
+    
+    /// <summary>
+    /// Gets a collection of the public tests.
+    /// </summary>
+    /// <param name="getPublicTestsRequest">Request to retrieve the public tests.</param>
+    /// <returns>Collection of the tests.</returns>
+    /// <response code="200">Success.</response>
+    /// <response code="400">If invalid data provided.</response>
+    /// <response code="500">If server error occured.</response>
+    [ProducesResponseType(typeof(GetTestsResponse), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.InternalServerError)]
+    [HttpGet("public")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetPublicTestsAsync([FromQuery] GetPublicTestsRequest getPublicTestsRequest)
+    {
+        var query = _mapper.Map<GetPublicTestsQuery>(getPublicTestsRequest);
+        query.UserId = HttpContext.User.GetUserId();
+        var result = await _mediator.Send(query);
+        return Ok(result);
     }
 
     /// <summary>

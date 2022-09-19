@@ -1,7 +1,5 @@
 using AutoMapper;
-using NTester.Domain.Mappings.Account;
-using NTester.Domain.Mappings.Auth;
-using NTester.Domain.Mappings.Tests;
+using NTester.Domain.Mappings;
 
 namespace NTester.Domain.Tests.Common;
 

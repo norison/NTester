@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using NTester.DataAccess;
 using NTester.DataAccess.Data.NTesterDbContext;
 using NTester.DataAccess.Entities;
@@ -33,9 +34,14 @@ public static class ServiceCollectionExtensions
         services.AddDataAccess(configuration);
         services.AddDomain(configuration);
         services.AddHttpContextAccessor();
-        services.AddControllers();
 
-        services.Configure<ApiBehaviorOptions>(options => { options.SuppressModelStateInvalidFilter = false; });
+        services.AddControllers().AddNewtonsoftJson(options =>
+        {
+            options.SerializerSettings.Formatting = Formatting.Indented;
+            options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+        });
+
+        services.Configure<ApiBehaviorOptions>(options => { options.SuppressModelStateInvalidFilter = true; });
 
         ConfigureIdentity(services);
         ConfigureAuthentication(services, configuration);
@@ -87,6 +93,7 @@ public static class ServiceCollectionExtensions
 
     private static void ConfigureSwagger(IServiceCollection services)
     {
+        services.AddRouting(options => { options.LowercaseUrls = true; });
         services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
         services.AddSwaggerGen();
     }
@@ -100,9 +107,6 @@ public static class ServiceCollectionExtensions
             options.ReportApiVersions = true;
             options.ApiVersionReader = new HeaderApiVersionReader("X-Version");
         });
-        services.AddVersionedApiExplorer(options =>
-        {
-            options.GroupNameFormat = "'v'VVV";
-        });
+        services.AddVersionedApiExplorer(options => { options.GroupNameFormat = "'v'VVV"; });
     }
 }

@@ -7,7 +7,7 @@ using NTester.Domain.Features.Auth.Commands.Login;
 using NTester.Domain.Features.Auth.Commands.Refresh;
 using NTester.Domain.Features.Auth.Commands.Register;
 
-namespace NTester.Domain.Mappings.Auth;
+namespace NTester.Domain.Mappings;
 
 /// <summary>
 /// Mappings profile for the authentication feature.
