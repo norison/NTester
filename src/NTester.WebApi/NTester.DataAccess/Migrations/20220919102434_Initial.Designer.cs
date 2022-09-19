@@ -12,8 +12,8 @@ using NTester.DataAccess.Data.NTesterDbContext;
 namespace NTester.DataAccess.Migrations
 {
     [DbContext(typeof(NTesterDbContext))]
-    [Migration("20220913143026_AddedAlternateKeysForRefreshToken")]
-    partial class AddedAlternateKeysForRefreshToken
+    [Migration("20220919102434_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -181,17 +181,26 @@ namespace NTester.DataAccess.Migrations
 
             modelBuilder.Entity("NTester.DataAccess.Entities.ClientEntity", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("Id");
+                    b.HasKey("Name");
 
                     b.ToTable("Clients");
+
+                    b.HasData(
+                        new
+                        {
+                            Name = "Postman"
+                        },
+                        new
+                        {
+                            Name = "Swagger"
+                        },
+                        new
+                        {
+                            Name = "NTester Web App"
+                        });
                 });
 
             modelBuilder.Entity("NTester.DataAccess.Entities.QuestionEntity", b =>
@@ -220,12 +229,9 @@ namespace NTester.DataAccess.Migrations
                     b.Property<string>("Token")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("AccessToken")
+                    b.Property<string>("ClientName")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<Guid>("ClientId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("ExpirationDateTime")
                         .HasColumnType("datetime2");
@@ -235,11 +241,12 @@ namespace NTester.DataAccess.Migrations
 
                     b.HasKey("Token");
 
-                    b.HasAlternateKey("AccessToken");
+                    b.HasIndex("ClientName");
 
-                    b.HasAlternateKey("UserId", "ClientId");
+                    b.HasIndex("UserId", "ClientName")
+                        .IsUnique();
 
-                    b.HasIndex("ClientId");
+                    SqlServerIndexBuilderExtensions.IncludeProperties(b.HasIndex("UserId", "ClientName"), new[] { "Token", "ExpirationDateTime" });
 
                     b.ToTable("RefreshTokens");
                 });
@@ -250,10 +257,17 @@ namespace NTester.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("CreationDateTime")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("SYSUTCDATETIME()");
+
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<bool>("Published")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -423,7 +437,7 @@ namespace NTester.DataAccess.Migrations
                 {
                     b.HasOne("NTester.DataAccess.Entities.ClientEntity", "Client")
                         .WithMany("RefreshTokens")
-                        .HasForeignKey("ClientId")
+                        .HasForeignKey("ClientName")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
