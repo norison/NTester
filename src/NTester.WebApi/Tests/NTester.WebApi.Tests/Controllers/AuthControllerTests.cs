@@ -38,9 +38,11 @@ public class AuthControllerTests : ControllerTestsBase
     public async Task LoginAsync_ShouldReturnCorrectResult(
         LoginRequest loginRequest,
         LoginCommand loginCommand,
-        AuthResponse authResponse)
+        AuthResponse authResponse,
+        string clientName)
     {
         // Arrange
+        _authController.ControllerContext.HttpContext = CreateHttpContext(clientName: clientName);
         _mapper.Map<LoginCommand>(default).ReturnsForAnyArgs(loginCommand);
         _mediator.Send((LoginCommand)default!).ReturnsForAnyArgs(authResponse);
 
@@ -52,15 +54,18 @@ public class AuthControllerTests : ControllerTestsBase
         await _mediator.Received().Send(loginCommand);
         result.Should().BeOfType<OkObjectResult>();
         result.As<OkObjectResult>().Value.Should().Be(authResponse);
+        loginCommand.ClientName.Should().Be(clientName);
     }
 
     [Test, AutoData]
     public async Task RegisterAsync_ShouldReturnCorrectResult(
         RegisterRequest registerRequest,
         RegisterCommand registerCommand,
-        AuthResponse authResponse)
+        AuthResponse authResponse,
+        string clientName)
     {
         // Arrange
+        _authController.ControllerContext.HttpContext = CreateHttpContext(clientName: clientName);
         _mapper.Map<RegisterCommand>(default).ReturnsForAnyArgs(registerCommand);
         _mediator.Send((RegisterCommand)default!).ReturnsForAnyArgs(authResponse);
 
@@ -72,6 +77,7 @@ public class AuthControllerTests : ControllerTestsBase
         await _mediator.Received().Send(registerCommand);
         result.Should().BeOfType<OkObjectResult>();
         result.As<OkObjectResult>().Value.Should().Be(authResponse);
+        registerCommand.ClientName.Should().Be(clientName);
     }
 
     [Test, AutoData]

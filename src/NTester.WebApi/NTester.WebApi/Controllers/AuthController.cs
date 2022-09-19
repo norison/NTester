@@ -13,6 +13,7 @@ using NTester.Domain.Features.Auth.Commands.Login;
 using NTester.Domain.Features.Auth.Commands.Logout;
 using NTester.Domain.Features.Auth.Commands.Refresh;
 using NTester.Domain.Features.Auth.Commands.Register;
+using NTester.WebApi.Constants;
 
 namespace NTester.WebApi.Controllers;
 
@@ -54,6 +55,7 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> LoginAsync(LoginRequest loginRequest)
     {
         var command = _mapper.Map<LoginCommand>(loginRequest);
+        command.ClientName = HttpContext.Request.Headers[HeaderConstants.Client];
         var result = await _mediator.Send(command);
         return Ok(result);
     }
@@ -73,6 +75,7 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> RegisterAsync(RegisterRequest registerRequest)
     {
         var command = _mapper.Map<RegisterCommand>(registerRequest);
+        command.ClientName = HttpContext.Request.Headers[HeaderConstants.Client];
         var result = await _mediator.Send(command);
         return Ok(result);
     }

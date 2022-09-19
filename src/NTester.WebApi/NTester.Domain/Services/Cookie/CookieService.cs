@@ -24,7 +24,7 @@ public class CookieService : ICookieService
         {
             Secure = true,
             HttpOnly = true,
-            SameSite = SameSiteMode.Strict
+            SameSite = SameSiteMode.None
         };
 
         _contextAccessor.HttpContext.Response.Cookies.Append(

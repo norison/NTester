@@ -41,7 +41,7 @@ public class CookieServiceTests
         capturedOptions.Should().NotBeNull();
         capturedOptions.Secure.Should().BeTrue();
         capturedOptions.HttpOnly.Should().BeTrue();
-        capturedOptions.SameSite.Should().Be(SameSiteMode.Strict);
+        capturedOptions.SameSite.Should().Be(SameSiteMode.None);
     }
 
     [Test]

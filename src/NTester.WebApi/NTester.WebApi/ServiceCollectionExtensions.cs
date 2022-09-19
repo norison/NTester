@@ -85,7 +85,8 @@ public static class ServiceCollectionExtensions
                     ValidIssuer = jwtSettings.Issuer,
                     ValidAudience = jwtSettings.Audience,
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = key
+                    IssuerSigningKey = key,
+                    ClockSkew = TimeSpan.Zero
                 };
             });
     }

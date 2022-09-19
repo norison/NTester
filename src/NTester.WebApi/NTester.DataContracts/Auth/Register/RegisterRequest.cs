@@ -29,9 +29,4 @@ public class RegisterRequest
     /// Surname of the user.
     /// </summary>
     public string Surname { get; set; } = string.Empty;
-
-    /// <summary>
-    /// Name of the client.
-    /// </summary>
-    public string ClientName { get; set; } = string.Empty;
 }
