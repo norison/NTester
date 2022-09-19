@@ -34,7 +34,7 @@ public class RegisterCommand : IRequest<AuthResponse>
     public string Surname { get; set; } = string.Empty;
 
     /// <summary>
-    /// Id of the client.
+    /// Name of the client.
     /// </summary>
-    public Guid ClientId { get; set; }
+    public string ClientName { get; set; } = string.Empty;
 }

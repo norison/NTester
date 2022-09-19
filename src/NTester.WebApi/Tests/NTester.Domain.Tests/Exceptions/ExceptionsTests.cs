@@ -42,7 +42,7 @@ public class ExceptionsTests
         new(new RefreshTokenWasNotProvidedException(),
             HttpStatusCode.BadRequest,
             (int)AuthCode.RefreshTokenWasNotProvided),
-        new(new UnsupportedClientException(Guid.NewGuid()),
+        new(new UnsupportedClientException(string.Empty),
             HttpStatusCode.BadRequest,
             (int)AuthCode.UnsupportedClient),
         new(new UserNotFoundException(Guid.NewGuid()),

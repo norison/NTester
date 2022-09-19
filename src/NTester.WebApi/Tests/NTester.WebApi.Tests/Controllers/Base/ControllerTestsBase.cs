@@ -6,14 +6,14 @@ namespace NTester.WebApi.Tests.Controllers.Base;
 
 public abstract class ControllerTestsBase
 {
-    protected static HttpContext CreateHttpContext(Guid userId = default, Guid clientId = default)
+    protected static HttpContext CreateHttpContext(Guid userId = default, string clientName = "client")
     {
         return new DefaultHttpContext
         {
             User = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
             {
                 new(ClaimConstants.UserIdClaimTypeName, userId.ToString()),
-                new(ClaimConstants.ClientIdClaimTypeName, clientId.ToString())
+                new(ClaimConstants.ClientNameClaimTypeName, clientName)
             }))
         };
     }

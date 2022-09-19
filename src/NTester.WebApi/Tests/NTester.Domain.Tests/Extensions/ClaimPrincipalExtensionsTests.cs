@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using AutoFixture.NUnit3;
 using FluentAssertions;
 using NTester.Domain.Constants;
 using NTester.Domain.Extensions;
@@ -26,7 +27,7 @@ public class ClaimPrincipalExtensionsTests
         // Assert
         result.Should().Be(userId);
     }
-    
+
     [Test]
     public void GetUserId_NotExists_ShouldReturnEmptyGuid()
     {
@@ -39,35 +40,34 @@ public class ClaimPrincipalExtensionsTests
         // Assert
         result.Should().BeEmpty();
     }
-    
-    [Test]
-    public void GetClientId_Exists_ShouldReturnUserId()
+
+    [Test, AutoData]
+    public void GetClientName_Exists_ShouldReturnUserId(string clientName)
     {
         // Arrange
-        var clientId = Guid.NewGuid();
         var claims = new List<Claim>
         {
-            new(ClaimConstants.ClientIdClaimTypeName, clientId.ToString())
+            new(ClaimConstants.ClientNameClaimTypeName, clientName)
         };
         var principal = new ClaimsPrincipal(new ClaimsIdentity(claims));
 
         // Act
-        var result = principal.GetClientId();
+        var result = principal.GetClientName();
 
         // Assert
-        result.Should().Be(clientId);
+        result.Should().Be(clientName);
     }
-    
+
     [Test]
-    public void GetClientId_NotExists_ShouldReturnEmptyGuid()
+    public void GetClientName_NotExists_ShouldReturnEmptyGuid()
     {
         // Arrange
         var principal = new ClaimsPrincipal(new ClaimsIdentity());
 
         // Act
-        var result = principal.GetClientId();
+        var result = principal.GetClientName();
 
         // Assert
-        result.Should().BeEmpty();
+        result.Should().BeNull();
     }
 }

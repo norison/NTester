@@ -52,16 +52,18 @@ public class LoginCommandValidatorTests : ValidatorTestBase<LoginCommand, LoginC
     }
 
     [Test]
-    public void ClientId_InvalidValue_ShouldHaveValidationErrors()
+    [TestCase(null)]
+    [TestCase("")]
+    public void ClientName_InvalidValue_ShouldHaveValidationErrors(string clientName)
     {
         // Arrange
-        void Mutation(LoginCommand command) => command.ClientId = Guid.Empty;
+        void Mutation(LoginCommand command) => command.ClientName = clientName;
 
         // Act
         var result = Validate(Mutation);
 
         // Assert
-        result.ShouldHaveValidationErrorFor(command => command.ClientId);
+        result.ShouldHaveValidationErrorFor(command => command.ClientName);
     }
 
     protected override LoginCommand CreateValidObject()
@@ -70,7 +72,7 @@ public class LoginCommandValidatorTests : ValidatorTestBase<LoginCommand, LoginC
         {
             UserName = "username",
             Password = "password",
-            ClientId = Guid.NewGuid()
+            ClientName = "client"
         };
     }
 }

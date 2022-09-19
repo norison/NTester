@@ -32,23 +32,25 @@ public class LogoutCommandValidatorTests : ValidatorTestBase<LogoutCommand, Logo
     }
     
     [Test]
-    public void ClientId_InvalidValue_ShouldHaveValidationErrors()
+    [TestCase(null)]
+    [TestCase("")]
+    public void ClientName_InvalidValue_ShouldHaveValidationErrors(string clientName)
     {
         // Arrange
-        void Mutation(LogoutCommand command) => command.ClientId = Guid.Empty;
+        void Mutation(LogoutCommand command) => command.ClientName = clientName;
 
         // Act
         var result = Validate(Mutation);
 
         // Assert
-        result.ShouldHaveValidationErrorFor(command => command.ClientId);
+        result.ShouldHaveValidationErrorFor(command => command.ClientName);
     }
     
     protected override LogoutCommand CreateValidObject()
     {
         return new LogoutCommand
         {
-            ClientId = Guid.NewGuid(),
+            ClientName = "client",
             UserId = Guid.NewGuid()
         };
     }

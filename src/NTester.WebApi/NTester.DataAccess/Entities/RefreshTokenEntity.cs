@@ -16,9 +16,9 @@ public class RefreshTokenEntity
     public DateTime ExpirationDateTime { get; set; }
 
     /// <summary>
-    /// Id of the client.
+    /// Name of the client.
     /// </summary>
-    public Guid ClientId { get; set; }
+    public string ClientName { get; set; } = string.Empty;
 
     /// <summary>
     /// Client of the refresh token entity.

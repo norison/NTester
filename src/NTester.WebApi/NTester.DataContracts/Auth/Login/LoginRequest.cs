@@ -16,7 +16,7 @@ public class LoginRequest
     public string Password { get; set; } = string.Empty;
 
     /// <summary>
-    /// Id of the client.
+    /// Name of the client.
     /// </summary>
-    public Guid ClientId { get; set; }
+    public string ClientName { get; set; } = string.Empty;
 }

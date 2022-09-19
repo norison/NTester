@@ -44,7 +44,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, AuthResponse>
         var user = await _userManager.FindByNameAsync(request.UserName);
         await ValidateUser(user, request.Password);
 
-        var result = await _authService.AuthenticateUserAsync(user.Id, request.ClientId);
+        var result = await _authService.AuthenticateUserAsync(user.Id, request.ClientName);
 
         _cookieService.SetRefreshToken(result.RefreshToken);
 

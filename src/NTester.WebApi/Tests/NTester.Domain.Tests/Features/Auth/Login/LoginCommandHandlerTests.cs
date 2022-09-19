@@ -87,7 +87,7 @@ public class LoginCommandHandlerTests
             .ReturnsForAnyArgs(signInResult)
             .AndDoes(x => capturedUser = x.Arg<UserEntity>());
 
-        _authService.AuthenticateUserAsync((Guid)default!, default).ReturnsForAnyArgs(authResponse);
+        _authService.AuthenticateUserAsync((Guid)default!, default!).ReturnsForAnyArgs(authResponse);
 
         // Act
         var result = await _handler.Handle(loginCommand, CancellationToken.None);
@@ -98,7 +98,7 @@ public class LoginCommandHandlerTests
         
         _cookieService.Received().SetRefreshToken(result.RefreshToken);
         
-        await _authService.AuthenticateUserAsync(capturedUser.Id, loginCommand.ClientId);
+        await _authService.AuthenticateUserAsync(capturedUser.Id, loginCommand.ClientName);
 
         result.Should().Be(authResponse);
         capturedUser.Should().Be(user);

@@ -95,12 +95,12 @@ public class AuthControllerTests : ControllerTestsBase
     }
 
     [Test, AutoData]
-    public async Task Logout_ShouldReturnCorrectResult(Guid userId, Guid clientId)
+    public async Task Logout_ShouldReturnCorrectResult(Guid userId, string clientName)
     {
         // Arrange
         LogoutCommand capturedLogoutCommand = null!;
 
-        _authController.ControllerContext.HttpContext = CreateHttpContext(userId, clientId);
+        _authController.ControllerContext.HttpContext = CreateHttpContext(userId, clientName);
 
         _mediator
             .WhenForAnyArgs(x => x.Send((LogoutCommand)default!))
@@ -113,6 +113,6 @@ public class AuthControllerTests : ControllerTestsBase
         await _mediator.Received().Send(capturedLogoutCommand);
         result.Should().BeOfType<OkResult>();
         capturedLogoutCommand.UserId.Should().Be(userId);
-        capturedLogoutCommand.ClientId.Should().Be(clientId);
+        capturedLogoutCommand.ClientName.Should().Be(clientName);
     }
 }

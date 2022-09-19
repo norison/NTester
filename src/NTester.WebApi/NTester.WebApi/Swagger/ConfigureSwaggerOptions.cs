@@ -35,7 +35,7 @@ public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
             Scheme = JwtBearerDefaults.AuthenticationScheme,
             BearerFormat = "JWT",
             Name = "Authorization",
-            Description = "Authorization token",
+            Description = "Authorization token"
         });
         options.AddSecurityRequirement(new OpenApiSecurityRequirement
         {
@@ -64,7 +64,7 @@ public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
                 {
                     Name = "Ihor Matiev",
                     Email = "ihor.matiev@gmail.com"
-                },
+                }
             });
         }
     }

@@ -36,7 +36,7 @@ public class LogoutCommandHandler : IRequestHandler<LogoutCommand, Unit>
 
         _cookieService.RemoveRefreshToken();
 
-        await _authService.RevokeRefreshTokenAsync(refreshToken, request.ClientId, request.UserId);
+        await _authService.RevokeRefreshTokenAsync(refreshToken, request.UserId, request.ClientName);
 
         return Unit.Value;
     }

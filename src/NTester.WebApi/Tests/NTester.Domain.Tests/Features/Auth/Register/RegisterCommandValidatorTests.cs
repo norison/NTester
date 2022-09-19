@@ -101,16 +101,18 @@ public class RegisterCommandValidatorTests : ValidatorTestBase<RegisterCommand, 
     }
     
     [Test]
-    public void ClientId_InvalidValue_ShouldHaveValidationErrors()
+    [TestCase(null)]
+    [TestCase("")]
+    public void ClientName_InvalidValue_ShouldHaveValidationErrors(string clientName)
     {
         // Arrange
-        void Mutation(RegisterCommand command) => command.ClientId = Guid.Empty;
+        void Mutation(RegisterCommand command) => command.ClientName = clientName;
 
         // Act
         var result = Validate(Mutation);
 
         // Assert
-        result.ShouldHaveValidationErrorFor(command => command.ClientId);
+        result.ShouldHaveValidationErrorFor(command => command.ClientName);
     }
 
     protected override RegisterCommand CreateValidObject()
@@ -122,7 +124,7 @@ public class RegisterCommandValidatorTests : ValidatorTestBase<RegisterCommand, 
             Password = "Password",
             Name = "Name",
             Surname = "Surname",
-            ClientId = Guid.NewGuid()
+            ClientName = "Client"
         };
     }
 }

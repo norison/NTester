@@ -7,13 +7,13 @@ namespace NTester.Domain.Exceptions.Auth;
 /// </summary>
 public class UnsupportedClientException : ValidationExceptionBase
 {
-    private const string ErrorMessage = "Provided client is not supported - Client ID: '{0}'.";
+    private const string ErrorMessage = "Provided client is not supported - Client Name: '{0}'.";
 
     /// <summary>
     /// Creates an instance of the model validation exception.
     /// </summary>
-    /// <param name="clientId">Id of the client.</param>
-    public UnsupportedClientException(Guid clientId) : base(string.Format(ErrorMessage, clientId))
+    /// <param name="clientName">Name of the client.</param>
+    public UnsupportedClientException(string clientName) : base(string.Format(ErrorMessage, clientName))
     {
     }
 

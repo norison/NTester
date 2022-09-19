@@ -41,19 +41,19 @@ public class AuthService : IAuthService
 
     #region Public Methods
 
-    /// <inheritdoc cref="IAuthService.AuthenticateUserAsync(Guid, Guid)"/>
-    public async Task<AuthResponse> AuthenticateUserAsync(Guid userId, Guid clientId)
+    /// <inheritdoc cref="IAuthService.AuthenticateUserAsync(Guid, string)"/>
+    public async Task<AuthResponse> AuthenticateUserAsync(Guid userId, string clientName)
     {
-        await ValidateIfClientExistsAsync(clientId);
+        await ValidateIfClientExistsAsync(clientName);
 
-        var refreshTokenEntity = await GetRefreshTokenOrDefault(userId, clientId);
+        var refreshTokenEntity = await GetRefreshTokenOrDefault(userId, clientName);
         if (refreshTokenEntity != null)
         {
             _dbContext.RefreshTokens.Remove(refreshTokenEntity);
         }
 
-        var claims = GenerateClaims(userId, clientId);
-        return await AuthenticateAsync(userId, clientId, claims);
+        var claims = GenerateClaims(userId, clientName);
+        return await AuthenticateAsync(userId, clientName, claims);
     }
 
     /// <inheritdoc cref="IAuthService.AuthenticateUserAsync(string, string)"/>
@@ -62,7 +62,7 @@ public class AuthService : IAuthService
         var principal = _tokenService.GetPrincipalFromExpiredAccessToken(accessToken);
 
         var userId = principal.GetUserId();
-        var clientId = principal.GetClientId();
+        var clientId = principal.GetClientName();
 
         var refreshTokenEntity = await GetRefreshTokenOrDefault(userId, clientId);
 
@@ -77,11 +77,12 @@ public class AuthService : IAuthService
     }
 
     /// <inheritdoc cref="IAuthService.RevokeRefreshTokenAsync"/>
-    public async Task RevokeRefreshTokenAsync(string refreshToken, Guid clientId, Guid userId)
+    public async Task RevokeRefreshTokenAsync(string refreshToken, Guid userId, string clientName)
     {
         var refreshTokenEntity = await _dbContext.RefreshTokens.FindAsync(refreshToken);
 
-        if (refreshTokenEntity == null || refreshTokenEntity.ClientId != clientId ||
+        if (refreshTokenEntity == null ||
+            refreshTokenEntity.ClientName != clientName ||
             refreshTokenEntity.UserId != userId)
         {
             throw new InvalidRefreshTokenException();
@@ -95,7 +96,7 @@ public class AuthService : IAuthService
 
     #region Private methods
 
-    private async Task<AuthResponse> AuthenticateAsync(Guid userId, Guid clientId, IEnumerable<Claim> claims)
+    private async Task<AuthResponse> AuthenticateAsync(Guid userId, string clientName, IEnumerable<Claim> claims)
     {
         var accessToken = _tokenService.GenerateAccessToken(claims);
         var refreshToken = _tokenService.GenerateRefreshToken();
@@ -104,7 +105,7 @@ public class AuthService : IAuthService
         {
             Token = refreshToken,
             UserId = userId,
-            ClientId = clientId,
+            ClientName = clientName,
             ExpirationDateTime = _dateTimeService.UtcNow.AddMonths(_refreshTokenSettings.LifeMonths)
         };
 
@@ -118,28 +119,29 @@ public class AuthService : IAuthService
         };
     }
 
-    private async Task ValidateIfClientExistsAsync(Guid clientId)
+    private async Task ValidateIfClientExistsAsync(string clientName)
     {
-        var isClientExists = await _dbContext.Clients.AnyAsync(x => x.Id == clientId);
+        var isClientExists = await _dbContext.Clients.AnyAsync(x => x.Name == clientName);
 
         if (!isClientExists)
         {
-            throw new UnsupportedClientException(clientId);
+            throw new UnsupportedClientException(clientName);
         }
     }
 
-    private static IEnumerable<Claim> GenerateClaims(Guid userId, Guid clientId)
+    private static IEnumerable<Claim> GenerateClaims(Guid userId, string clientName)
     {
         return new List<Claim>
         {
             new(ClaimConstants.UserIdClaimTypeName, userId.ToString()),
-            new(ClaimConstants.ClientIdClaimTypeName, clientId.ToString())
+            new(ClaimConstants.ClientNameClaimTypeName, clientName)
         };
     }
 
-    private async Task<RefreshTokenEntity?> GetRefreshTokenOrDefault(Guid userId, Guid clientId)
+    private async Task<RefreshTokenEntity?> GetRefreshTokenOrDefault(Guid userId, string clientName)
     {
-        return await _dbContext.RefreshTokens.FirstOrDefaultAsync(x => x.UserId == userId && x.ClientId == clientId);
+        return await _dbContext.RefreshTokens
+            .FirstOrDefaultAsync(x => x.UserId == userId && x.ClientName == clientName);
     }
 
     #endregion

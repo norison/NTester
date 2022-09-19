@@ -13,5 +13,5 @@ public static class ClaimConstants
     /// <summary>
     /// Name of the client id claim type.
     /// </summary>
-    public const string ClientIdClaimTypeName = "client";
+    public const string ClientNameClaimTypeName = "client";
 }

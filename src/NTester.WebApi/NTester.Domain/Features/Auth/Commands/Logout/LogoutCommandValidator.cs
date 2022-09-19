@@ -12,7 +12,7 @@ public class LogoutCommandValidator : AbstractValidator<LogoutCommand>
     /// </summary>
     public LogoutCommandValidator()
     {
-        RuleFor(x => x.ClientId).NotEmpty();
         RuleFor(x => x.UserId).NotEmpty();
+        RuleFor(x => x.ClientName).NotEmpty();
     }
 }

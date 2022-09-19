@@ -112,7 +112,7 @@ public class RegisterCommandHandlerTests
             .ReturnsForAnyArgs(identityResult)
             .AndDoes(x => capturedUser = x.Arg<UserEntity>());
 
-        _authService.AuthenticateUserAsync((Guid)default!, default).ReturnsForAnyArgs(authResponse);
+        _authService.AuthenticateUserAsync((Guid)default!, default!).ReturnsForAnyArgs(authResponse);
 
         // Act
         var result = await _handler.Handle(registerCommand, CancellationToken.None);
@@ -126,7 +126,7 @@ public class RegisterCommandHandlerTests
         await _dbContextTransaction.Received().CommitAsync();
         await _dbContextTransaction.Received().DisposeAsync();
 
-        await _authService.AuthenticateUserAsync(capturedUser.Id, registerCommand.ClientId);
+        await _authService.AuthenticateUserAsync(capturedUser.Id, registerCommand.ClientName);
 
         await _userManager.Received().CreateAsync(capturedUser, registerCommand.Password);
 

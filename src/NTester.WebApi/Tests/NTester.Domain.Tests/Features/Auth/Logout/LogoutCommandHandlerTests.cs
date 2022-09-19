@@ -50,6 +50,6 @@ public class LogoutCommandHandlerTests
         _cookieService.Received().GetRefreshToken();
         _cookieService.Received().RemoveRefreshToken();
 
-        await _authService.Received().RevokeRefreshTokenAsync(refreshToken, logoutCommand.ClientId, logoutCommand.UserId);
+        await _authService.Received().RevokeRefreshTokenAsync(refreshToken, logoutCommand.UserId, logoutCommand.ClientName);
     }
 }

@@ -11,9 +11,9 @@ public interface IAuthService
     /// Authenticates a user.
     /// </summary>
     /// <param name="userId">Id of the user.</param>
-    /// <param name="clientId">Id of the client.</param>
+    /// <param name="clientName">Name of the client.</param>
     /// <returns>Authentication response.</returns>
-    Task<AuthResponse> AuthenticateUserAsync(Guid userId, Guid clientId);
+    Task<AuthResponse> AuthenticateUserAsync(Guid userId, string clientName);
     
     /// <summary>
     /// Authenticates a user.
@@ -28,6 +28,6 @@ public interface IAuthService
     /// </summary>
     /// <param name="refreshToken">Token to refresh.</param>
     /// <param name="userId">Id of the user.</param>
-    /// <param name="clientId">Id of the client.</param>
-    Task RevokeRefreshTokenAsync(string refreshToken, Guid userId, Guid clientId);
+    /// <param name="clientName">Name of the client.</param>
+    Task RevokeRefreshTokenAsync(string refreshToken, Guid userId, string clientName);
 }

@@ -11,7 +11,6 @@ namespace NTester.Domain.Features.Tests.Queries.GetTests.GetPublicTests;
 public class GetPublicTestsQueryHandler : GetTestsQueryHandlerBase, IRequestHandler<GetPublicTestsQuery, GetTestsResponse>
 {
     private readonly INTesterDbContext _dbContext;
-    private readonly IMapper _mapper;
 
     /// <summary>
     /// Creates an instance of the <see cref="GetPublicTestsQueryHandler"/>.
@@ -21,7 +20,6 @@ public class GetPublicTestsQueryHandler : GetTestsQueryHandlerBase, IRequestHand
     public GetPublicTestsQueryHandler(INTesterDbContext dbContext, IMapper mapper) : base(mapper)
     {
         _dbContext = dbContext;
-        _mapper = mapper;
     }
 
     /// <inheritdoc cref="IRequestHandler{TRequest,TResponse}.Handle"/>

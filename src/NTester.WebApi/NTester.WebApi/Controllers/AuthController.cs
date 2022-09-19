@@ -113,7 +113,7 @@ public class AuthController : ControllerBase
     {
         var command = new LogoutCommand
         {
-            ClientId = HttpContext.User.GetClientId(),
+            ClientName = HttpContext.User.GetClientName(),
             UserId = HttpContext.User.GetUserId()
         };
 

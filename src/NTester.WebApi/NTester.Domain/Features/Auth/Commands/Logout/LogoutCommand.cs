@@ -8,12 +8,12 @@ namespace NTester.Domain.Features.Auth.Commands.Logout;
 public class LogoutCommand : IRequest<Unit>
 {
     /// <summary>
-    /// Id of the client.
-    /// </summary>
-    public Guid ClientId { get; set; }
-
-    /// <summary>
     /// Id of the user.
     /// </summary>
     public Guid UserId { get; set; }
+
+    /// <summary>
+    /// Name of the client.
+    /// </summary>
+    public string ClientName { get; set; } = string.Empty;
 }

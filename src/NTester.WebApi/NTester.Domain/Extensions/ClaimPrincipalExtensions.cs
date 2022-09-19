@@ -15,7 +15,8 @@ public static class ClaimPrincipalExtensions
     /// <returns>Id of the user.</returns>
     public static Guid GetUserId(this ClaimsPrincipal claimsPrincipal)
     {
-        return GetGuidValue(claimsPrincipal, ClaimConstants.UserIdClaimTypeName);
+        var value = claimsPrincipal.FindFirstValue(ClaimConstants.UserIdClaimTypeName);
+        return value == null ? Guid.Empty : Guid.Parse(value);
     }
 
     /// <summary>
@@ -23,14 +24,8 @@ public static class ClaimPrincipalExtensions
     /// </summary>
     /// <param name="claimsPrincipal">Claim principal.</param>
     /// <returns>Id of the client.</returns>
-    public static Guid GetClientId(this ClaimsPrincipal claimsPrincipal)
+    public static string GetClientName(this ClaimsPrincipal claimsPrincipal)
     {
-        return GetGuidValue(claimsPrincipal, ClaimConstants.ClientIdClaimTypeName);
-    }
-
-    private static Guid GetGuidValue(ClaimsPrincipal claimsPrincipal, string claimType)
-    {
-        var value = claimsPrincipal.FindFirstValue(claimType);
-        return value == null ? Guid.Empty : Guid.Parse(value);
+        return claimsPrincipal.FindFirstValue(ClaimConstants.ClientNameClaimTypeName);
     }
 }

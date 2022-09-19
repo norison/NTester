@@ -15,14 +15,14 @@ public class RefreshTokenEntityTypeConfiguration : IEntityTypeConfiguration<Refr
         builder.HasKey(x => x.Token);
 
         builder
-            .HasIndex(x => new { x.UserId, x.ClientId })
+            .HasIndex(x => new { x.UserId, x.ClientName })
             .IsUnique()
             .IncludeProperties(x => new { x.Token, x.ExpirationDateTime });
 
         builder
             .HasOne(x => x.Client)
             .WithMany(x => x.RefreshTokens)
-            .HasForeignKey(x => x.ClientId)
+            .HasForeignKey(x => x.ClientName)
             .OnDelete(DeleteBehavior.Cascade);
 
         builder

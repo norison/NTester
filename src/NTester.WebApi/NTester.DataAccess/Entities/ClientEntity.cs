@@ -6,11 +6,6 @@
 public class ClientEntity
 {
     /// <summary>
-    /// Id of the client.
-    /// </summary>
-    public Guid Id { get; set; }
-
-    /// <summary>
     /// Name of the client.
     /// </summary>
     public string Name { get; set; } = string.Empty;
