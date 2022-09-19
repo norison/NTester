@@ -10,20 +10,24 @@ import {store} from './app/store';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import App from "./App";
+import LoginView from "./features/auth/LoginView";
+import ProtectedRoute from "./common/ProtectedRoute";
+import {fetchUserAsync} from "./features/account/accountSlice";
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
 
+store.dispatch(fetchUserAsync());
+
 root.render(
-    <React.StrictMode>
-        <Provider store={store}>
-            <BrowserRouter>
-                <Routes>
-                    <Route path="/" element={<App/>}/>
-                </Routes>
-            </BrowserRouter>
-        </Provider>
-    </React.StrictMode>
+    <Provider store={store}>
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<ProtectedRoute element={<App/>}/>}/>
+                <Route path="/login" element={<LoginView/>}/>
+            </Routes>
+        </BrowserRouter>
+    </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function

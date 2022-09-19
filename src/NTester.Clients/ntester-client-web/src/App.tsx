@@ -1,9 +1,14 @@
-import {useNavigate} from "react-router-dom";
+import {useAppSelector} from "./app/hooks";
 
 function App() {
+    const user = useAppSelector(state => state.accountReducer.user);
+    
     return (
         <div className="App">
-            App
+           <div>{user?.userName}</div>
+           <div>{user?.email}</div>
+           <div>{user?.name}</div>
+           <div>{user?.surname}</div>
         </div>
     );
 }
