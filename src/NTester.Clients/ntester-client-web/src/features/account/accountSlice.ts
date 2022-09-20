@@ -1,20 +1,21 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import User from "../../services/account/models/User";
-import accountService from "../../services/account/AccountService";
+import User from "./models/User";
+import accountService from "./accountService";
+import {LoadingStatus} from "../../common/enums/LoadingStatus";
 
 interface AccountSlice {
-    user: User | null;
-    loadingStatus: "idle" | "loading" | "error",
-    error: string | null;
+    user: User | undefined;
+    loadingStatus: LoadingStatus,
+    error: string | undefined;
 }
 
 const initialState: AccountSlice = {
-    user: null,
-    loadingStatus: "idle",
-    error: null
+    user: undefined,
+    loadingStatus: LoadingStatus.Idle,
+    error: undefined
 }
 
-export const fetchUserAsync = createAsyncThunk("fetchUser", async () => {
+export const fetchUserAsync = createAsyncThunk("account/fetchUser", async () => {
     return await accountService.getUser();
 });
 
@@ -24,15 +25,15 @@ const accountSlice = createSlice({
     reducers: {},
     extraReducers: builder => builder
         .addCase(fetchUserAsync.pending, (state) => {
-            state.loadingStatus = "loading";
+            state.loadingStatus = LoadingStatus.Loading;
         })
         .addCase(fetchUserAsync.fulfilled, (state, action) => {
-            state.loadingStatus = "idle";
+            state.loadingStatus = LoadingStatus.Idle;
             state.user = action.payload;
         })
         .addCase(fetchUserAsync.rejected, (state, action) => {
-            console.log(action);
-            state.loadingStatus = "error";
+            state.loadingStatus = LoadingStatus.Error;
+            state.error = action.error.message;
         })
 })
 

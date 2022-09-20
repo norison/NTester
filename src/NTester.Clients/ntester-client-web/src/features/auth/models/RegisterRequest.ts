@@ -4,5 +4,4 @@ export default interface RegisterRequest {
     password: string;
     name: string;
     surname: string;
-    clientName: string;
 }

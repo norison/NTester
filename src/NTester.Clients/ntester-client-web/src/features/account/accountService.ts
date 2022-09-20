@@ -1,5 +1,5 @@
 import User from "./models/User";
-import api from "../../http";
+import api from "../../app/api";
 
 class AccountService {
     public async getUser(): Promise<User> {
