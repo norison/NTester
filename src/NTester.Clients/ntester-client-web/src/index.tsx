@@ -19,9 +19,7 @@ const root = createRoot(container);
 root.render(
     <Provider store={store}>
         <BrowserRouter>
-            <Routes>
-                <Route path="/*" element={<App/>}/>
-            </Routes>
+            <App/>
         </BrowserRouter>
         <ToastContainer/>
     </Provider>

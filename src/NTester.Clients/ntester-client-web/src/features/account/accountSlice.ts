@@ -1,38 +1,29 @@
-import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+﻿import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import User from "./models/User";
+import {RootState} from "../../app/store";
 
-interface AccountSlice {
-    user: User | undefined;
-    loadingStatus: LoadingStatus,
-    error: string | undefined;
+interface AccountSliceState {
+    user: User | null
 }
 
-const initialState: AccountSlice = {
-    user: undefined,
-    loadingStatus: LoadingStatus.Idle,
-    error: undefined
-}
-
-export const fetchUserAsync = createAsyncThunk("account/fetchUser", async () => {
-    return await accountService.getUser();
-});
+const initialState: AccountSliceState = {
+    user: null
+};
 
 const accountSlice = createSlice({
     name: "account",
     initialState,
-    reducers: {},
-    extraReducers: builder => builder
-        .addCase(fetchUserAsync.pending, (state) => {
-            state.loadingStatus = LoadingStatus.Loading;
-        })
-        .addCase(fetchUserAsync.fulfilled, (state, action) => {
-            state.loadingStatus = LoadingStatus.Idle;
+    reducers: {
+        setUser(state, action: PayloadAction<User>) {
             state.user = action.payload;
-        })
-        .addCase(fetchUserAsync.rejected, (state, action) => {
-            state.loadingStatus = LoadingStatus.Error;
-            state.error = action.error.message;
-        })
-})
+        },
+        removeUser(state) {
+            state = initialState;
+        }
+    }
+});
 
+export const selectCurrentUser = (state: RootState) => state.account.user;
+
+export const {setUser, removeUser} = accountSlice.actions;
 export default accountSlice.reducer;
