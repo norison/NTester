@@ -1,7 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import User from "./models/User";
-import accountService from "./accountService";
-import {LoadingStatus} from "../../common/enums/LoadingStatus";
 
 interface AccountSlice {
     user: User | undefined;

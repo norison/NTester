@@ -73,7 +73,13 @@ public class AuthService : IAuthService
 
         _dbContext.RefreshTokens.Remove(refreshTokenEntity);
 
-        return await AuthenticateAsync(userId, clientId, principal.Claims);
+        if (refreshTokenEntity.ExpirationDateTime >= _dateTimeService.UtcNow)
+        {
+            return await AuthenticateAsync(userId, clientId, principal.Claims);
+        }
+
+        await _dbContext.SaveChangesAsync();
+        throw new RefreshTokenExpiredException();
     }
 
     /// <inheritdoc cref="IAuthService.RevokeRefreshTokenAsync"/>

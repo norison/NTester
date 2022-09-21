@@ -92,7 +92,7 @@ public class AuthServiceTests
 
         _tokenService.Received().GenerateAccessToken(capturedClaims);
         _tokenService.Received().GenerateRefreshToken();
-        
+
         await refreshTokensDbSet.Received().AddAsync(capturedRefreshTokenEntity);
         await _dbContext.Received().SaveChangesAsync();
 
@@ -174,6 +174,50 @@ public class AuthServiceTests
 
         _tokenService.Received().GetPrincipalFromExpiredAccessToken(accessToken);
     }
+    
+    [Test, AutoDataExt]
+    public async Task AuthenticateUserAsync_RefreshTokenExpired_ShouldThrowAnException(
+        Guid userId,
+        string clientName,
+        string accessToken,
+        string refreshToken,
+        DateTime expirationDateTime)
+    {
+        // Arrange
+        var claims = new List<Claim>
+        {
+            new(ClaimConstants.UserIdClaimTypeName, userId.ToString()),
+            new(ClaimConstants.ClientNameClaimTypeName, clientName)
+        };
+        var principal = new ClaimsPrincipal(new ClaimsIdentity(claims));
+
+        var refreshTokenEntities = new List<RefreshTokenEntity>
+        {
+            new()
+            {
+                ClientName = clientName,
+                UserId = userId,
+                Token = refreshToken,
+                ExpirationDateTime = expirationDateTime.AddHours(-5)
+            }
+        };
+
+        _dateTimeService.UtcNow.Returns(expirationDateTime);
+
+        _tokenService.GetPrincipalFromExpiredAccessToken(default!).ReturnsForAnyArgs(principal);
+        var refreshTokensDbSet = refreshTokenEntities.AsQueryable().BuildMockDbSet();
+        _dbContext.RefreshTokens.Returns(refreshTokensDbSet);
+
+        // Act/Assert
+        await _authService
+            .Invoking(x => x.AuthenticateUserAsync(accessToken, refreshToken))
+            .Should()
+            .ThrowAsync<RefreshTokenExpiredException>();
+
+        _tokenService.Received().GetPrincipalFromExpiredAccessToken(accessToken);
+        _dbContext.RefreshTokens.Received().Remove(refreshTokenEntities.First());
+        await _dbContext.Received().SaveChangesAsync();
+    }
 
     [Test, AutoDataExt]
     public async Task AuthenticateUserAsync_NoError_ShouldAuthenticate(
@@ -197,7 +241,13 @@ public class AuthServiceTests
 
         var refreshTokenEntities = new List<RefreshTokenEntity>
         {
-            new() { ClientName = clientName, UserId = userId, Token = oldRefreshToken }
+            new()
+            {
+                ClientName = clientName,
+                UserId = userId,
+                Token = oldRefreshToken,
+                ExpirationDateTime = expirationDateTime.AddHours(5)
+            }
         };
 
         _tokenService.GetPrincipalFromExpiredAccessToken(default!).ReturnsForAnyArgs(principal);

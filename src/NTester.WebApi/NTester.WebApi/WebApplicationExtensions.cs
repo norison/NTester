@@ -30,7 +30,8 @@ public static class WebApplicationExtensions
                 .WithOrigins("http://localhost:3000")
                 .AllowAnyHeader()
                 .AllowAnyMethod()
-                .AllowCredentials();
+                .AllowCredentials()
+                .WithExposedHeaders("WWW-Authenticate");
         });
 
         app.UseHttpsRedirection();

@@ -26,7 +26,12 @@ public enum AuthCode
     RefreshTokenWasNotProvided = 2003,
     
     /// <summary>
+    /// Error code when the refresh token has expired.
+    /// </summary>
+    RefreshTokenExpired = 2004,
+    
+    /// <summary>
     /// Error code when the client unsupported.
     /// </summary>
-    UnsupportedClient = 2004
+    UnsupportedClient = 2005
 }

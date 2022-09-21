@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="9dd57f95-266d-40c9-8f05-85ab692376de" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.ntester-client-web.dir/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.ntester-client-web.dir/.idea/indexLayout.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.ntester-client-web.dir/.idea/projectSettingsUpdater.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.ntester-client-web.dir/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/api/apiSlice.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/auth/authSlice.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../NTester.WebApi/NTester.Domain/Exceptions/Auth/RefreshTokenExpiredException.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/api.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/store.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/store.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/enums/LoadingStatus.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/account/accountService.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/account/accountSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/account/accountSlice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/auth/authService.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/DashboardPage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/LoginPage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/RegisterPage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/routes/PrivateRoute.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/routes/PublicRoute.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../NTester.WebApi/NTester.Domain/Exceptions/Auth/AuthCode.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../../NTester.WebApi/NTester.Domain/Exceptions/Auth/AuthCode.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../NTester.WebApi/NTester.Domain/Services/Auth/AuthService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../../NTester.WebApi/NTester.Domain/Services/Auth/AuthService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../NTester.WebApi/NTester.WebApi/WebApplicationExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../../NTester.WebApi/NTester.WebApi/WebApplicationExtensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../NTester.WebApi/NTester.WebApi/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../NTester.WebApi/NTester.WebApi/appsettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../NTester.WebApi/Tests/NTester.Domain.Tests/Services/Auth/AuthServiceTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../../NTester.WebApi/Tests/NTester.Domain.Tests/Services/Auth/AuthServiceTests.cs" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="TypeScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2F5dPmfUjVS9RKFAZZt6Bn0Fg5T" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "settings.javascript.prettier",
+    "ts.external.directory.path": "D:\\Development\\Own\\Other\\NTester\\src\\NTester.Clients\\ntester-client-web\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="9dd57f95-266d-40c9-8f05-85ab692376de" name="Changes" comment="" />
+      <created>1663785856955</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1663785856955</updated>
+      <workItem from="1663785865622" duration="177000" />
+      <workItem from="1663786070640" duration="5430000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
+  <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+</project>
