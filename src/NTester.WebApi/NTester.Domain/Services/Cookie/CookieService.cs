@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using NTester.Domain.Constants;
+using NTester.Domain.Services.DateTime;
 
 namespace NTester.Domain.Services.Cookie;
 
@@ -7,14 +8,17 @@ namespace NTester.Domain.Services.Cookie;
 public class CookieService : ICookieService
 {
     private readonly IHttpContextAccessor _contextAccessor;
+    private readonly IDateTimeService _dateTimeService;
 
     /// <summary>
     /// Creates an instance of the cookie service.
     /// </summary>
     /// <param name="contextAccessor">Accessor to the http context.</param>
-    public CookieService(IHttpContextAccessor contextAccessor)
+    /// <param name="dateTimeService">Date and time service.</param>
+    public CookieService(IHttpContextAccessor contextAccessor, IDateTimeService dateTimeService)
     {
         _contextAccessor = contextAccessor;
+        _dateTimeService = dateTimeService;
     }
 
     /// <inheritdoc cref="ICookieService.SetRefreshToken"/>
@@ -36,7 +40,15 @@ public class CookieService : ICookieService
     /// <inheritdoc cref="ICookieService.RemoveRefreshToken"/>
     public void RemoveRefreshToken()
     {
-        _contextAccessor.HttpContext.Response.Cookies.Delete(CookieConstants.RefreshTokenCookieName);
+        var cookieOptions = new CookieOptions
+        {
+            Secure = true,
+            HttpOnly = true,
+            SameSite = SameSiteMode.None,
+            Expires = _dateTimeService.UtcNow.AddYears(-1)
+        };
+
+        _contextAccessor.HttpContext.Response.Cookies.Delete(CookieConstants.RefreshTokenCookieName, cookieOptions);
     }
 
     /// <inheritdoc cref="ICookieService.GetRefreshToken"/>

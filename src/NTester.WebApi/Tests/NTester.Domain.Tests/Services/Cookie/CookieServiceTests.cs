@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using NSubstitute;
 using NTester.Domain.Constants;
 using NTester.Domain.Services.Cookie;
+using NTester.Domain.Services.DateTime;
 using NUnit.Framework;
 
 namespace NTester.Domain.Tests.Services.Cookie;
@@ -12,13 +13,15 @@ namespace NTester.Domain.Tests.Services.Cookie;
 public class CookieServiceTests
 {
     private IHttpContextAccessor _contextAccessor;
+    private IDateTimeService _dateTimeService;
     private CookieService _cookieService;
 
     [SetUp]
     public void SetUp()
     {
         _contextAccessor = Substitute.For<IHttpContextAccessor>();
-        _cookieService = new CookieService(_contextAccessor);
+        _dateTimeService = Substitute.For<IDateTimeService>();
+        _cookieService = new CookieService(_contextAccessor, _dateTimeService);
     }
 
     [Test, AutoData]
@@ -44,16 +47,29 @@ public class CookieServiceTests
         capturedOptions.SameSite.Should().Be(SameSiteMode.None);
     }
 
-    [Test]
-    public void RemoveRefreshToken_ShouldRemoveRefreshTokenCookie()
+    [Test, AutoData]
+    public void RemoveRefreshToken_ShouldRemoveRefreshTokenCookie(DateTime dateTime)
     {
+        // Arrange
+        CookieOptions capturedOptions = null!;
+        _contextAccessor.HttpContext.Response.Cookies
+            .WhenForAnyArgs(x => x.Delete(default, default))
+            .Do(x => capturedOptions = x.Arg<CookieOptions>());
+        
+        _dateTimeService.UtcNow.Returns(dateTime);
+        
         // Act
         _cookieService.RemoveRefreshToken();
 
         // Assert
         _contextAccessor.HttpContext.Response.Cookies
             .Received()
-            .Delete(CookieConstants.RefreshTokenCookieName);
+            .Delete(CookieConstants.RefreshTokenCookieName, capturedOptions);
+
+        capturedOptions.Secure.Should().BeTrue();
+        capturedOptions.HttpOnly.Should().BeTrue();
+        capturedOptions.SameSite.Should().Be(SameSiteMode.None);
+        capturedOptions.Expires.Should().Be(dateTime.AddYears(-1));
     }
 
     [Test, AutoData]
