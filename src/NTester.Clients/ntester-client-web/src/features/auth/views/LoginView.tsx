@@ -4,7 +4,6 @@ import LoginForm from "../components/LoginForm";
 import TopBarProgress from "react-topbar-progress-indicator";
 import {Avatar, Box, Container, Link, Typography} from "@mui/material";
 import {useLazyGetUserQuery} from "../../account/accountApiSlice";
-import {setUser} from "../../account/accountSlice";
 import {toast} from "react-toastify";
 import {isErrorWithMessage, isFetchBaseQueryError} from "../../../utils/errorHelpers";
 import {ErrorResponse} from "../../../common/models/ErrorResponse";
@@ -15,13 +14,13 @@ function LoginView() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [login, authResult] = useLoginMutation();
-    const [trigger, accountResult] = useLazyGetUserQuery();
+    const [getUser, accountResult] = useLazyGetUserQuery();
 
     const onSubmit = async (userName: string, password: string) => {
         try {
-            const user = await trigger().unwrap();
-            dispatch(setUser(user));
-            
+            await login({userName, password}).unwrap();
+            await getUser().unwrap();
+
             navigate("/");
         } catch (e) {
             if (isFetchBaseQueryError(e)) {
@@ -32,7 +31,9 @@ function LoginView() {
         }
     };
 
-    const isLoading = authResult.isLoading || accountResult.isLoading;
+    const isLoading = authResult.isLoading ||
+        accountResult.isLoading ||
+        accountResult.isFetching;
 
     return (
         <Container maxWidth="xs">
