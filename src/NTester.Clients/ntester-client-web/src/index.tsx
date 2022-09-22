@@ -1,24 +1,24 @@
-import "@fontsource/roboto/300.css";
-import "@fontsource/roboto/400.css";
-import "@fontsource/roboto/500.css";
-import "@fontsource/roboto/700.css";
-
 import "react-toastify/dist/ReactToastify.css";
 
+import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { store } from "app/store";
+import { ToastContainer } from "react-toastify";
+import { ThemeProvider } from "@mui/material";
+import { theme } from "themes/mainTheme";
 import App from "App";
-import React from "react";
-import ReactDOM from "react-dom";
 
-ReactDOM.render(
-	<React.StrictMode>
-		<Provider store={store}>
+const container = document.getElementById("root")!;
+const root = createRoot(container);
+
+root.render(
+	<Provider store={store}>
+		<ThemeProvider theme={theme}>
 			<BrowserRouter>
 				<App />
 			</BrowserRouter>
-		</Provider>
-	</React.StrictMode>,
-	document.getElementById("root")!
+			<ToastContainer />
+		</ThemeProvider>
+	</Provider>
 );
