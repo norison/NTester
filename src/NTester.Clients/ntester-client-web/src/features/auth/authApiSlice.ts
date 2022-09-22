@@ -2,7 +2,7 @@
 import LoginRequest from "./models/LoginRequest";
 import AuthResponse from "./models/AuthResponse";
 import RegisterRequest from "./models/RegisterRequest";
-import {ACCESS_TOKEN_LOCAL_STORAGE_NAME} from "../../common/constants/localStorageConstants";
+import AccessTokenService from "./services/AccessTokenService";
 
 export const authApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
@@ -13,7 +13,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
                 body: request
             }),
             transformResponse: (response: AuthResponse) => {
-                localStorage.setItem(ACCESS_TOKEN_LOCAL_STORAGE_NAME, response.accessToken);
+                AccessTokenService.setAccessToken(response.accessToken);
                 return response;
             }
         }),
@@ -24,7 +24,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
                 body: request
             }),
             transformResponse: (response: AuthResponse) => {
-                localStorage.setItem(ACCESS_TOKEN_LOCAL_STORAGE_NAME, response.accessToken);
+                AccessTokenService.setAccessToken(response.accessToken);
                 return response;
             }
         }),
@@ -34,7 +34,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
                 method: "POST"
             }),
             transformResponse: () => {
-                localStorage.removeItem(ACCESS_TOKEN_LOCAL_STORAGE_NAME);
+                AccessTokenService.removeAccessToken();
             }
         })
     })

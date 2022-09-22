@@ -10,4 +10,4 @@ export const accountApiSlice = apiSlice.injectEndpoints({
     })
 });
 
-export const {useLazyGetUserQuery} = accountApiSlice;
+export const {useGetUserQuery, useLazyGetUserQuery} = accountApiSlice;

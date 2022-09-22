@@ -4,7 +4,6 @@ import LoginForm from "../components/LoginForm";
 import TopBarProgress from "react-topbar-progress-indicator";
 import {Avatar, Box, Container, Link, Typography} from "@mui/material";
 import {useLazyGetUserQuery} from "../../account/accountApiSlice";
-import {setAccessToken} from "../authSlice";
 import {setUser} from "../../account/accountSlice";
 import {toast} from "react-toastify";
 import {isErrorWithMessage, isFetchBaseQueryError} from "../../../utils/errorHelpers";
@@ -20,11 +19,10 @@ function LoginView() {
 
     const onSubmit = async (userName: string, password: string) => {
         try {
-            const authResponse = await login({userName, password}).unwrap();
-            dispatch(setAccessToken(authResponse.accessToken));
-
             const user = await trigger().unwrap();
             dispatch(setUser(user));
+            
+            navigate("/");
         } catch (e) {
             if (isFetchBaseQueryError(e)) {
                 toast.error((e.data as ErrorResponse).message);

@@ -9,17 +9,16 @@ import {
 } from "@reduxjs/toolkit/query/react";
 import RefreshRequest from "../../features/auth/models/RefreshRequest";
 import AuthResponse from "../../features/auth/models/AuthResponse";
-import {RootState} from "../store";
-import {removeAccessToken, setAccessToken} from "../../features/auth/authSlice";
+import AccessTokenService from "../../features/auth/services/AccessTokenService";
 
 const baseQuery = fetchBaseQuery({
     baseUrl: `${process.env.REACT_APP_BASE_URL}/api`,
     credentials: "include",
-    prepareHeaders: (headers, {getState}) => {
+    prepareHeaders: (headers) => {
         headers.set("Content-Type", "application/json");
         headers.set("X-Client", process.env.REACT_APP_CLIENT_NAME ?? "");
 
-        const accessToken = (getState() as RootState).auth.accessToken;
+        const accessToken = AccessTokenService.getAccessToken();
         if (accessToken) {
             headers.set("Authorization", `Bearer ${accessToken}`);
         }
@@ -32,19 +31,19 @@ const baseQueryWithReAuth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
     let result = await baseQuery(args, api, extraOptions);
 
     if (result.error && result.error.status === 401) {
-        const state = api.getState() as RootState;
-        const accessToken = state.auth.accessToken;
+        const accessToken = AccessTokenService.getAccessToken();
 
         if (!accessToken) {
             return result;
         }
 
-        const fetchArgs = args as FetchArgs;
-        const headers = fetchArgs.headers as Headers;
+        const authHeaderValue = result.meta?.response?.headers.get("WWW-Authenticate");
 
-        if (!headers.get("WWW-Authenticate")?.includes("The token expired")) {
+        if (!authHeaderValue?.includes("The token expired")) {
             return result;
         }
+
+        AccessTokenService.removeAccessToken();
 
         const request: RefreshRequest = {accessToken};
         const refreshResult = await baseQuery({url: 'auth/refresh', method: 'POST', body: request}, api, extraOptions);
@@ -52,10 +51,8 @@ const baseQueryWithReAuth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
         const response = refreshResult.data as AuthResponse;
 
         if (response) {
-            api.dispatch(setAccessToken(response.accessToken));
+            AccessTokenService.setAccessToken(response.accessToken);
             result = await baseQuery(args, api, extraOptions);
-        } else {
-            api.dispatch(removeAccessToken());
         }
     }
     return result;
