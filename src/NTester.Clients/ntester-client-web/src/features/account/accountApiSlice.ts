@@ -1,5 +1,5 @@
-﻿import {apiSlice} from "../../app/api/apiSlice";
-import User from "./models/User";
+﻿import {apiSlice} from "app/api/apiSlice";
+import User from "features/account/models/User";
 
 export const accountApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({

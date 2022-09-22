@@ -1,17 +1,14 @@
-﻿import {useLoginMutation} from "../authApiSlice";
-import {useDispatch} from "react-redux";
-import LoginForm from "../components/LoginForm";
-import TopBarProgress from "react-topbar-progress-indicator";
-import {Avatar, Box, Container, Link, Typography} from "@mui/material";
-import {useLazyGetUserQuery} from "../../account/accountApiSlice";
+﻿import {useLoginMutation} from "features/auth/authApiSlice";
+import {useLazyGetUserQuery} from "features/account/accountApiSlice";
+import {Avatar, Box, Button, Container, Link, Typography} from "@mui/material";
 import {toast} from "react-toastify";
-import {isErrorWithMessage, isFetchBaseQueryError} from "../../../utils/errorHelpers";
-import {ErrorResponse} from "../../../common/models/ErrorResponse";
+import LoginForm from "features/auth/components/LoginForm";
+import TopBarProgress from "react-topbar-progress-indicator";
+import {isErrorWithMessage, isFetchBaseQueryError} from "utils/errorHelpers";
 import {useNavigate} from "react-router-dom";
 import {LockOutlined} from "@mui/icons-material";
 
 function LoginView() {
-    const dispatch = useDispatch();
     const navigate = useNavigate();
     const [login, authResult] = useLoginMutation();
     const [getUser, accountResult] = useLazyGetUserQuery();
@@ -24,7 +21,7 @@ function LoginView() {
             navigate("/");
         } catch (e) {
             if (isFetchBaseQueryError(e)) {
-                toast.error((e.data as ErrorResponse).message);
+                toast.error(e.data.message);
             } else if (isErrorWithMessage(e)) {
                 toast.error(e.message);
             }
@@ -49,17 +46,13 @@ function LoginView() {
 
                 <LoginForm onSubmit={onSubmit} disabled={isLoading}/>
 
-                <Link href="#" display="block" align="center" variant="body2">
-                    {"Don't have an account? Sign Up"}
-                </Link>
+                <Link href="#"><Typography>Don't have an account? Sign Up</Typography></Link>
 
             </Box>
 
             <Typography variant="body2" color="text.secondary" align="center" sx={{marginTop: 8}}>
                 {'Copyright © '}
-                <Link color="inherit" href="#">
-                    NTester
-                </Link>{' '}
+                <Button href="#">NTester</Button>{" "}
                 {new Date().getFullYear()}
                 {'.'}
             </Typography>

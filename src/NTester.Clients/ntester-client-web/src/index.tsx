@@ -7,10 +7,10 @@ import "react-toastify/dist/ReactToastify.css";
 
 import {createRoot} from 'react-dom/client';
 import {Provider} from 'react-redux';
-import {store} from './app/store';
-import reportWebVitals from './reportWebVitals';
+import {BrowserRouter} from "react-router-dom";
+import {store} from 'app/store';
+import reportWebVitals from 'reportWebVitals';
 import App from "./App";
-import {BrowserRouter, Route, Routes} from "react-router-dom";
 import {ToastContainer} from "react-toastify";
 
 const container = document.getElementById('root')!;

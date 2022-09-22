@@ -7,9 +7,9 @@ import {
     fetchBaseQuery,
     FetchBaseQueryError,
 } from "@reduxjs/toolkit/query/react";
-import RefreshRequest from "../../features/auth/models/RefreshRequest";
-import AuthResponse from "../../features/auth/models/AuthResponse";
-import AccessTokenService from "../../features/auth/services/AccessTokenService";
+import RefreshRequest from "features/auth/models/RefreshRequest";
+import AuthResponse from "features/auth/models/AuthResponse";
+import AccessTokenService from "features/auth/services/AccessTokenService";
 
 const baseQuery = fetchBaseQuery({
     baseUrl: `${process.env.REACT_APP_BASE_URL}/api`,

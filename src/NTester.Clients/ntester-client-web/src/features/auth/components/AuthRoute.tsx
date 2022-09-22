@@ -1,6 +1,6 @@
 ﻿import {Navigate, Outlet} from "react-router-dom";
-import {selectCurrentUser} from "../../account/accountSlice";
-import {useAppSelector} from "../../../app/hooks";
+import {selectCurrentUser} from "features/account/accountSlice";
+import {useAppSelector} from "app/hooks";
 
 interface AuthRouteProps {
     redirectPath?: string;

@@ -1,8 +1,8 @@
 ﻿import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import User from "./models/User";
-import {RootState} from "../../app/store";
-import {accountApiSlice} from "./accountApiSlice";
-import {authApiSlice} from "../auth/authApiSlice";
+import User from "features/account/models/User";
+import {RootState} from "app/store";
+import {accountApiSlice} from "features/account/accountApiSlice";
+import {authApiSlice} from "features/auth/authApiSlice";
 
 interface AccountSliceState {
     user: User | null

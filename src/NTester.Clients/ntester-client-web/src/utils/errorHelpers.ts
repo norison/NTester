@@ -1,8 +1,8 @@
-﻿import {FetchBaseQueryError} from "@reduxjs/toolkit/query";
+﻿import {ErrorResponse} from "common/models/ErrorResponse";
 
 export function isFetchBaseQueryError(
     error: unknown
-): error is FetchBaseQueryError {
+): error is { status: number, data: ErrorResponse } {
     return typeof error === "object" && error != null && "status" in error;
 }
 

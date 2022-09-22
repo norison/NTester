@@ -1,8 +1,8 @@
-﻿import {apiSlice} from "../../app/api/apiSlice";
-import LoginRequest from "./models/LoginRequest";
-import AuthResponse from "./models/AuthResponse";
-import RegisterRequest from "./models/RegisterRequest";
-import AccessTokenService from "./services/AccessTokenService";
+﻿import {apiSlice} from "app/api/apiSlice";
+import LoginRequest from "features/auth/models/LoginRequest";
+import AuthResponse from "features/auth/models/AuthResponse";
+import RegisterRequest from "features/auth/models/RegisterRequest";
+import AccessTokenService from "features/auth/services/AccessTokenService";
 
 export const authApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
