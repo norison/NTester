@@ -1,40 +1,38 @@
 import { useAppSelector } from "app/hooks";
 import { selectCurrentUser } from "features/account/accountSlice";
-import { Box, Button, Container, Typography } from "@mui/material";
 import { useLogoutMutation } from "features/auth/authApiSlice";
 import { useNavigate } from "react-router-dom";
-import TopBarProgress from "react-topbar-progress-indicator";
+import { isFetchBaseQueryError } from "utils/errorHelpers";
+import { toast } from "react-toastify";
+import Header from "common/components/Header";
 
 function DashboardView() {
 	const navigate = useNavigate();
 	const user = useAppSelector(selectCurrentUser)!;
-	const [logout, { isLoading }] = useLogoutMutation();
+	const [logout] = useLogoutMutation();
 
-	const logoutHandler = async () => {
-		await logout().unwrap();
-		navigate("/");
+	const handleLogout = async () => {
+		try {
+			await logout().unwrap();
+			navigate("/login");
+		} catch (e) {
+			if (isFetchBaseQueryError(e)) {
+				toast.error(e.data.message);
+			}
+		}
 	};
 
-	if (isLoading) {
-		return <TopBarProgress />;
-	}
+	const headerActionItems = [
+		{
+			text: "Profile",
+			handler: () => {
+				toast.success("Profile");
+			},
+		},
+		{ text: "Logout", handler: handleLogout },
+	];
 
-	return (
-		<Container component="main" maxWidth="xs" sx={{ justifyContent: "center", alignItems: "center" }}>
-			<Typography align="center">
-				{user.name} {user.surname}
-			</Typography>
-			<Typography align="center">{user.userName}</Typography>
-			<Typography align="center">{user.email}</Typography>
-			<Typography align="center">{user.id}</Typography>
-
-			<Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: "10px" }}>
-				<Button onClick={logoutHandler} variant="outlined" size="small">
-					Logout
-				</Button>
-			</Box>
-		</Container>
-	);
+	return <Header user={user} actionItems={headerActionItems} />;
 }
 
 export default DashboardView;

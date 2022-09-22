@@ -4,7 +4,7 @@ import RegisterView from "features/auth/views/RegisterView";
 import PrivateRoute from "features/auth/components/PrivateRoute";
 import AuthRoute from "features/auth/components/AuthRoute";
 import DashboardView from "common/views/DashboardView";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import TopBarProgress from "react-topbar-progress-indicator";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { theme } from "themes/mainTheme";
@@ -20,15 +20,18 @@ function App() {
 	return (
 		<ThemeProvider theme={theme}>
 			<CssBaseline />
-			<ToastContainer />
+			<ToastContainer position="bottom-right" />
 			<main>
 				<Routes>
-					<Route element={<PrivateRoute />}>
-						<Route path="/" element={<DashboardView />} />
-					</Route>
-					<Route element={<AuthRoute />}>
-						<Route path="/login" element={<LoginView />} />
-						<Route path="/register" element={<RegisterView />} />
+					<Route path="/">
+						<Route element={<PrivateRoute />}>
+							<Route index element={<DashboardView />} />
+						</Route>
+						<Route element={<AuthRoute />}>
+							<Route path="login" element={<LoginView />} />
+							<Route path="register" element={<RegisterView />} />
+						</Route>
+						<Route path="*" element={<Navigate to="/" replace />} />
 					</Route>
 				</Routes>
 			</main>
