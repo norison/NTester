@@ -1,6 +1,6 @@
 import { useAppSelector } from "app/hooks";
 import { selectCurrentUser } from "features/account/accountSlice";
-import { Box, Button, Container, Typography } from "@mui/material";
+import { Box, Button, Container, Paper, Typography } from "@mui/material";
 import { useLogoutMutation } from "features/auth/authApiSlice";
 import { useNavigate } from "react-router-dom";
 import TopBarProgress from "react-topbar-progress-indicator";

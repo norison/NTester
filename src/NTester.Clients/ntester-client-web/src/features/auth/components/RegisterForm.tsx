@@ -86,6 +86,7 @@ function RegisterForm({ onSubmit, disabled }: RegisterFormProps) {
 						render={({ field }) => (
 							<TextField
 								{...field}
+								type="email"
 								required
 								fullWidth
 								label="Email Address"
