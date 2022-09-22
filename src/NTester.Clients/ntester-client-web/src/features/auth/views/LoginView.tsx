@@ -7,6 +7,7 @@ import TopBarProgress from "react-topbar-progress-indicator";
 import {isErrorWithMessage, isFetchBaseQueryError} from "utils/errorHelpers";
 import {useNavigate} from "react-router-dom";
 import {LockOutlined} from "@mui/icons-material";
+import Copyright from "common/components/Copyright";
 
 function LoginView() {
     const navigate = useNavigate();
@@ -46,17 +47,10 @@ function LoginView() {
 
                 <LoginForm onSubmit={onSubmit} disabled={isLoading}/>
 
-                <Link href="#"><Typography>Don't have an account? Sign Up</Typography></Link>
+                <Link href="/register"><Typography>Don't have an account? Sign Up</Typography></Link>
 
             </Box>
-
-            <Typography variant="body2" color="text.secondary" align="center" sx={{marginTop: 8}}>
-                {'Copyright © '}
-                <Button href="#">NTester</Button>{" "}
-                {new Date().getFullYear()}
-                {'.'}
-            </Typography>
-
+            <Copyright/>
         </Container>
     );
 }

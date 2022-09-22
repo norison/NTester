@@ -1,3 +1,3 @@
 export default interface RefreshRequest {
-    accessToken: string;
+	accessToken: string;
 }

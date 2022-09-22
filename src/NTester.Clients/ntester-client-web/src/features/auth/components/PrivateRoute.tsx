@@ -1,20 +1,20 @@
-﻿import {Navigate, Outlet} from "react-router-dom";
-import {selectCurrentUser} from "features/account/accountSlice";
-import {useAppSelector} from "app/hooks";
+import { Navigate, Outlet } from "react-router-dom";
+import { selectCurrentUser } from "features/account/accountSlice";
+import { useAppSelector } from "app/hooks";
 
 interface PrivateRouteProps {
-    redirectPath?: string;
-    children?: JSX.Element;
+	redirectPath?: string;
+	children?: JSX.Element;
 }
 
-function PrivateRoute({redirectPath = "/login", children}: PrivateRouteProps) {
-    const user = useAppSelector(selectCurrentUser);
-    
-    if(user) {
-        return children ?? <Outlet/>;
-    }
+function PrivateRoute({ redirectPath = "/login", children }: PrivateRouteProps) {
+	const user = useAppSelector(selectCurrentUser);
 
-    return <Navigate to={redirectPath} replace/>;
+	if (user) {
+		return children ?? <Outlet />;
+	}
+
+	return <Navigate to={redirectPath} replace />;
 }
 
 export default PrivateRoute;

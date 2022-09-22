@@ -1,20 +1,20 @@
-﻿import {Navigate, Outlet} from "react-router-dom";
-import {selectCurrentUser} from "features/account/accountSlice";
-import {useAppSelector} from "app/hooks";
+import { Navigate, Outlet } from "react-router-dom";
+import { selectCurrentUser } from "features/account/accountSlice";
+import { useAppSelector } from "app/hooks";
 
 interface AuthRouteProps {
-    redirectPath?: string;
-    children?: JSX.Element;
+	redirectPath?: string;
+	children?: JSX.Element;
 }
 
-function AuthRoute({redirectPath = "/", children}: AuthRouteProps) {
-    const user = useAppSelector(selectCurrentUser);
+function AuthRoute({ redirectPath = "/", children }: AuthRouteProps) {
+	const user = useAppSelector(selectCurrentUser);
 
-    if (!user) {
-        return children ?? <Outlet/>;
-    }
+	if (!user) {
+		return children ?? <Outlet />;
+	}
 
-    return <Navigate to={redirectPath} replace/>;
+	return <Navigate to={redirectPath} replace />;
 }
 
 export default AuthRoute;

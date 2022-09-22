@@ -1,3 +1,3 @@
 export default interface AuthResponse {
-    accessToken: string;
+	accessToken: string;
 }
