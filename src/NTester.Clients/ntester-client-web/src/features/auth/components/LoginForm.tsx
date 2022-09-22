@@ -2,9 +2,10 @@ import { Controller, useForm } from "react-hook-form";
 import { Box, Button, TextField } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import LoginRequest from "../models/LoginRequest";
 
 interface LoginFormProps {
-	onSubmit: (userName: string, password: string) => void;
+	onSubmit: (loginRequest: LoginRequest) => void;
 	disabled: boolean;
 }
 
@@ -34,12 +35,7 @@ function LoginForm({ onSubmit, disabled }: LoginFormProps) {
 	});
 
 	return (
-		<Box
-			component="form"
-			noValidate
-			onSubmit={handleSubmit((data) => onSubmit(data.userName, data.password))}
-			sx={{ mt: 1 }}
-		>
+		<Box component="form" noValidate onSubmit={handleSubmit((data) => onSubmit(data))} sx={{ mt: 1 }}>
 			<Controller
 				name="userName"
 				control={control}
