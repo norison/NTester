@@ -6,7 +6,7 @@ namespace NTester.Domain.Exceptions.Common;
 /// <summary>
 /// Exception for non-general cases.
 /// </summary>
-public class NonGeneralException : RestExceptionBase
+public class NonGeneralException : RestException
 {
     /// <summary>
     /// Creates an instance of the non general exception.
@@ -16,12 +16,12 @@ public class NonGeneralException : RestExceptionBase
     {
     }
 
-    /// <inheritdoc cref="RestExceptionBase.StatusCode"/>
+    /// <inheritdoc cref="RestException.StatusCode"/>
     public override HttpStatusCode StatusCode => HttpStatusCode.InternalServerError;
 
-    /// <inheritdoc cref="RestExceptionBase.Code"/>
+    /// <inheritdoc cref="RestException.Code"/>
     public override int Code => (int)CommonCode.NonGeneralErrorOccured;
 
-    /// <inheritdoc cref="RestExceptionBase.Description"/>
+    /// <inheritdoc cref="RestException.Description"/>
     public override string Description => "A non-general error has occurred that should not be in the correct workflow.";
 }

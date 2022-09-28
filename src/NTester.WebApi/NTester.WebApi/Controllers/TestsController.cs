@@ -8,6 +8,7 @@ using NTester.DataContracts.Tests.Create;
 using NTester.DataContracts.Tests.GetTests;
 using NTester.Domain.Extensions;
 using NTester.Domain.Features.Tests.Commands.Create;
+using NTester.Domain.Features.Tests.Queries.GetTestById;
 using NTester.Domain.Features.Tests.Queries.GetTests.GetOwnTests;
 using NTester.Domain.Features.Tests.Queries.GetTests.GetPublicTests;
 
@@ -54,11 +55,11 @@ public class TestsController : ControllerBase
     public async Task<IActionResult> GetOwnTestsAsync([FromQuery] GetOwnTestsRequest getPublicTestsRequest)
     {
         var query = _mapper.Map<GetOwnTestsQuery>(getPublicTestsRequest);
-        query.UserId = HttpContext.User.GetUserId();
+        query.UserId = User.GetUserId();
         var result = await _mediator.Send(query);
         return Ok(result);
     }
-    
+
     /// <summary>
     /// Gets a collection of the public tests.
     /// </summary>
@@ -75,8 +76,29 @@ public class TestsController : ControllerBase
     public async Task<IActionResult> GetPublicTestsAsync([FromQuery] GetPublicTestsRequest getPublicTestsRequest)
     {
         var query = _mapper.Map<GetPublicTestsQuery>(getPublicTestsRequest);
-        query.UserId = HttpContext.User.GetUserId();
+        query.UserId = User.GetUserId();
         var result = await _mediator.Send(query);
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Gets a test by id.
+    /// </summary>
+    /// <param name="id">Id of the test.</param>
+    /// <returns>Information about the test.</returns>
+    /// <response code="200">Success.</response>
+    /// <response code="400">If invalid data provided.</response>
+    /// <response code="404">If test was not found.</response>
+    /// <response code="500">If server error occured.</response>
+    [ProducesResponseType(typeof(GetTestsResponse), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.NotFound)]
+    [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.InternalServerError)]
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> GetTestByIdAsync(Guid id)
+    {
+        var getTestByIdQuery = new GetTestByIdQuery { Id = id, UserId = User.GetUserId() };
+        var result = await _mediator.Send(getTestByIdQuery);
         return Ok(result);
     }
 
@@ -97,7 +119,7 @@ public class TestsController : ControllerBase
     public async Task<IActionResult> CreateTestAsync(CreateTestRequest createTestRequest)
     {
         var command = _mapper.Map<CreateTestCommand>(createTestRequest);
-        command.UserId = HttpContext.User.GetUserId();
+        command.UserId = User.GetUserId();
         var result = await _mediator.Send(command);
         return Ok(result);
     }

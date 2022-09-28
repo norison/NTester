@@ -3,6 +3,8 @@ using AutoMapper;
 using NTester.DataAccess.Entities;
 using NTester.DataContracts.Tests.Create;
 using NTester.DataContracts.Tests.Create.Models;
+using NTester.DataContracts.Tests.GetTestById;
+using NTester.DataContracts.Tests.GetTestById.Models;
 using NTester.DataContracts.Tests.GetTests;
 using NTester.DataContracts.Tests.GetTests.Models;
 using NTester.Domain.Features.Tests.Commands.Create;
@@ -25,6 +27,7 @@ public class TestsMappingsProfile : Profile
     {
         ConfigureCreateTest();
         ConfigureGetTests();
+        ConfigureGetTestById();
     }
 
     private void ConfigureCreateTest()
@@ -59,5 +62,12 @@ public class TestsMappingsProfile : Profile
         CreateMap<GetOwnTestsRequest, GetOwnTestsQuery>();
         CreateMap<GetPublicTestsRequest, GetPublicTestsQuery>();
         CreateMap<TestEntity, GetTestsResponseItem>();
+    }
+
+    private void ConfigureGetTestById()
+    {
+        CreateMap<TestEntity, GetTestByIdResponse>();
+        CreateMap<QuestionEntity, GetTestByIdQuestionItem>();
+        CreateMap<AnswerEntity, GetTestByIdAnswerItem>();
     }
 }

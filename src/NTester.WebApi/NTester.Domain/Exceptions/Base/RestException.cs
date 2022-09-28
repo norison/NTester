@@ -5,13 +5,13 @@ namespace NTester.Domain.Exceptions.Base;
 /// <summary>
 /// Base exception of the application.
 /// </summary>
-public abstract class RestExceptionBase : Exception
+public abstract class RestException : Exception
 {
     /// <summary>
     /// Creates an instance of the base exception of the application.
     /// </summary>
     /// <param name="message">Exception message.</param>
-    protected RestExceptionBase(string message) : base(message)
+    protected RestException(string message) : base(message)
     {
     }
 

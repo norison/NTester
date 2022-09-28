@@ -38,7 +38,7 @@ public class CustomExceptionHandlerMiddleware
 
     private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
-        var restException = exception as RestExceptionBase ?? new NonGeneralException(exception.Message);
+        var restException = exception as RestException ?? new NonGeneralException(exception.Message);
 
         context.Response.StatusCode = (int)restException.StatusCode;
 

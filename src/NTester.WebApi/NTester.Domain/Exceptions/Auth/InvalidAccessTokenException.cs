@@ -5,7 +5,7 @@ namespace NTester.Domain.Exceptions.Auth;
 /// <summary>
 /// Exception for the case when access token is invalid.
 /// </summary>
-public class InvalidAccessTokenException : ValidationExceptionBase
+public class InvalidAccessTokenException : ValidationException
 {
     private const string ErrorMessage = "The access token has invalid values or cannot be verified by the secret.";
 
@@ -16,6 +16,6 @@ public class InvalidAccessTokenException : ValidationExceptionBase
     {
     }
 
-    /// <inheritdoc cref="RestExceptionBase.Code"/>
+    /// <inheritdoc cref="RestException.Code"/>
     public override int Code => (int)AuthCode.InvalidAccessToken;
 }

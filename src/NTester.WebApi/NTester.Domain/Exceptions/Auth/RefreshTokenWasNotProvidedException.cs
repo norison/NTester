@@ -5,7 +5,7 @@ namespace NTester.Domain.Exceptions.Auth;
 /// <summary>
 /// Exception for the case when refresh token was not provided.
 /// </summary>
-public class RefreshTokenWasNotProvidedException : ValidationExceptionBase
+public class RefreshTokenWasNotProvidedException : ValidationException
 {
     private const string ErrorMessage = "Refresh token was not provided.";
 
@@ -16,6 +16,6 @@ public class RefreshTokenWasNotProvidedException : ValidationExceptionBase
     {
     }
 
-    /// <inheritdoc cref="RestExceptionBase.Code"/>
+    /// <inheritdoc cref="RestException.Code"/>
     public override int Code => (int)AuthCode.RefreshTokenWasNotProvided;
 }

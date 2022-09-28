@@ -5,7 +5,7 @@ namespace NTester.Domain.Exceptions.Account;
 /// <summary>
 /// Exception for the cases when the user not found.
 /// </summary>
-public class UserNotFoundException : NotFoundExceptionBase
+public class UserNotFoundException : NotFoundException
 {
     private const string ErrorMessage = "User not found - User ID: '{0}'.";
 
@@ -17,6 +17,6 @@ public class UserNotFoundException : NotFoundExceptionBase
     {
     }
 
-    /// <inheritdoc cref="RestExceptionBase.Code"/>
+    /// <inheritdoc cref="RestException.Code"/>
     public override int Code => (int)AccountCode.UserNotFound;
 }

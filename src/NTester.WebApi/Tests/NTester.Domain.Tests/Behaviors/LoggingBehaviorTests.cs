@@ -4,7 +4,6 @@ using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using NTester.Domain.Behaviors;
-using NTester.Domain.Services.DateTime;
 using NUnit.Framework;
 
 namespace NTester.Domain.Tests.Behaviors;

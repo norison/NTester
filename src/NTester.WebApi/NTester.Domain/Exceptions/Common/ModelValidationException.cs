@@ -5,7 +5,7 @@ namespace NTester.Domain.Exceptions.Common;
 /// <summary>
 /// Exception for model validation.
 /// </summary>
-public class ModelValidationException : ValidationExceptionBase
+public class ModelValidationException : ValidationException
 {
     /// <summary>
     /// Creates an instance of the model validation exception.
@@ -15,6 +15,6 @@ public class ModelValidationException : ValidationExceptionBase
     {
     }
 
-    /// <inheritdoc cref="RestExceptionBase.Code"/>
+    /// <inheritdoc cref="RestException.Code"/>
     public override int Code => (int)CommonCode.ModelValidationFailed;
 }

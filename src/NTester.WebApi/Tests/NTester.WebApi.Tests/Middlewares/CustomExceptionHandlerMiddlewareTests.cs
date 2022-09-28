@@ -41,11 +41,11 @@ public class CustomExceptionHandlerMiddlewareTests
     }
 
     [Test, TestCaseSource(nameof(RestExceptions))]
-    public async Task InvokeAsync_ThrowsRestExceptionBase_ShouldHandleException(RestExceptionBase restExceptionBase)
+    public async Task InvokeAsync_ThrowsRestExceptionBase_ShouldHandleException(RestException restException)
     {
         // Arrange
         var context = CreateHttpContext();
-        _requestDelegate.Invoke(default!).ThrowsForAnyArgs(restExceptionBase);
+        _requestDelegate.Invoke(default!).ThrowsForAnyArgs(restException);
 
         // Act
         await _middleware.InvokeAsync(context);
@@ -53,10 +53,10 @@ public class CustomExceptionHandlerMiddlewareTests
         // Assert
         await _requestDelegate.Received().Invoke(context);
         
-        context.Response.StatusCode.Should().Be((int)restExceptionBase.StatusCode);
+        context.Response.StatusCode.Should().Be((int)restException.StatusCode);
         context.Response.ContentType.Should().Be("application/json; charset=utf-8");
 
-        await AssertRestException(context, restExceptionBase);
+        await AssertRestException(context, restException);
     }
 
     [Test]
@@ -83,12 +83,12 @@ public class CustomExceptionHandlerMiddlewareTests
         await AssertRestException(context, expectedException);
     }
 
-    private static async Task AssertRestException(HttpContext context, RestExceptionBase restExceptionBase)
+    private static async Task AssertRestException(HttpContext context, RestException restException)
     {
         var errorResponse = await GetErrorResponse(context);
-        errorResponse.Message.Should().Be(restExceptionBase.Message);
-        errorResponse.Code.Should().Be(restExceptionBase.Code);
-        errorResponse.Description.Should().Be(restExceptionBase.Description);
+        errorResponse.Message.Should().Be(restException.Message);
+        errorResponse.Code.Should().Be(restException.Code);
+        errorResponse.Description.Should().Be(restException.Description);
     }
 
     private static HttpContext CreateHttpContext()
@@ -110,7 +110,7 @@ public class CustomExceptionHandlerMiddlewareTests
         return JsonConvert.DeserializeObject<ErrorResponse>(streamText);
     }
 
-    private static IEnumerable<RestExceptionBase> RestExceptions => new List<RestExceptionBase>
+    private static IEnumerable<RestException> RestExceptions => new List<RestException>
     {
         new ModelValidationException("validation message"),
         new NonGeneralException("non-general message"),

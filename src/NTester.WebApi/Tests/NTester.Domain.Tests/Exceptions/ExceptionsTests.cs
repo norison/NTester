@@ -13,7 +13,7 @@ public class ExceptionsTests
 {
     [Test, TestCaseSource(nameof(ExceptionsTestCases))]
     public void ExceptionProperties_ShouldBeCorrectValues(
-        RestExceptionBase exception,
+        RestException exception,
         HttpStatusCode statusCode,
         int code)
     {

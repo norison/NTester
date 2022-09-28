@@ -5,19 +5,19 @@ namespace NTester.Domain.Exceptions.Base;
 /// <summary>
 /// Base exception for not found cases.
 /// </summary>
-public abstract class NotFoundExceptionBase : RestExceptionBase
+public abstract class NotFoundException : RestException
 {
     /// <summary>
     /// Creates an instance of the validation exception.
     /// </summary>
     /// <param name="message">Exception message</param>
-    protected NotFoundExceptionBase(string message) : base(message)
+    protected NotFoundException(string message) : base(message)
     {
     }
 
-    /// <inheritdoc cref="RestExceptionBase.StatusCode"/>
+    /// <inheritdoc cref="RestException.StatusCode"/>
     public override HttpStatusCode StatusCode => HttpStatusCode.NotFound;
 
-    /// <inheritdoc cref="RestExceptionBase.Description"/>
+    /// <inheritdoc cref="RestException.Description"/>
     public override string Description => "The requested data was not found.";
 }

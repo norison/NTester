@@ -5,7 +5,7 @@ namespace NTester.Domain.Exceptions.Auth;
 /// <summary>
 /// Exception for the case when refresh token is invalid.
 /// </summary>
-public class InvalidRefreshTokenException : ValidationExceptionBase
+public class InvalidRefreshTokenException : ValidationException
 {
     private const string ErrorMessage = "Refresh token not found or no access token pair.";
 
@@ -16,6 +16,6 @@ public class InvalidRefreshTokenException : ValidationExceptionBase
     {
     }
 
-    /// <inheritdoc cref="RestExceptionBase.Code"/>
+    /// <inheritdoc cref="RestException.Code"/>
     public override int Code => (int)AuthCode.InvalidRefreshToken;
 }

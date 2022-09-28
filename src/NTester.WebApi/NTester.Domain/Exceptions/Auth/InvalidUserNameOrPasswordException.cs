@@ -5,7 +5,7 @@ namespace NTester.Domain.Exceptions.Auth;
 /// <summary>
 /// Exception for the case when invalid user name or password.
 /// </summary>
-public class InvalidUserNameOrPasswordException : ValidationExceptionBase
+public class InvalidUserNameOrPasswordException : ValidationException
 {
     private const string ErrorMessage = "Provided invalid user name or password";
 
@@ -16,6 +16,6 @@ public class InvalidUserNameOrPasswordException : ValidationExceptionBase
     {
     }
 
-    /// <inheritdoc cref="RestExceptionBase.Code"/>
+    /// <inheritdoc cref="RestException.Code"/>
     public override int Code => (int)AuthCode.IncorrectUserNameOrPassword;
 }

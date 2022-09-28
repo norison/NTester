@@ -5,19 +5,19 @@ namespace NTester.Domain.Exceptions.Base;
 /// <summary>
 /// Base exception for validation.
 /// </summary>
-public abstract class ValidationExceptionBase : RestExceptionBase
+public abstract class ValidationException : RestException
 {
     /// <summary>
     /// Creates an instance of the validation exception.
     /// </summary>
     /// <param name="message">Exception message</param>
-    protected ValidationExceptionBase(string message) : base(message)
+    protected ValidationException(string message) : base(message)
     {
     }
 
-    /// <inheritdoc cref="RestExceptionBase.StatusCode"/>
+    /// <inheritdoc cref="RestException.StatusCode"/>
     public override HttpStatusCode StatusCode => HttpStatusCode.BadRequest;
 
-    /// <inheritdoc cref="RestExceptionBase.Description"/>
+    /// <inheritdoc cref="RestException.Description"/>
     public override string Description => "A validation error occurred while passing invalid data.";
 }
