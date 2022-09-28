@@ -25,7 +25,7 @@ public class GetTestByIdQueryHandler : IRequestHandler<GetTestByIdQuery, GetTest
         _dbContext = dbContext;
         _mapper = mapper;
     }
-    
+
     /// <inheritdoc cref="IRequestHandler{TRequest,TResponse}.Handle"/>
     public async Task<GetTestByIdResponse> Handle(GetTestByIdQuery request, CancellationToken cancellationToken)
     {
@@ -35,12 +35,7 @@ public class GetTestByIdQueryHandler : IRequestHandler<GetTestByIdQuery, GetTest
             .Where(x => x.Id == request.Id)
             .FirstOrDefaultAsync(cancellationToken);
 
-        if (test == null)
-        {
-            throw new TestNotFoundException(request.Id);
-        }
-
-        if (!test.Published && test.UserId != request.UserId)
+        if (test == null || !test.Published && test.UserId != request.UserId)
         {
             throw new TestNotFoundException(request.Id);
         }
