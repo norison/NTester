@@ -8,7 +8,9 @@ namespace NTester.Domain.Features.Tests.Queries.GetTests.GetPublicTests;
 /// <summary>
 /// Handler for <see cref="GetPublicTestsQuery"/>.
 /// </summary>
-public class GetPublicTestsQueryHandler : GetTestsQueryHandlerBase, IRequestHandler<GetPublicTestsQuery, GetTestsResponse>
+public class GetPublicTestsQueryHandler :
+    GetTestsQueryHandlerBase,
+    IRequestHandler<GetPublicTestsQuery, GetTestsResponse>
 {
     private readonly INTesterDbContext _dbContext;
 
@@ -25,9 +27,7 @@ public class GetPublicTestsQueryHandler : GetTestsQueryHandlerBase, IRequestHand
     /// <inheritdoc cref="IRequestHandler{TRequest,TResponse}.Handle"/>
     public async Task<GetTestsResponse> Handle(GetPublicTestsQuery request, CancellationToken cancellationToken)
     {
-        var query = request.UserId == Guid.Empty
-            ? _dbContext.Tests
-            : _dbContext.Tests.Where(x => x.Published && x.UserId != request.UserId);
+        var query = _dbContext.Tests.Where(x => x.Published && x.UserId != request.UserId);
 
         if (!string.IsNullOrEmpty(request.Title))
         {

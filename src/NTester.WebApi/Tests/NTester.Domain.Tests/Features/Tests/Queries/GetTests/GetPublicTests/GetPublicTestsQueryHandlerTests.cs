@@ -53,6 +53,29 @@ public class GetPublicTestsQueryHandlerTests
         result.Tests.Should().OnlyContain(x => x.Published && x.UserId != userId && x.Title.Contains("ti"));
     }
     
+    [Test]
+    public async Task Handle_EmptyUserId_ShouldReturnCorrectPublicTests()
+    {
+        // Arrange
+        var query = new GetPublicTestsQuery()
+        {
+            PageNumber = 1,
+            PageSize = 5,
+            UserId = Guid.Empty,
+            Title = "ti"
+        };
+    
+        var testsDbSet = GetDataForTestPublishedTrue(Guid.NewGuid());
+        _dbContext.Tests.Returns(testsDbSet);
+    
+        // Act
+        var result = await _handler.Handle(query, CancellationToken.None);
+    
+        // Assert
+        result.Tests.Count().Should().Be(4);
+        result.Tests.Should().OnlyContain(x => x.Published && x.Title.Contains("ti"));
+    }
+    
     private static IEnumerable<TestEntity> GetDataForTestPublishedTrue(Guid userId)
     {
         return new List<TestEntity>
