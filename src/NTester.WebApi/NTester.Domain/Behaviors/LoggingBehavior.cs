@@ -1,6 +1,6 @@
+using System.Diagnostics;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using NTester.Domain.Services.DateTime;
 
 namespace NTester.Domain.Behaviors;
 
@@ -12,18 +12,20 @@ namespace NTester.Domain.Behaviors;
 public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
 {
+    private const string BeginRequestTemplate = "Begin Request Id: '{uniqueId}', Request name: '{requestName}'";
+
+    private const string EndRequestTemplate =
+        "End Request Id: '{uniqueId}', Request name: '{requestName}', Total request time: '{time}'";
+
     private readonly ILogger<LoggingBehavior<TRequest, TResponse>> _logger;
-    private readonly IDateTimeService _dateTimeService;
 
     /// <summary>
     /// Creates an instance of the <see cref="LoggingBehavior{TRequest,TResponse}"/>.
     /// </summary>
     /// <param name="logger">Instance of the logger.</param>
-    /// <param name="dateTimeService">Provides date and time.</param>
-    public LoggingBehavior(ILogger<LoggingBehavior<TRequest, TResponse>> logger, IDateTimeService dateTimeService)
+    public LoggingBehavior(ILogger<LoggingBehavior<TRequest, TResponse>> logger)
     {
         _logger = logger;
-        _dateTimeService = dateTimeService;
     }
 
     /// <inheritdoc cref="IPipelineBehavior{TRequest,TResponse}.Handle"/>
@@ -34,46 +36,25 @@ public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, 
     {
         var requestName = typeof(TRequest).Name;
         var uniqueId = Guid.NewGuid().ToString();
-        var startDateTime = _dateTimeService.UtcNow;
+        var stopWatch = new Stopwatch();
 
         try
         {
-            LogRequest(uniqueId, requestName);
+            _logger.LogInformation(BeginRequestTemplate, uniqueId, requestName);
 
+            stopWatch.Start();
             var response = await next();
+            stopWatch.Stop();
 
-            LogResponse(uniqueId, requestName, startDateTime);
+            _logger.LogInformation(EndRequestTemplate, uniqueId, requestName, stopWatch.Elapsed);
 
             return response;
         }
         catch (Exception exception)
         {
-            LogResponse(exception, uniqueId, requestName, startDateTime);
+            stopWatch.Stop();
+            _logger.LogError(exception, EndRequestTemplate, uniqueId, requestName, stopWatch.Elapsed);
             throw;
         }
-    }
-
-    private void LogRequest(string uniqueId, string requestName)
-    {
-        const string template = "Begin Request Id: '{uniqueId}', Request name: '{requestName}'";
-        _logger.LogInformation(template, uniqueId, requestName);
-    }
-
-    private void LogResponse(string uniqueId, string requestName, DateTime startDateTime)
-    {
-        var message = GetResponseMessage(uniqueId, requestName, startDateTime);
-        _logger.LogInformation(message);
-    }
-
-    private void LogResponse(Exception exception, string uniqueId, string requestName, DateTime startDateTime)
-    {
-        var message = GetResponseMessage(uniqueId, requestName, startDateTime);
-        _logger.LogInformation(exception, message);
-    }
-
-    private string GetResponseMessage(string uniqueId, string requestName, DateTime startDateTime)
-    {
-        var time = (_dateTimeService.UtcNow - startDateTime).TotalMilliseconds;
-        return $"End Request Id: '{uniqueId}', Request name: '{requestName}', Total request time: '{time}'";
     }
 }

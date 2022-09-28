@@ -13,7 +13,6 @@ namespace NTester.Domain.Tests.Behaviors;
 public class LoggingBehaviorTests
 {
     private ILogger<LoggingBehavior<TestRequest, Unit>> _logger;
-    private IDateTimeService _dateTimeService;
     private RequestHandlerDelegate<Unit> _nextDelegate;
     private LoggingBehavior<TestRequest, Unit> _loggingBehavior;
 
@@ -21,10 +20,9 @@ public class LoggingBehaviorTests
     public void SetUp()
     {
         _logger = Substitute.For<ILogger<LoggingBehavior<TestRequest, Unit>>>();
-        _dateTimeService = Substitute.For<IDateTimeService>();
         _nextDelegate = Substitute.For<RequestHandlerDelegate<Unit>>();
 
-        _loggingBehavior = new LoggingBehavior<TestRequest, Unit>(_logger, _dateTimeService);
+        _loggingBehavior = new LoggingBehavior<TestRequest, Unit>(_logger);
     }
 
     [Test]
@@ -34,7 +32,6 @@ public class LoggingBehaviorTests
         await _loggingBehavior.Handle(new TestRequest(), CancellationToken.None, _nextDelegate);
 
         // Assert
-        var _ = _dateTimeService.Received(2).UtcNow;
         _logger.ReceivedCalls().Count().Should().Be(2);
     }
     
@@ -50,7 +47,6 @@ public class LoggingBehaviorTests
             .Should()
             .ThrowAsync<Exception>();
         
-        var _ = _dateTimeService.Received(2).UtcNow;
         _logger.ReceivedCalls().Count().Should().Be(2);
     }
 

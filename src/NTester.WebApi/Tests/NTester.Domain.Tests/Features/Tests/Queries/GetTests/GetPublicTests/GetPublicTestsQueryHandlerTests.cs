@@ -5,7 +5,6 @@ using MockQueryable.NSubstitute;
 using NSubstitute;
 using NTester.DataAccess.Data.NTesterDbContext;
 using NTester.DataAccess.Entities;
-using NTester.Domain.Features.Tests.Queries.GetTests.GetOwnTests;
 using NTester.Domain.Features.Tests.Queries.GetTests.GetPublicTests;
 using NTester.Domain.Tests.Common;
 using NUnit.Framework;
