@@ -3,7 +3,7 @@ using NTester.Domain.Features.Tests.Commands.Create.Models;
 using NTester.Domain.Tests.Common;
 using NUnit.Framework;
 
-namespace NTester.Domain.Tests.Features.Tests.Models;
+namespace NTester.Domain.Tests.Features.Tests.Commands.Create.Models;
 
 [TestFixture]
 public class
@@ -19,19 +19,6 @@ public class
         result.ShouldNotHaveAnyValidationErrors();
     }
 
-    [Test, Description("Workaround to add the getter to test coverage.")]
-    public void IsCorrect_ValidData_ShouldNotHaveValidationErrors()
-    {
-        // Arrange
-        void Mutation(CreateTestAnswerModel model) => model.IsCorrect = model.IsCorrect;
-
-        // Act
-        var result = Validate(Mutation);
-
-        // Arrange
-        result.ShouldNotHaveValidationErrorFor(x => x.IsCorrect);
-    }
-    
     [Test, TestCaseSource(nameof(ContentTestCases))]
     public void Content_InvalidValue_ShouldHaveValidationErrors(string content)
     {

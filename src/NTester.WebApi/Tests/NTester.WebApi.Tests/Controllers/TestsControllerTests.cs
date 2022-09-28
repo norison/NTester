@@ -5,7 +5,10 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
 using NTester.DataContracts.Tests.Create;
+using NTester.DataContracts.Tests.GetTests;
 using NTester.Domain.Features.Tests.Commands.Create;
+using NTester.Domain.Features.Tests.Queries.GetTests.GetOwnTests;
+using NTester.Domain.Features.Tests.Queries.GetTests.GetPublicTests;
 using NTester.WebApi.Controllers;
 using NTester.WebApi.Tests.Controllers.Base;
 using NUnit.Framework;
@@ -37,7 +40,7 @@ public class TestsControllerTests : ControllerTestsBase
     {
         // Arrange
         _mapper.Map<CreateTestCommand>(default).ReturnsForAnyArgs(createTestCommand);
-        _mediator.Send((CreateTestCommand)default!).ReturnsForAnyArgs(createTestResponse);
+        _mediator.Send(createTestCommand).ReturnsForAnyArgs(createTestResponse);
         _testsController.ControllerContext.HttpContext = CreateHttpContext(userId);
 
         // Act
@@ -49,5 +52,51 @@ public class TestsControllerTests : ControllerTestsBase
         createTestCommand.UserId.Should().Be(userId);
         result.Should().BeOfType<OkObjectResult>();
         result.As<OkObjectResult>().Value.Should().Be(createTestResponse);
+    }
+
+    [Test, AutoData]
+    public async Task GetOwnTestsAsync_ShouldReturnCorrectResult(
+        GetOwnTestsRequest getOwnTestsRequest,
+        GetOwnTestsQuery getOwnTestsQuery,
+        GetTestsResponse getTestsResponse,
+        Guid userId)
+    {
+        // Arrange
+        _mapper.Map<GetOwnTestsQuery>(default).ReturnsForAnyArgs(getOwnTestsQuery);
+        _mediator.Send(getOwnTestsQuery).ReturnsForAnyArgs(getTestsResponse);
+        _testsController.ControllerContext.HttpContext = CreateHttpContext(userId);
+
+        // Act
+        var result = await _testsController.GetOwnTestsAsync(getOwnTestsRequest);
+
+        // Assert
+        _mapper.Received().Map<GetOwnTestsQuery>(getOwnTestsRequest);
+        await _mediator.Received().Send(getOwnTestsQuery);
+        getOwnTestsQuery.UserId.Should().Be(userId);
+        result.Should().BeOfType<OkObjectResult>();
+        result.As<OkObjectResult>().Value.Should().Be(getTestsResponse);
+    }
+    
+    [Test, AutoData]
+    public async Task GetPublicTestsAsync_ShouldReturnCorrectResult(
+        GetPublicTestsRequest getPublicTestsRequest,
+        GetPublicTestsQuery getPublicTestsQuery,
+        GetTestsResponse getTestsResponse,
+        Guid userId)
+    {
+        // Arrange
+        _mapper.Map<GetPublicTestsQuery>(default).ReturnsForAnyArgs(getPublicTestsQuery);
+        _mediator.Send(getPublicTestsQuery).ReturnsForAnyArgs(getTestsResponse);
+        _testsController.ControllerContext.HttpContext = CreateHttpContext(userId);
+
+        // Act
+        var result = await _testsController.GetPublicTestsAsync(getPublicTestsRequest);
+
+        // Assert
+        _mapper.Received().Map<GetPublicTestsQuery>(getPublicTestsRequest);
+        await _mediator.Received().Send(getPublicTestsQuery);
+        getPublicTestsQuery.UserId.Should().Be(userId);
+        result.Should().BeOfType<OkObjectResult>();
+        result.As<OkObjectResult>().Value.Should().Be(getTestsResponse);
     }
 }

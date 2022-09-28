@@ -27,7 +27,7 @@ public class GetPublicTestsQueryHandler : GetTestsQueryHandlerBase, IRequestHand
     {
         var query = request.UserId == Guid.Empty
             ? _dbContext.Tests
-            : _dbContext.Tests.Where(x => x.UserId != request.UserId);
+            : _dbContext.Tests.Where(x => x.Published && x.UserId != request.UserId);
 
         if (!string.IsNullOrEmpty(request.Title))
         {

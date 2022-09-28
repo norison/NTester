@@ -8,7 +8,7 @@ using NTester.Domain.Features.Tests.Commands.Create;
 using NTester.Domain.Tests.Common;
 using NUnit.Framework;
 
-namespace NTester.Domain.Tests.Features.Tests;
+namespace NTester.Domain.Tests.Features.Tests.Commands.Create;
 
 [TestFixture]
 public class CreateTestCommandHandlerTests

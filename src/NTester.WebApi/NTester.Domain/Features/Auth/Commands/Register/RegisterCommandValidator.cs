@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using NTester.Domain.Extensions;
+using NTester.Domain.Extensions.Validation;
 
 namespace NTester.Domain.Features.Auth.Commands.Register;
 
@@ -13,11 +13,11 @@ public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
     /// </summary>
     public RegisterCommandValidator()
     {
-        RuleFor(x => x.Email).NotEmpty().EmailAddress();
-        RuleFor(x => x.UserName).NotEmpty().MinimumLength(2);
+        RuleFor(x => x.Email).Email();
+        RuleFor(x => x.UserName).UserName();
         RuleFor(x => x.Password).Password();
-        RuleFor(x => x.Name).NotEmpty().MinimumLength(2).MaximumLength(10).NoWhiteSpaces();
-        RuleFor(x => x.Surname).NotEmpty().MinimumLength(2).MaximumLength(10).NoWhiteSpaces();
-        RuleFor(x => x.ClientName).NotEmpty();
+        RuleFor(x => x.Name).Name();
+        RuleFor(x => x.Surname).Surname();
+        RuleFor(x => x.ClientName).ClientName();
     }
 }

@@ -15,5 +15,5 @@ public abstract class GetTestsQueryBase : PageQuery
     /// <summary>
     /// Test title must partially match the property value.
     /// </summary>
-    public string Title { get; set; } = string.Empty;
+    public string? Title { get; set; }
 }

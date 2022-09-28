@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using NTester.Domain.Extensions.Validation;
 
 namespace NTester.Domain.Features.Auth.Commands.Logout;
 
@@ -12,7 +13,7 @@ public class LogoutCommandValidator : AbstractValidator<LogoutCommand>
     /// </summary>
     public LogoutCommandValidator()
     {
-        RuleFor(x => x.UserId).NotEmpty();
-        RuleFor(x => x.ClientName).NotEmpty();
+        RuleFor(x => x.UserId).UserId();
+        RuleFor(x => x.ClientName).ClientName();
     }
 }

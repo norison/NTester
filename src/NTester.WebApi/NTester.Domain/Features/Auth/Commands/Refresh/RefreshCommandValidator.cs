@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using NTester.Domain.Extensions.Validation;
 
 namespace NTester.Domain.Features.Auth.Commands.Refresh;
 
@@ -12,6 +13,6 @@ public class RefreshCommandValidator : AbstractValidator<RefreshCommand>
     /// </summary>
     public RefreshCommandValidator()
     {
-        RuleFor(x => x.AccessToken).NotEmpty();
+        RuleFor(x => x.AccessToken).AccessToken();
     }
 }

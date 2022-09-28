@@ -1,4 +1,5 @@
 using FluentValidation;
+using NTester.Domain.Extensions.Validation;
 
 namespace NTester.Domain.Features.Account.Queries.GetUser;
 
@@ -12,6 +13,6 @@ public class GetUserQueryValidator : AbstractValidator<GetUserQuery>
     /// </summary>
     public GetUserQueryValidator()
     {
-        RuleFor(x => x.UserId).NotEmpty();
+        RuleFor(x => x.UserId).UserId();
     }
 }
