@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NTester.DataContracts;
 using NTester.DataContracts.Tests.Create;
+using NTester.DataContracts.Tests.GetTestById;
 using NTester.DataContracts.Tests.GetTests;
 using NTester.Domain.Extensions;
 using NTester.Domain.Features.Tests.Commands.Create;
@@ -90,7 +91,7 @@ public class TestsController : ControllerBase
     /// <response code="400">If invalid data provided.</response>
     /// <response code="404">If test was not found.</response>
     /// <response code="500">If server error occured.</response>
-    [ProducesResponseType(typeof(GetTestsResponse), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(GetTestByIdResponse), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.NotFound)]
     [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.InternalServerError)]
