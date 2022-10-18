@@ -4,6 +4,7 @@ using NTester.Domain.Exceptions.Account;
 using NTester.Domain.Exceptions.Auth;
 using NTester.Domain.Exceptions.Base;
 using NTester.Domain.Exceptions.Common;
+using NTester.Domain.Exceptions.Tests;
 using NUnit.Framework;
 
 namespace NTester.Domain.Tests.Exceptions;
@@ -24,12 +25,15 @@ public class ExceptionsTests
 
     private static IEnumerable<TestCaseData> ExceptionsTestCases => new List<TestCaseData>
     {
+        // Common
         new(new NonGeneralException(string.Empty),
             HttpStatusCode.InternalServerError,
             (int)CommonCode.NonGeneralErrorOccured),
         new(new ModelValidationException(string.Empty),
             HttpStatusCode.BadRequest,
             (int)CommonCode.ModelValidationFailed),
+        
+        // Auth
         new(new InvalidUserNameOrPasswordException(),
             HttpStatusCode.BadRequest,
             (int)AuthCode.IncorrectUserNameOrPassword),
@@ -48,8 +52,15 @@ public class ExceptionsTests
         new(new UnsupportedClientException(string.Empty),
             HttpStatusCode.BadRequest,
             (int)AuthCode.UnsupportedClient),
+        
+        // Account
         new(new UserNotFoundException(Guid.NewGuid()),
             HttpStatusCode.NotFound,
-            (int)AccountCode.UserNotFound)
+            (int)AccountCode.UserNotFound),
+        
+        // Tests
+        new(new TestNotFoundException(Guid.NewGuid()),
+            HttpStatusCode.NotFound,
+            (int)TestsCode.TestNotFound)
     };
 }
