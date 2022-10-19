@@ -3,10 +3,8 @@ name: NTester Web API
 on:
   push:
     branches: [ "main" ]
-    paths: [ "src/NTester.WebApi" ]
   pull_request:
     branches: [ "main" ]
-    paths: [ "src/NTester.WebApi" ]
 
 jobs:
   build-and-test:
