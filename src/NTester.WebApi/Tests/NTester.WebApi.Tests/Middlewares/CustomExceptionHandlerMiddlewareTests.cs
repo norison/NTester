@@ -107,7 +107,7 @@ public class CustomExceptionHandlerMiddlewareTests
         context.Response.Body.Seek(0, SeekOrigin.Begin);
         var reader = new StreamReader(context.Response.Body);
         var streamText = await reader.ReadToEndAsync();
-        return JsonConvert.DeserializeObject<ErrorResponse>(streamText);
+        return JsonConvert.DeserializeObject<ErrorResponse>(streamText)!;
     }
 
     private static IEnumerable<RestException> RestExceptions => new List<RestException>
