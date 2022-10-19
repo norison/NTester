@@ -1,16 +1,22 @@
-name: Build And Test
+name: NTester Web API
 
 on:
   push:
     branches: [ "main" ]
+    paths: [ "src/NTester.WebApi" ]
   pull_request:
     branches: [ "main" ]
+    paths: [ "src/NTester.WebApi" ]
 
 jobs:
-  build:
+  build-and-test:
 
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: src/NTester.WebApi
+        
     steps:
     - uses: actions/checkout@v3
     - name: Setup .NET
