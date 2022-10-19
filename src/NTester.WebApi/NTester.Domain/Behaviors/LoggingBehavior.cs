@@ -31,8 +31,8 @@ public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, 
     /// <inheritdoc cref="IPipelineBehavior{TRequest,TResponse}.Handle"/>
     public async Task<TResponse> Handle(
         TRequest request,
-        CancellationToken cancellationToken,
-        RequestHandlerDelegate<TResponse> next)
+        RequestHandlerDelegate<TResponse> next,
+        CancellationToken cancellationToken)
     {
         var requestName = typeof(TRequest).Name;
         var uniqueId = Guid.NewGuid().ToString();

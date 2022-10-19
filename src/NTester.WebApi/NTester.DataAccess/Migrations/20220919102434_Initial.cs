@@ -5,8 +5,15 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace NTester.DataAccess.Migrations
 {
+    /// <summary>
+    /// Initial migration.
+    /// </summary>
     public partial class Initial : Migration
     {
+        /// <summary>
+        /// Up migration.
+        /// </summary>
+        /// <param name="migrationBuilder">Migration builder.</param>
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -336,6 +343,10 @@ namespace NTester.DataAccess.Migrations
                 column: "RoleId");
         }
 
+        /// <summary>
+        /// Down migration
+        /// </summary>
+        /// <param name="migrationBuilder">Migration builder</param>
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(

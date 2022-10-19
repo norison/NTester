@@ -28,7 +28,7 @@ public class LoggingBehaviorTests
     public async Task Handle_NoErrors_ShouldLogRequestAndResponse()
     {
         // Act
-        await _loggingBehavior.Handle(new TestRequest(), CancellationToken.None, _nextDelegate);
+        await _loggingBehavior.Handle(new TestRequest(), _nextDelegate, CancellationToken.None);
 
         // Assert
         _logger.ReceivedCalls().Count().Should().Be(2);
@@ -42,7 +42,7 @@ public class LoggingBehaviorTests
         
         // Act/Assert
         await _loggingBehavior
-            .Invoking(x => x.Handle(new TestRequest(), CancellationToken.None, _nextDelegate))
+            .Invoking(x => x.Handle(new TestRequest(), _nextDelegate, CancellationToken.None))
             .Should()
             .ThrowAsync<Exception>();
         

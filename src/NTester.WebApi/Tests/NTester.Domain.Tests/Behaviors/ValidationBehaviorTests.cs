@@ -35,7 +35,7 @@ public class ValidationBehaviorTests
         _validator.Validate((IValidationContext)default!).ReturnsForAnyArgs(new ValidationResult());
 
         // Act
-        await _validationBehavior.Handle(request, CancellationToken.None, _nextDelegate);
+        await _validationBehavior.Handle(request, _nextDelegate, CancellationToken.None);
 
         // Assert
         _nextDelegate.ReceivedCalls().Count().Should().Be(1);
@@ -57,7 +57,7 @@ public class ValidationBehaviorTests
 
         // Act/Assert
         await _validationBehavior
-            .Invoking(x => x.Handle(request, CancellationToken.None, _nextDelegate))
+            .Invoking(x => x.Handle(request, _nextDelegate, CancellationToken.None))
             .Should()
             .ThrowAsync<ValidationException>()
             .WithMessage(errorMessage);
