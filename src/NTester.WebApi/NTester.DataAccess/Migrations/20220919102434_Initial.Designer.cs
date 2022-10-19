@@ -15,6 +15,7 @@ namespace NTester.DataAccess.Migrations
     [Migration("20220919102434_Initial")]
     partial class Initial
     {
+        /// <inheritdoc cref="Migration.BuildTargetModel"/>
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
