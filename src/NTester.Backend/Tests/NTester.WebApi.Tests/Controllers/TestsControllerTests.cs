@@ -5,8 +5,10 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
 using NTester.DataContracts.Tests.Create;
+using NTester.DataContracts.Tests.GetTestById;
 using NTester.DataContracts.Tests.GetTests;
 using NTester.Domain.Features.Tests.Commands.Create;
+using NTester.Domain.Features.Tests.Queries.GetTestById;
 using NTester.Domain.Features.Tests.Queries.GetTests.GetOwnTests;
 using NTester.Domain.Features.Tests.Queries.GetTests.GetPublicTests;
 using NTester.WebApi.Controllers;
@@ -76,7 +78,7 @@ public class TestsControllerTests : ControllerTestsBase
         result.Should().BeOfType<OkObjectResult>();
         result.As<OkObjectResult>().Value.Should().Be(getTestsResponse);
     }
-    
+
     [Test, AutoData]
     public async Task GetPublicTestsAsync_ShouldReturnCorrectResult(
         GetPublicTestsRequest getPublicTestsRequest,
@@ -98,5 +100,31 @@ public class TestsControllerTests : ControllerTestsBase
         getPublicTestsQuery.UserId.Should().Be(userId);
         result.Should().BeOfType<OkObjectResult>();
         result.As<OkObjectResult>().Value.Should().Be(getTestsResponse);
+    }
+
+    [Test, AutoData]
+    public async Task GetTestByIdAsync_ShouldReturnCorrectResult(
+        Guid testId,
+        Guid userId,
+        GetTestByIdResponse getTestByIdResponse)
+    {
+        // Arrange
+        GetTestByIdQuery capturedQuery = null!;
+
+        _mediator.Send((GetTestByIdQuery)default!)
+            .ReturnsForAnyArgs(getTestByIdResponse)
+            .AndDoes(x => capturedQuery = x.Arg<GetTestByIdQuery>());
+
+        _testsController.ControllerContext.HttpContext = CreateHttpContext(userId);
+
+        // Act
+        var result = await _testsController.GetTestByIdAsync(testId);
+
+        // Assert
+        capturedQuery.Should().NotBeNull();
+        capturedQuery.Id.Should().Be(testId);
+        capturedQuery.UserId.Should().Be(userId);
+        result.Should().BeOfType<OkObjectResult>();
+        result.As<OkObjectResult>().Value.Should().Be(getTestByIdResponse);
     }
 }
