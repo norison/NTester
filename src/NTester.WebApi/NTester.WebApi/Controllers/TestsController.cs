@@ -47,7 +47,7 @@ public class TestsController : ControllerBase
     /// <response code="200">Success.</response>
     /// <response code="400">If invalid data provided.</response>
     /// <response code="401">If user is unauthorized.</response>
-    /// <response code="500">If server error occured.</response>
+    /// <response code="500">If server error occurred.</response>
     [ProducesResponseType(typeof(GetTestsResponse), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.InternalServerError)]
@@ -68,7 +68,7 @@ public class TestsController : ControllerBase
     /// <returns>Collection of the tests.</returns>
     /// <response code="200">Success.</response>
     /// <response code="400">If invalid data provided.</response>
-    /// <response code="500">If server error occured.</response>
+    /// <response code="500">If server error occurred.</response>
     [ProducesResponseType(typeof(GetTestsResponse), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.InternalServerError)]
@@ -90,7 +90,7 @@ public class TestsController : ControllerBase
     /// <response code="200">Success.</response>
     /// <response code="400">If invalid data provided.</response>
     /// <response code="404">If test was not found.</response>
-    /// <response code="500">If server error occured.</response>
+    /// <response code="500">If server error occurred.</response>
     [ProducesResponseType(typeof(GetTestByIdResponse), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.NotFound)]
@@ -111,7 +111,7 @@ public class TestsController : ControllerBase
     /// <response code="200">Success.</response>
     /// <response code="400">If invalid data provided.</response>
     /// <response code="401">If user is unauthorized.</response>
-    /// <response code="500">If server error occured.</response>
+    /// <response code="500">If server error occurred.</response>
     [ProducesResponseType(typeof(CreateTestResponse), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.InternalServerError)]

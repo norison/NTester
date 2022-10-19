@@ -47,7 +47,7 @@ public class AuthController : ControllerBase
     /// <returns>Authentication response.</returns>
     /// <response code="200">Success.</response>
     /// <response code="400">If invalid data provided.</response>
-    /// <response code="500">If server error occured.</response>
+    /// <response code="500">If server error occurred.</response>
     [ProducesResponseType(typeof(AuthResponse), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.InternalServerError)]
@@ -55,7 +55,7 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> LoginAsync(LoginRequest loginRequest)
     {
         var command = _mapper.Map<LoginCommand>(loginRequest);
-        command.ClientName = HttpContext.Request.Headers[HeaderConstants.Client];
+        command.ClientName = Request.Headers[HeaderConstants.Client];
         var result = await _mediator.Send(command);
         return Ok(result);
     }
@@ -67,7 +67,7 @@ public class AuthController : ControllerBase
     /// <returns>Authentication response.</returns>
     /// <response code="200">Success.</response>
     /// <response code="400">If invalid data provided.</response>
-    /// <response code="500">If server error occured.</response>
+    /// <response code="500">If server error occurred.</response>
     [ProducesResponseType(typeof(AuthResponse), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.InternalServerError)]
@@ -75,7 +75,7 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> RegisterAsync(RegisterRequest registerRequest)
     {
         var command = _mapper.Map<RegisterCommand>(registerRequest);
-        command.ClientName = HttpContext.Request.Headers[HeaderConstants.Client];
+        command.ClientName = Request.Headers[HeaderConstants.Client];
         var result = await _mediator.Send(command);
         return Ok(result);
     }
@@ -87,7 +87,7 @@ public class AuthController : ControllerBase
     /// <returns>Authentication response.</returns>
     /// <response code="200">Success.</response>
     /// <response code="400">If invalid data provided.</response>
-    /// <response code="500">If server error occured.</response>
+    /// <response code="500">If server error occurred.</response>
     [ProducesResponseType(typeof(AuthResponse), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.InternalServerError)]
@@ -100,12 +100,12 @@ public class AuthController : ControllerBase
     }
 
     /// <summary>
-    /// Logouts a user.
+    /// Logout a user.
     /// </summary>
     /// <response code="200">Success.</response>
     /// <response code="400">If invalid data provided.</response>
     /// <response code="401">If user is unauthorized.</response>
-    /// <response code="500">If server error occured.</response>
+    /// <response code="500">If server error occurred.</response>
     [ProducesResponseType(typeof(AuthResponse), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.InternalServerError)]
@@ -116,8 +116,8 @@ public class AuthController : ControllerBase
     {
         var command = new LogoutCommand
         {
-            ClientName = HttpContext.User.GetClientName(),
-            UserId = HttpContext.User.GetUserId()
+            ClientName = User.GetClientName(),
+            UserId = User.GetUserId()
         };
 
         await _mediator.Send(command);

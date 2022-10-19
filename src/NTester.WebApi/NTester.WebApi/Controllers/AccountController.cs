@@ -38,7 +38,7 @@ public class AccountController : ControllerBase
     /// <response code="400">If invalid data provided.</response>
     /// <response code="401">If user is unauthorized.</response>
     /// <response code="404">If user not found.</response>
-    /// <response code="500">If server error occured.</response>
+    /// <response code="500">If server error occurred.</response>
     [ProducesResponseType(typeof(GetUserResponse), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.InternalServerError)]
     [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.NotFound)]
@@ -46,7 +46,7 @@ public class AccountController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetUserAsync()
     {
-        var getUserCommand = new GetUserQuery { UserId = HttpContext.User.GetUserId() };
+        var getUserCommand = new GetUserQuery { UserId = User.GetUserId() };
         var result = await _mediator.Send(getUserCommand);
         return Ok(result);
     }
