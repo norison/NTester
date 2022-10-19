@@ -8,7 +8,7 @@ on:
   pull_request:
     branches: [ "main" ]
     paths: 
-    - src/NTester.WebApi/**
+    - src/NTester.Backend/**
 
 jobs:
   build-and-test:
@@ -17,7 +17,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: src/NTester.WebApi
+        working-directory: src/NTester.Backend
         
     steps:
     - uses: actions/checkout@v3

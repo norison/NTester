@@ -1,18 +1,21 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTester.WebApi", "NTester.WebApi\NTester.WebApi.csproj", "{6AB58881-9E17-49E7-ACCF-2EAA28F86D67}"
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32804.467
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NTester.WebApi", "NTester.WebApi\NTester.WebApi.csproj", "{6AB58881-9E17-49E7-ACCF-2EAA28F86D67}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTester.DataAccess", "NTester.DataAccess\NTester.DataAccess.csproj", "{F34C352B-9C2E-4994-974F-6AD1AC075007}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NTester.DataAccess", "NTester.DataAccess\NTester.DataAccess.csproj", "{F34C352B-9C2E-4994-974F-6AD1AC075007}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTester.Domain", "NTester.Domain\NTester.Domain.csproj", "{902B4C54-6F1E-4CFB-90AF-D59923774D15}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NTester.Domain", "NTester.Domain\NTester.Domain.csproj", "{902B4C54-6F1E-4CFB-90AF-D59923774D15}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTester.DataContracts", "NTester.DataContracts\NTester.DataContracts.csproj", "{C0BA5E65-6086-4BF1-8FE5-4C1161CC827E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NTester.DataContracts", "NTester.DataContracts\NTester.DataContracts.csproj", "{C0BA5E65-6086-4BF1-8FE5-4C1161CC827E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{9853D6F0-8FFE-4558-B0E7-CB363F29ABA2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTester.Domain.Tests", "Tests\NTester.Domain.Tests\NTester.Domain.Tests.csproj", "{37E8FBB7-E053-4488-9B49-FA3C42E7B8DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NTester.Domain.Tests", "Tests\NTester.Domain.Tests\NTester.Domain.Tests.csproj", "{37E8FBB7-E053-4488-9B49-FA3C42E7B8DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTester.WebApi.Tests", "Tests\NTester.WebApi.Tests\NTester.WebApi.Tests.csproj", "{3260099A-E526-40B4-AAA6-366E23BCA12F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NTester.WebApi.Tests", "Tests\NTester.WebApi.Tests\NTester.WebApi.Tests.csproj", "{3260099A-E526-40B4-AAA6-366E23BCA12F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,8 +48,14 @@ Global
 		{3260099A-E526-40B4-AAA6-366E23BCA12F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3260099A-E526-40B4-AAA6-366E23BCA12F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{37E8FBB7-E053-4488-9B49-FA3C42E7B8DD} = {9853D6F0-8FFE-4558-B0E7-CB363F29ABA2}
 		{3260099A-E526-40B4-AAA6-366E23BCA12F} = {9853D6F0-8FFE-4558-B0E7-CB363F29ABA2}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {42E02888-8EB1-4EFA-8A09-942F45A19666}
 	EndGlobalSection
 EndGlobal
