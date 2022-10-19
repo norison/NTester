@@ -4,7 +4,7 @@ on:
   push:
     branches: [ "main" ]
     paths: 
-    - src/NTester.WebApi/**
+    - src/NTester.Backend/**
   pull_request:
     branches: [ "main" ]
     paths: 
